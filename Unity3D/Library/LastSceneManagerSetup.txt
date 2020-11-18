@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Matching-Game/Scenes/GameLevel.unity
+- path: Assets/SurivivalGame/Scenes/GameLevel.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
