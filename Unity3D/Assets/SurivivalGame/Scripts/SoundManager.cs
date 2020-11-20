@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
 using UnityEngine.Audio;
 
 public class SoundManager : MonoBehaviour
@@ -9,7 +10,7 @@ public class SoundManager : MonoBehaviour
     public Sound[] sounds;
     public Sound[] music;
 
-
+    int musicIndex,musicIncrement;
 
     // Start is called before the first frame update
     private void Awake()
@@ -26,7 +27,7 @@ public class SoundManager : MonoBehaviour
 
         SetAllSounds(sounds);
         SetAllSounds(music);
-        PlayMusic("EDM");
+        PlayRandomMusic();
     }
 
     void SetAllSounds(Sound[] array)
@@ -64,5 +65,11 @@ public class SoundManager : MonoBehaviour
             return;
         }
         s.source.Play();
+    }
+
+    void PlayRandomMusic()
+    {
+        int index = UnityEngine.Random.Range(0, music.Length);
+        music[index].source.Play();
     }
 }
