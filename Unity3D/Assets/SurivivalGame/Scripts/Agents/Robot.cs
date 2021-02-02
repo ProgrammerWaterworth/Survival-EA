@@ -9,15 +9,50 @@ using UnityEngine;
 public abstract class Robot : MonoBehaviour, IGoap
 {
     public Inventory inventory;
-    public float moveSpeed = 1;
-    public float range = 5;
+    public float maxMoveSpeed = 1;
+    public float range = 2;
+    float moveSpeed;
+    Animator animator;
+    Rigidbody rb;
+    [SerializeField] float rotationStepAngle;
+
+    Transform targetLocation;
 
     void Start()
+    {
+        SetUpRobot();
+    }
+
+    void Update()
+    {
+        AnimateMovement();
+    }
+
+    private void FixedUpdate()
+    {
+        MoveAgentToTarget();
+    }
+
+    /// <summary>
+    /// Set up the components required for the robot to function.
+    /// </summary>
+    void SetUpRobot()
     {
         if (GetComponent<Inventory>() != null)
             inventory = GetComponent<Inventory>();
         else
+        {
             inventory = gameObject.AddComponent<Inventory>() as Inventory;
+            Debug.LogWarning(this + " has no Inventory Component, adding one.");
+        }
+
+        if (GetComponent<Rigidbody>() != null)
+            rb = GetComponent<Rigidbody>();
+        else
+        {
+            rb = gameObject.AddComponent<Rigidbody>() as Rigidbody;
+            Debug.LogWarning(this + " has no Rigidbody Component, adding one.");
+        }
         /*
         if (inventory.GetWeapon() == null)
         {
@@ -26,19 +61,14 @@ public abstract class Robot : MonoBehaviour, IGoap
             inventory.SetWeapon(tool);
         }
         */
+
+        if (GetComponent<Animator>() != null)
+        {
+            animator = GetComponent<Animator>();
+        }
+        else Debug.LogWarning(this + " has no animator set!");
     }
 
-    /*Spotlight representation of visable range*/
-
-
-    void Update()
-    {
-
-    }
-
-    /**
-	 * Key-Value data that will feed the GOAP actions and system while planning.
-	 */
     public HashSet<KeyValuePair<string, object>> GetWorldState()
     {
         HashSet<KeyValuePair<string, object>> worldData = new HashSet<KeyValuePair<string, object>>();
@@ -50,9 +80,6 @@ public abstract class Robot : MonoBehaviour, IGoap
         return worldData;
     }
 
-    /**
-	 * Implement in subclasses
-	 */
     public abstract HashSet<KeyValuePair<string, object>> CreateGoalState();
 
 
@@ -65,14 +92,12 @@ public abstract class Robot : MonoBehaviour, IGoap
 
     public void PlanFound(HashSet<KeyValuePair<string, object>> goal, Queue<GoapAction> actions)
     {
-        // Yay we found a plan for our goal
-        Debug.Log("<color=green>Plan found</color> " + GoapAgent.PrintAllActions(actions));
+        Debug.Log("<color=green>Plan found</color> - " + GoapAgent.PrintActionPlan(actions));
     }
 
     public void ActionsFinished()
     {
-        // Everything is done, we completed our actions for this gool. Hooray!
-        Debug.Log("<color=blue>Actions completed</color>");
+        Debug.Log("<color=cyan>Actions completed!</color>");
     }
 
     public void PlanAborted(GoapAction aborter)
@@ -80,23 +105,65 @@ public abstract class Robot : MonoBehaviour, IGoap
         // An action bailed out of the plan. State has been reset to plan again.
         // Take note of what happened and make sure if you run the same goal again
         // that it can succeed.
-        Debug.Log("<color=red>Plan Aborted</color> " + GoapAgent.PrettyPrint(aborter));
+        Debug.Log("<color=red>Plan Aborted</color> " + GoapAgent.ActionName(aborter));
     }
 
-    //called per step
     public bool MoveAgent(GoapAction nextAction)
     {
-        // move towards the NextAction's target
-        float step = moveSpeed * Time.deltaTime;
-        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, nextAction.target.transform.position, step);
+        Debug.Log(this + " is moving.");
+        targetLocation = nextAction.target.transform;
 
-        if (gameObject.transform.position.Equals(nextAction.target.transform.position))
+        // Set direction the agent is facing.        
+        transform.forward = Vector3.RotateTowards(transform.forward, targetLocation.position - transform.position, rotationStepAngle, 0);
+        transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+
+        Debug.Log(this + " distance from target: "+ Vector3.Distance(transform.position, targetLocation.position));
+        if (Vector3.Distance(transform.position,targetLocation.position) < range)
         {
+            Debug.Log(this + " is in range of target location.");
             // we are at the target location, we are done
             nextAction.SetInRange(true);
+            targetLocation = null;
             return true;
         }
         else
-            return false;
+            return false;     
+    }
+
+    /// <summary>
+    /// FixedUpdate Function: Applies movement to agent's Rigidbody.
+    /// </summary>
+    void MoveAgentToTarget()
+    {
+        if (targetLocation == null)      
+            return;
+
+        if (rb != null)
+        {
+            // Move towards the NextAction's target
+            moveSpeed = maxMoveSpeed * Time.fixedDeltaTime;
+            Vector3 _direction = targetLocation.transform.position - transform.position;
+            _direction = new Vector3(_direction.x, 0, _direction.z).normalized;
+            rb.velocity = _direction * moveSpeed;
+        }
+        else Debug.LogWarning(this + " hasn't set Rigidbody Component!");
+
+    }
+
+    /// <summary>
+    /// Animates the movement of Robot.
+    /// </summary>
+    /// <param name="_speed">Speed of the animation.</param>
+    void AnimateMovement()
+    {      
+        if (animator != null)
+        {
+            if (rb != null)
+            {
+                animator.SetFloat("Movespeed", rb.velocity.magnitude);
+            }
+            else Debug.LogWarning(this + " hasn't set Rigidbody Component!");
+        }
+        else Debug.LogWarning(this + " hasn't set Animator Component!");
     }
 }

@@ -70,7 +70,7 @@ public class PickUpBatteryAction : GoapAction
         return closest != null;
     }
 
-    public override bool Perform(GameObject agent)
+    public override bool ExecuteAction(GameObject agent)
     {
         if (startTime == 0)
             startTime = Time.time;
