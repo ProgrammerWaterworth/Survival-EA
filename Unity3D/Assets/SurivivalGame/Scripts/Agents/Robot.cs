@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
- * A Robot parent class that should have children classes that implement CreateGoalState() 
- */
-
+/// <summary>
+/// A Goap agent implemenation.
+/// </summary>
 public abstract class Robot : BaseAgent
 {
     public Inventory inventory;
@@ -14,8 +13,8 @@ public abstract class Robot : BaseAgent
     float moveSpeed;
     Animator animator;
     Rigidbody rb;
-    [SerializeField] float rotationStepAngle;
 
+    [SerializeField] float rotationStepAngle;
     [SerializeField] Transform targetLocation;
 
     void Start()
@@ -111,7 +110,6 @@ public abstract class Robot : BaseAgent
     /// </summary>
     void MoveAgentToTarget()
     {
-        Debug.Log("target: " + targetLocation);
         if (targetLocation == null)
         {
             return;

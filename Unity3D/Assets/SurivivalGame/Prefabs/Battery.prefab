@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6976328115283349809}
   - component: {fileID: 6976328115283349808}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 6971895352482365440}
   - component: {fileID: 6964659566681198532}
   - component: {fileID: 6954818931708725618}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Shoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 6972055311358548550}
   - component: {fileID: 6965066485016300068}
   - component: {fileID: 6954477398443928604}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Side
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +263,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6971687877686710742}
-  m_Layer: 0
+  - component: {fileID: 3779233853568179300}
+  m_Layer: 10
   m_Name: Battery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -289,6 +290,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -23.83, y: 0, z: 0}
+--- !u!65 &3779233853568179300
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6977369740182708128}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.3, y: 0.3, z: 0.3}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6977895163710420068
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,7 +314,7 @@ GameObject:
   - component: {fileID: 6971961903169298074}
   - component: {fileID: 6964929186363316118}
   - component: {fileID: 6954701873543417356}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Inner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -381,7 +395,7 @@ GameObject:
   - component: {fileID: 6980449321684629608}
   - component: {fileID: 6965061301078395120}
   - component: {fileID: 6954463090994041118}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

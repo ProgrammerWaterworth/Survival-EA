@@ -112,7 +112,6 @@ public sealed class GoapAgent : MonoBehaviour
                 Debug.Log("<color=orange>Failed to plan for goal with conditions: </color>" + PrintStateConditions(_goal));
                 dataProvider.PlanFailed(_goal);
             }
-
         };
     }
 
