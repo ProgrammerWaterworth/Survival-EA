@@ -6,7 +6,7 @@ using UnityEngine;
  * A Robot parent class that should have children classes that implement CreateGoalState() 
  */
 
-public abstract class Robot : MonoBehaviour, IGoap
+public abstract class Robot : BaseAgent
 {
     public Inventory inventory;
     public float maxMoveSpeed = 1;
@@ -16,7 +16,7 @@ public abstract class Robot : MonoBehaviour, IGoap
     Rigidbody rb;
     [SerializeField] float rotationStepAngle;
 
-    Transform targetLocation;
+    [SerializeField] Transform targetLocation;
 
     void Start()
     {
@@ -69,48 +69,24 @@ public abstract class Robot : MonoBehaviour, IGoap
         else Debug.LogWarning(this + " has no animator set!");
     }
 
-    public HashSet<KeyValuePair<string, object>> GetWorldState()
+    public override HashSet<KeyValuePair<string, object>> GetWorldState()
     {
         HashSet<KeyValuePair<string, object>> worldData = new HashSet<KeyValuePair<string, object>>();
 
         //worldData.Add(new KeyValuePair<string, object>("hasCharge", (inventory.GetCharge()>10)));
-        Debug.Log("<color=orange>Charge:</color>" + inventory.GetCharge());
+        Debug.Log("<color=orange>"+this+" charge:</color>" + inventory.GetCharge());
         //worldData.Add(new KeyValuePair<string, object>("hasWeapon", (inventory.GetWeapon() != null)));
 
         return worldData;
     }
 
-    public abstract HashSet<KeyValuePair<string, object>> CreateGoalState();
-
-
-    public void PlanFailed(HashSet<KeyValuePair<string, object>> failedGoal)
+    public override void PlanFound(HashSet<KeyValuePair<string, object>> goal, Queue<GoapAction> actions)
     {
-        // Not handling this here since we are making sure our goals will always succeed.
-        // But normally you want to make sure the world state has changed before running
-        // the same goal again, or else it will just fail.
+        base.PlanFound(goal, actions);
     }
 
-    public void PlanFound(HashSet<KeyValuePair<string, object>> goal, Queue<GoapAction> actions)
+    public override bool MoveAgent(GoapAction nextAction)
     {
-        Debug.Log("<color=green>Plan found</color> - " + GoapAgent.PrintActionPlan(actions));
-    }
-
-    public void ActionsFinished()
-    {
-        Debug.Log("<color=cyan>Actions completed!</color>");
-    }
-
-    public void PlanAborted(GoapAction aborter)
-    {
-        // An action bailed out of the plan. State has been reset to plan again.
-        // Take note of what happened and make sure if you run the same goal again
-        // that it can succeed.
-        Debug.Log("<color=red>Plan Aborted</color> " + GoapAgent.ActionName(aborter));
-    }
-
-    public bool MoveAgent(GoapAction nextAction)
-    {
-        Debug.Log(this + " is moving.");
         targetLocation = nextAction.target.transform;
 
         // Set direction the agent is facing.        
@@ -120,10 +96,10 @@ public abstract class Robot : MonoBehaviour, IGoap
         Debug.Log(this + " distance from target: "+ Vector3.Distance(transform.position, targetLocation.position));
         if (Vector3.Distance(transform.position,targetLocation.position) < range)
         {
+            targetLocation = null;
             Debug.Log(this + " is in range of target location.");
             // we are at the target location, we are done
-            nextAction.SetInRange(true);
-            targetLocation = null;
+            nextAction.SetInRange(true);          
             return true;
         }
         else
@@ -135,16 +111,20 @@ public abstract class Robot : MonoBehaviour, IGoap
     /// </summary>
     void MoveAgentToTarget()
     {
-        if (targetLocation == null)      
+        Debug.Log("target: " + targetLocation);
+        if (targetLocation == null)
+        {
             return;
-
+        }   
+            
         if (rb != null)
         {
             // Move towards the NextAction's target
             moveSpeed = maxMoveSpeed * Time.fixedDeltaTime;
             Vector3 _direction = targetLocation.transform.position - transform.position;
             _direction = new Vector3(_direction.x, 0, _direction.z).normalized;
-            rb.velocity = _direction * moveSpeed;
+            rb.AddForce(_direction * moveSpeed, ForceMode.Force);
+            rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxMoveSpeed);
         }
         else Debug.LogWarning(this + " hasn't set Rigidbody Component!");
 

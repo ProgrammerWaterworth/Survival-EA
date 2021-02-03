@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/**
- * Plans how to reach the goal state with the available actions.
- */
+/// <summary>
+/// Plans how an agent can reach the goal state with the available actions from its current state.
+/// </summary>
 public class GoapPlanner
 {
     /// <summary>
@@ -20,6 +20,13 @@ public class GoapPlanner
                                   HashSet<KeyValuePair<string, object>> _worldState,
                                   HashSet<KeyValuePair<string, object>> _goal)
     {
+        //Ensure there are available actions.
+        if(_availableActions == null)
+        {
+            Debug.Log("<color=red>" + this +" has no available actions to form a plan with. </color>");
+            return null;
+        }
+        
         // Reset all available actions.
         foreach (GoapAction _action in _availableActions)
         {
@@ -91,7 +98,8 @@ public class GoapPlanner
     }
 
     /// <summary>
-    /// 
+    /// Recursive Function: Creates part of a tree plan with usable actions.
+    /// Terminates when all possible action paths have been created.
     /// </summary>
     /// <param name="_parentNode">Root node of tree.</param>
     /// <param name="_leafNodes"></param>
@@ -265,7 +273,10 @@ public class GoapPlanner
         {
             _message += _action.GetType().ToString() + ", ";
         }
-        _message = _message.Substring(0, _message.Length - 2); //remove final ", "
+        if (_message.Length > 2)
+            _message = _message.Substring(0, _message.Length - 2); //remove final ", "
+        else
+            _message = "None.";
 
         return _message;
    

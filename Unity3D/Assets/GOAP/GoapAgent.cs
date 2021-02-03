@@ -8,7 +8,7 @@ using System;
 /// </summary>
 public sealed class GoapAgent : MonoBehaviour
 {
-
+    #region Finite State Machine
     private FSM stateMachine;
     /// <summary>
     /// Finds something to do - Searching
@@ -22,33 +22,30 @@ public sealed class GoapAgent : MonoBehaviour
     /// Performs an action
     /// </summary>
     private FSM.FSMState executeActionState;
+    #endregion
+
+    #region Actions
     /// <summary>
     /// All actions available to the Goap Agent
     /// </summary>
     private HashSet<GoapAction> availableActions;
     /// <summary>
-    /// All actions currently available to the Goap Agent
+    /// Actions the agent must execute to reach their goal.
     /// </summary>
-    private Queue<GoapAction> currentActions;
+    private Queue<GoapAction> currentPlanActions;
+    #endregion
 
-    private IGoap dataProvider; // this is the implementing class that provides our world data and listens to feedback on planning
+    /// <summary>
+    /// The agent which implements the IGoap interface.
+    /// </summary>
+    IGoap dataProvider; // this is the implementing class that provides our world data and listens to feedback on planning
 
-    private GoapPlanner goapPlanner;
+    GoapPlanner goapPlanner;
 
 
     void Start()
     {
-        //Initialise GOAP agent
-        stateMachine = new FSM();
-        availableActions = new HashSet<GoapAction>();
-        currentActions = new Queue<GoapAction>();
-        goapPlanner = new GoapPlanner();
-        FindAndSetDataProvider();
-        CreateIdleState();
-        CreateMoveToState();
-        CreatePerformActionState();
-        stateMachine.PushState(idleState);
-        LoadActions();
+        SetUpGoapAgent();
     }
 
 
@@ -57,51 +54,39 @@ public sealed class GoapAgent : MonoBehaviour
         stateMachine.Update(gameObject);
     }
 
-
     /// <summary>
-    /// Add action to the available actions.
+    /// Set up the components required for the Goap agent to function.
     /// </summary>
-    /// <param name="_action">Action to add.</param>
-    public void AddAction(GoapAction _action)
+    void SetUpGoapAgent()
     {
-        availableActions.Add(_action);
-    }
-
-    /// <summary>
-    /// Get Action from available actions.
-    /// </summary>
-    /// <param name="_action"></param>
-    /// <returns></returns>
-    public GoapAction GetAction(Type _action)
-    {
-        foreach (GoapAction availableAction in availableActions)
-        {
-            if (availableAction.GetType().Equals(_action))
-                return availableAction;
-        }
-        return null;
-    }
-
-    /// <summary>
-    /// Remove action from list of available actions.
-    /// </summary>
-    /// <param name="_action">Action to remove.</param>
-    public void RemoveAction(GoapAction _action)
-    {
-        availableActions.Remove(_action);
+        stateMachine = new FSM();
+        availableActions = new HashSet<GoapAction>();
+        currentPlanActions = new Queue<GoapAction>();
+        goapPlanner = new GoapPlanner();
+        FindAndSetDataProvider();
+        CreateIdleState();
+        CreateMoveToState();
+        CreateExecuteActionState();
+        stateMachine.PushState(idleState);
+        LoadActions();
     }
 
     /// <summary>
     /// Checks if there are any current actions available.
     /// </summary>
     /// <returns>True if GOAP agent has an action plan.</returns>
-    private bool HasPlan()
+     bool HasPlan()
     {
-        return currentActions.Count > 0;
+        return currentPlanActions.Count > 0;
     }
 
-    private void CreateIdleState()
+    /// <summary>
+    /// Creates the agents Idle state. 
+    /// A state in which the agent plans how to reach its goal.
+    /// </summary>
+    void CreateIdleState()
     {
+        //Invoked when updating idle state.
         idleState = (_fsm, _agentObj) => {
             // GOAP planning
 
@@ -114,7 +99,7 @@ public sealed class GoapAgent : MonoBehaviour
             if (_plan != null)
             {
                 // Obtained plan successfully.
-                currentActions = _plan;
+                currentPlanActions = _plan;
                 dataProvider.PlanFound(_goal, _plan);
 
                 _fsm.PopState(); // move to executeAction state
@@ -124,21 +109,24 @@ public sealed class GoapAgent : MonoBehaviour
             else
             {
                 // Failed to make a plan.
-                Debug.Log("<color=orange>Plan for goal failed:</color>" + PrintAllStates(_goal));
+                Debug.Log("<color=orange>Failed to plan for goal with conditions: </color>" + PrintStateConditions(_goal));
                 dataProvider.PlanFailed(_goal);
-                _fsm.PopState(); // move back to IdleAction state
-                _fsm.PushState(idleState);
             }
 
         };
     }
 
-    private void CreateMoveToState()
+    /// <summary>
+    /// Creates the agents MoveToState. 
+    /// A state in which the agent navigates to a location in which it can execute an action.
+    /// </summary>
+    void CreateMoveToState()
     {
+        //Invoked when in updating moveTo state.
         moveToState = (fsm, gameObj) => {
             // move the game object
 
-            GoapAction action = currentActions.Peek();
+            GoapAction action = currentPlanActions.Peek();
             if (action.RequiresInRange() && action.target == null)
             {
                 Debug.Log("<color=red>Fatal error:</color> Action requires a target but has none. Planning failed. You did not assign the target in your Action.checkProceduralPrecondition()");
@@ -156,9 +144,13 @@ public sealed class GoapAgent : MonoBehaviour
         };
     }
 
-    private void CreatePerformActionState()
+    /// <summary>
+    /// Creates the agents Execute Action state. 
+    /// A state in which the agent carries out their action.
+    /// </summary>
+    void CreateExecuteActionState()
     {
-
+        //Invoked when in updating executeAction state.
         executeActionState = (fsm, gameObj) => {
             // execute the action
 
@@ -172,17 +164,17 @@ public sealed class GoapAgent : MonoBehaviour
                 return;
             }
 
-            GoapAction action = currentActions.Peek();
+            GoapAction action = currentPlanActions.Peek();
             if (action.IsDone())
             {
                 // the action is done. Remove it so we can execute the next one
-                currentActions.Dequeue();
+                currentPlanActions.Dequeue();
             }
 
             if (HasPlan())
             {
                 // execute the next action
-                action = currentActions.Peek();
+                action = currentPlanActions.Peek();
                 bool inRange = action.RequiresInRange() ? action.IsInRange() : true;
 
                 if (inRange)
@@ -219,7 +211,7 @@ public sealed class GoapAgent : MonoBehaviour
     /// <summary>
     /// Search for a component that implements IGoap interface and set it to dataProvider.
     /// </summary>
-    private bool FindAndSetDataProvider()
+    bool FindAndSetDataProvider()
     {
         foreach (Component comp in gameObject.GetComponents(typeof(Component)))
         {
@@ -236,7 +228,7 @@ public sealed class GoapAgent : MonoBehaviour
     /// <summary>
     /// Add all GOAP Agent actions to the list of available actions.
     /// </summary>
-    private void LoadActions()
+    void LoadActions()
     {
         GoapAction[] actions = gameObject.GetComponents<GoapAction>();
         foreach (GoapAction action in actions)
@@ -247,16 +239,16 @@ public sealed class GoapAgent : MonoBehaviour
     }
 
     /// <summary>
-    /// Prints all states leading up to the goal.
+    /// Prints conditions of _state.
     /// </summary>
-    /// <param name="_states">FSM states.</param>
-    /// <returns>List of states in string form.</returns>
-    public static string PrintAllStates(HashSet<KeyValuePair<string, object>> _states)
+    /// <param name="_state"></param>
+    /// <returns>List of state conditions in string form.</returns>
+    public static string PrintStateConditions(HashSet<KeyValuePair<string, object>> _state)
     {
         String _allStates = "";
-        foreach (KeyValuePair<string, object> _state in _states)
+        foreach (KeyValuePair<string, object> _condition in _state)
         {
-            _allStates += _state.Key + ":" + _state.Value.ToString();
+            _allStates += _condition.Key + ":" + _condition.Value.ToString();
             _allStates += ", ";
         }
         return _allStates;
