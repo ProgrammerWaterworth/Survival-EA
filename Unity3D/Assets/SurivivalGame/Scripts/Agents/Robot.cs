@@ -92,7 +92,7 @@ public abstract class Robot : BaseAgent
         transform.forward = Vector3.RotateTowards(transform.forward, targetLocation.position - transform.position, rotationStepAngle, 0);
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
 
-        Debug.Log(this + " distance from target: "+ Vector3.Distance(transform.position, targetLocation.position));
+        //Debug.Log(this + " distance from target: "+ Vector3.Distance(transform.position, targetLocation.position));
         if (Vector3.Distance(transform.position,targetLocation.position) < range)
         {
             targetLocation = null;

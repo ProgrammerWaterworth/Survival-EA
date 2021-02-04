@@ -35,6 +35,12 @@ public class PickUpBatteryAction : GoapAction
 
     public override bool CheckProceduralPrecondition(GameObject agent)
     {
+        //Access agent memory and see if there is any knowledge of a battery.
+        if (GetComponent<AgentMemory>() != null)
+        {
+            
+        }
+
         // find the nearest battery to pick up
         Battery[] batteries = (Battery[])UnityEngine.GameObject.FindObjectsOfType(typeof(Battery));
         Battery closest = null;

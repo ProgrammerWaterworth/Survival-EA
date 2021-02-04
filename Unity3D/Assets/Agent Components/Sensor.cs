@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// For Detecting information by acting like the vision of the agent.
+/// For Detecting information by simulating the vision of the agent.
 /// </summary>
 public class Sensor : MonoBehaviour
 {
@@ -15,7 +15,7 @@ public class Sensor : MonoBehaviour
     const float sensorUpdateRate = 0.25f;
 
     [SerializeField] [Tooltip("Mask for objects that block the users vision.")] LayerMask obstacleMask;
-    [SerializeField][Tooltip("Mask for objects the user wants to interact with.")] LayerMask interactableMask;
+    [SerializeField] [Tooltip("Mask for objects the user wants to interact with.")] LayerMask interactableMask;
 
     void Start()
     {
@@ -40,7 +40,7 @@ public class Sensor : MonoBehaviour
     /// <summary>
     /// Updates visible target list with visible objects on the interactable mask layer.
     /// </summary>
-    void FindVisibleTargets()
+    void FindVisibleInteractables()
     {
         visibleInteractables.Clear();
 
@@ -69,7 +69,7 @@ public class Sensor : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(_delay);
-            FindVisibleTargets();
+            FindVisibleInteractables();
         }
     }
 }

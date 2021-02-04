@@ -119,7 +119,9 @@ public class GoapPlanner
                 // Apply the action's effects to the parent state
                 HashSet<KeyValuePair<string, object>> currentState = SetNewState(_parentNode.state, _action.Effects);
 
-                ActionNode _currentNode = new ActionNode(_parentNode, _parentNode.cumulitiveCost + _action.cost, currentState, _action);
+                //calculate movement cost too.                
+
+                ActionNode _currentNode = new ActionNode(_parentNode, _parentNode.cumulitiveCost + _action.GetCost(), currentState, _action);
 
                 //Check if current state meets the conditions of the goal state.
                 if (CheckConditions(_goal, currentState))

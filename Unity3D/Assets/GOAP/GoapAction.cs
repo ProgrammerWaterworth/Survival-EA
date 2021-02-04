@@ -24,7 +24,7 @@ public abstract class GoapAction : MonoBehaviour
     /// <summary>
     /// Cost of an action. Affects the actions chosen when planning to reach goal.
     /// </summary>
-    public float cost = 1f;
+    [SerializeField] float cost = 1f;
 
     /// <summary>
     /// Target that the action must be performed on, if not null.
@@ -86,6 +86,15 @@ public abstract class GoapAction : MonoBehaviour
     public bool IsInRange()
     {
         return inRange;
+    }
+
+    /// <summary>
+    /// Get the cost of executing this action.
+    /// </summary>
+    /// <returns>Cost of action.</returns>
+    public virtual float GetCost()
+    {
+        return cost;
     }
 
     /// <summary>
