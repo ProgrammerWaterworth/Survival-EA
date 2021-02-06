@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/SurivivalGame/Scenes/TestLevel.unity
+- path: Assets/SurivivalGame/Scenes/VariedTerrain.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

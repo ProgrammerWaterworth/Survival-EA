@@ -94,6 +94,8 @@ public sealed class GoapAgent : MonoBehaviour
             HashSet<KeyValuePair<string, object>> _worldState = dataProvider.GetWorldState();
             HashSet<KeyValuePair<string, object>> _goal = dataProvider.CreateGoalState();
 
+            Debug.Log(this + " is Idle");
+
             // Plan
             Queue<GoapAction> _plan = goapPlanner.Plan(gameObject, availableActions, _worldState, _goal);
             if (_plan != null)
@@ -124,16 +126,8 @@ public sealed class GoapAgent : MonoBehaviour
         //Invoked when in updating moveTo state.
         moveToState = (fsm, gameObj) => {
             // move the game object
-
+            Debug.Log(this + " is Moving");
             GoapAction action = currentPlanActions.Peek();
-            if (action.RequiresInRange() && action.target == null)
-            {
-                Debug.Log("<color=red>Fatal error:</color> Action requires a target but has none. Planning failed. You did not assign the target in your Action.checkProceduralPrecondition()");
-                fsm.PopState(); // move
-                fsm.PopState(); // execute action
-                fsm.PushState(idleState);
-                return;
-            }
 
             // get the agent to move itself
             if (dataProvider.MoveAgent(action))
@@ -152,6 +146,8 @@ public sealed class GoapAgent : MonoBehaviour
         //Invoked when in updating executeAction state.
         executeActionState = (fsm, gameObj) => {
             // execute the action
+
+            Debug.Log(this + " is Executing Action.");
 
             if (!HasPlan())
             {

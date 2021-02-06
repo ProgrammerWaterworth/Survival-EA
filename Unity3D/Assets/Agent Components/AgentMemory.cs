@@ -60,32 +60,53 @@ public class AgentMemory : MonoBehaviour
     }
 
     /// <summary>
-    /// Checks if there is a memory of an object with the name _objectName.
+    /// Checks if there is a memory of an object with the name _objectName. Can return True even if object is null as memory of it at that position depicts it being there.
     /// </summary>
     /// <param name="_objectName">object to search for.</param>
-    /// <returns>Closest object by memory recollection, otherwise null.</returns>
-    public GameObject CheckMemoryForObject(string _objectName, Vector3 _agentPosition)
+    /// <returns>True if it has a memory of an object.</returns>
+    public bool CheckMemoryForObject(string _objectName, Vector3 _agentPosition, out GameObject _object, out Vector3 _memoryPosition)
     {
-        if(agentMemories.ContainsKey(_objectName))
+        bool _foundObject = false;
+        _memoryPosition = Vector3.zero;
+        _object = null;
+        if (agentMemories.ContainsKey(_objectName))
         {
-            if(agentMemories[_objectName].Count > 0)
+            if (agentMemories[_objectName].Count > 0) //Has at least 1 memory of object stored.
             {
-                GameObject closestObject = null;
                 float closestDistance = Mathf.Infinity;
+                _foundObject = true;
 
-                foreach(KeyValuePair<GameObject,Memory> _pair in agentMemories[_objectName])
+                foreach (KeyValuePair<GameObject, Memory> _pair in agentMemories[_objectName])
                 {
-                    if(Vector3.Distance( _pair.Value.worldPosition, _agentPosition) < closestDistance)
+                    if (Vector3.Distance(_pair.Value.worldPosition, _agentPosition) < closestDistance)
                     {
                         closestDistance = Vector3.Distance(_pair.Value.worldPosition, _agentPosition);
-                        closestObject = _pair.Value.gameObject;
+                        _object = _pair.Value.gameObject;
+                        _memoryPosition = _pair.Value.worldPosition;
                     }
                 }
-
-                return closestObject;
             }
         }
-        return null;
+        return _foundObject;
+    }
+
+    public void RemoveObjectFromMemory(GameObject _object)
+    {
+        if (agentMemories.ContainsKey(_object.name))
+        {
+            if (agentMemories[_object.name].Count > 0) //Has at least 1 memory of object stored.
+            {
+                if (agentMemories[_object.name].ContainsKey(_object))
+                {
+                    Debug.Log(this + " is removing " + agentMemories[_object.name][_object]);
+                    agentMemories[_object.name].Remove(_object);
+                }
+                else Debug.LogError(this + " cannot find object in memories: " + _object.name);
+            }
+            else Debug.LogError(this + " currently has no memories of type: " + _object.name);
+
+        }
+        else Debug.LogError(this + " hasn't recorded memories of this type: " + _object.name);
     }
 
     /// <summary>
@@ -100,7 +121,8 @@ public class AgentMemory : MonoBehaviour
 
             foreach(Transform _informationTransform in sensor.visibleInteractables)
             {
-                UpdateMemory(_informationTransform.gameObject);
+                if(_informationTransform!=null)
+                    UpdateMemory(_informationTransform.gameObject);
             }
             if(showDebugLog)
                 Debug.Log(this + " types of memory: " + agentMemories.Count);
@@ -131,7 +153,7 @@ public class AgentMemory : MonoBehaviour
         if (agentMemories.ContainsKey(_keyObject.name) && agentMemories[_keyObject.name].ContainsKey(_keyObject))
         {
             if(showDebugLog)
-                Debug.Log(this + " is updating existing memory: " + agentMemories[_keyObject.name][_keyObject]);
+                Debug.Log(this + " is updating existing memory: " + agentMemories[_keyObject.name][_keyObject].gameObject);
 
             Memory _memory = agentMemories[_keyObject.name][_keyObject];
             _memory.worldPosition = _keyObject.transform.position;
@@ -140,13 +162,5 @@ public class AgentMemory : MonoBehaviour
         else  // Not a memory, make one.
             AddMemory(_keyObject);
         
-    }
-
-    /// <summary>
-    /// Removes a memory from knowledge base.
-    /// </summary>
-    void RemoveMemory()
-    {
-     
     }
 }

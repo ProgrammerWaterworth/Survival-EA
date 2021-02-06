@@ -15,8 +15,8 @@ public abstract class Robot : BaseAgent
     Rigidbody rb;
 
     [SerializeField] float rotationStepAngle;
-    [SerializeField] Transform targetLocation;
-
+    [SerializeField] Vector3 targetPosition;
+    [SerializeField] bool moving;
     void Start()
     {
         SetUpRobot();
@@ -29,7 +29,8 @@ public abstract class Robot : BaseAgent
 
     private void FixedUpdate()
     {
-        MoveAgentToTarget();
+        if(moving)
+            MoveAgentToTarget();
     }
 
     /// <summary>
@@ -86,16 +87,15 @@ public abstract class Robot : BaseAgent
 
     public override bool MoveAgent(GoapAction nextAction)
     {
-        targetLocation = nextAction.target.transform;
-
+        targetPosition = nextAction.targetPosition;
+        moving = true;
         // Set direction the agent is facing.        
-        transform.forward = Vector3.RotateTowards(transform.forward, targetLocation.position - transform.position, rotationStepAngle, 0);
+        transform.forward = Vector3.RotateTowards(transform.forward, targetPosition - transform.position, rotationStepAngle, 0);
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
 
         //Debug.Log(this + " distance from target: "+ Vector3.Distance(transform.position, targetLocation.position));
-        if (Vector3.Distance(transform.position,targetLocation.position) < range)
+        if (Vector3.Distance(transform.position,targetPosition) < range)
         {
-            targetLocation = null;
             Debug.Log(this + " is in range of target location.");
             // we are at the target location, we are done
             nextAction.SetInRange(true);          
@@ -110,7 +110,7 @@ public abstract class Robot : BaseAgent
     /// </summary>
     void MoveAgentToTarget()
     {
-        if (targetLocation == null)
+        if (targetPosition == Vector3.zero)
         {
             return;
         }   
@@ -119,13 +119,14 @@ public abstract class Robot : BaseAgent
         {
             // Move towards the NextAction's target
             moveSpeed = maxMoveSpeed * Time.fixedDeltaTime;
-            Vector3 _direction = targetLocation.transform.position - transform.position;
+            Vector3 _direction = targetPosition - transform.position;
             _direction = new Vector3(_direction.x, 0, _direction.z).normalized;
             rb.AddForce(_direction * moveSpeed, ForceMode.Force);
             rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxMoveSpeed);
         }
         else Debug.LogWarning(this + " hasn't set Rigidbody Component!");
 
+        moving = false;
     }
 
     /// <summary>

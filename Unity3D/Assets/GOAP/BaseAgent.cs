@@ -39,6 +39,8 @@ public abstract class BaseAgent : MonoBehaviour, IGoap
     public virtual void PlanFailed(HashSet<KeyValuePair<string, object>> _failedGoal)
     {
         //Child class should implement manage switching of goal or waiting for world state to change.
+
+        //By Default it should idle.
     }
 
     public virtual void PlanFound(HashSet<KeyValuePair<string, object>> _goalState, Queue<GoapAction> _actions)

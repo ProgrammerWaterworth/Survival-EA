@@ -31,6 +31,11 @@ public abstract class GoapAction : MonoBehaviour
     /// </summary>
     public GameObject target;
 
+    /// <summary>
+    /// Known location of target - could be different to true target position
+    /// </summary>
+    public Vector3 targetPosition;
+
     public GoapAction()
     {
         preconditions = new HashSet<KeyValuePair<string, object>>();
