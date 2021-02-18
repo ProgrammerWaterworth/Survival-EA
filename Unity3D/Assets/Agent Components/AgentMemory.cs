@@ -60,6 +60,21 @@ public class AgentMemory : MonoBehaviour
     }
 
     /// <summary>
+    /// Check for obstacles at current time and report back information.
+    /// </summary>
+    /// <param name="_memoryPosition"></param>
+    /// <returns></returns>
+    public bool CheckForObstacles()
+    {
+        if (sensor != null)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+    /// <summary>
     /// Checks if there is a memory of an object with the name _objectName. Can return True even if object is null as memory of it at that position depicts it being there.
     /// </summary>
     /// <param name="_objectName">object to search for.</param>
@@ -69,6 +84,7 @@ public class AgentMemory : MonoBehaviour
         bool _foundObject = false;
         _memoryPosition = Vector3.zero;
         _object = null;
+
         if (agentMemories.ContainsKey(_objectName))
         {
             if (agentMemories[_objectName].Count > 0) //Has at least 1 memory of object stored.
@@ -124,8 +140,6 @@ public class AgentMemory : MonoBehaviour
                 if(_informationTransform!=null)
                     UpdateMemory(_informationTransform.gameObject);
             }
-            if(showDebugLog)
-                Debug.Log(this + " types of memory: " + agentMemories.Count);
         }
     }
 
@@ -141,7 +155,10 @@ public class AgentMemory : MonoBehaviour
             agentMemories.Add(_keyObject.name, new Dictionary<GameObject, Memory>());
         }   
 
-        agentMemories[_keyObject.name].Add(_keyObject, _memory);       
+        agentMemories[_keyObject.name].Add(_keyObject, _memory);
+
+        if (showDebugLog)
+            Debug.Log(this + " is adding memory: " + agentMemories[_keyObject.name][_keyObject].gameObject);
     }
 
     /// <summary>
@@ -151,10 +168,7 @@ public class AgentMemory : MonoBehaviour
     void UpdateMemory(GameObject _keyObject)
     {
         if (agentMemories.ContainsKey(_keyObject.name) && agentMemories[_keyObject.name].ContainsKey(_keyObject))
-        {
-            if(showDebugLog)
-                Debug.Log(this + " is updating existing memory: " + agentMemories[_keyObject.name][_keyObject].gameObject);
-
+        {          
             Memory _memory = agentMemories[_keyObject.name][_keyObject];
             _memory.worldPosition = _keyObject.transform.position;
             _memory.timeStamp = Time.time;           

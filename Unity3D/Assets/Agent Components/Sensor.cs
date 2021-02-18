@@ -10,7 +10,16 @@ public class Sensor : MonoBehaviour
     public float viewDistance;
     public float viewAngle;
 
-     public List<Transform> visibleInteractables = new List<Transform>();
+    [SerializeField] bool senseActive;
+    [SerializeField] [Tooltip("The number of rays to cast out for detecting obstacles.")] int numViewRangeRays = 5;
+    [SerializeField] [Tooltip("The magnitude of how the desired direction of movement steered in the opposite direction to detected obstacles")]
+    [Range(0,1)]float avoidenceSensitivity;
+    /// <summary>
+    /// The desired direction of movement based on detected obstacles.
+    /// </summary>
+    Vector3 desiredDirection;
+
+    public List<Transform> visibleInteractables = new List<Transform>();
 
     const float sensorUpdateRate = 0.25f;
 
@@ -46,7 +55,7 @@ public class Sensor : MonoBehaviour
 
         Collider[] _targetsInRange = Physics.OverlapSphere(transform.position, viewDistance, interactableMask);
 
-        for(int i =0; i < _targetsInRange.Length; i++)
+        for(int i = 0; i < _targetsInRange.Length; i++)
         {
             Transform _target = _targetsInRange[i].transform;
             Vector3 _targetDirection = (_target.position - transform.position).normalized;
@@ -64,10 +73,28 @@ public class Sensor : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Raycast in view range to see what obstacles the agent is facing and update desired direction of movement.
+    /// </summary>
+    void DetectObstacles()
+    {
+        for (int i = 0; i < numViewRangeRays; i++)
+        {
+            RaycastHit _hit;
+            float _angle = -(viewAngle / 2) + ((float)(i / numViewRangeRays) * viewAngle);
+            Vector3 _direction = Quaternion.Euler(0, _angle, 0) * transform.forward;
 
+            // Does the ray intersect any objects excluding the player layer
+            if (Physics.Raycast(transform.position, _direction, out _hit, viewDistance, obstacleMask))
+            {
+                
+            }
+        }
+    }
 
     IEnumerator FindTargetsWithDelay(float _delay)
     {
+        //indefinite loop
         while (true)
         {
             yield return new WaitForSeconds(_delay);

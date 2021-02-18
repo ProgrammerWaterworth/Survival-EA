@@ -31,16 +31,8 @@ public class PickUpBatteryAction : GoapAction
         return true; // yes we need to be near the battery
     }
 
-    public override bool CheckProceduralPrecondition(GameObject _agent)
-    {
-        return FindTargetObject(_agent);
-    }
 
-    /// <summary>
-    /// Check if Target object is present for executing action.
-    /// </summary>
-    /// <returns></returns>
-    bool FindTargetObject(GameObject _agent)
+    protected override bool FindTargetObject(GameObject _agent)
     {
         //Access agent memory and see if there is any knowledge of a battery.
         if (GetComponent<AgentMemory>() != null)

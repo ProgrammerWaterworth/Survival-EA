@@ -85,9 +85,9 @@ public abstract class Robot : BaseAgent
         base.PlanFound(goal, actions);
     }
 
-    public override bool MoveAgent(GoapAction nextAction)
+    public override bool MoveAgent(GoapAction _nextAction)
     {
-        targetPosition = nextAction.targetPosition;
+        targetPosition = _nextAction.targetPosition;
         moving = true;
         // Set direction the agent is facing.        
         transform.forward = Vector3.RotateTowards(transform.forward, targetPosition - transform.position, rotationStepAngle, 0);
@@ -98,7 +98,7 @@ public abstract class Robot : BaseAgent
         {
             Debug.Log(this + " is in range of target location.");
             // we are at the target location, we are done
-            nextAction.SetInRange(true);          
+            _nextAction.SetInRange(true);          
             return true;
         }
         else

@@ -12,8 +12,9 @@ public class ChargeBaseAction : GoapAction
 
     public ChargeBaseAction()
     {
-        AddPrecondition("hasCharge", true);
+        AddPrecondition("hasBattery", true);
         AddEffect("chargeBase", true);
+        AddEffect("hasBattery", false);
     }
 
 
@@ -34,41 +35,24 @@ public class ChargeBaseAction : GoapAction
         return true; // yes we need to be near the battery
     }
 
-    public override bool CheckProceduralPrecondition(GameObject agent)
+    protected override bool FindTargetObject(GameObject _agent)
     {
-
-        // find the nearest battery to pick up
-        Base[] batteries = (Base[])UnityEngine.GameObject.FindObjectsOfType(typeof(Base));
-        Base closest = null;
-        float closestDist = 0;
-
-        foreach (Base battery in batteries)
+        //Access agent memory and see if there is any knowledge of a Base.
+        if (GetComponent<AgentMemory>() != null)
         {
-            if (closest == null)
+            GameObject _gameObject;
+            Vector3 _rememberedPosition; //the position that we think the object is in based on agent memory.
+
+            if (GetComponent<AgentMemory>().CheckMemoryForObject("ChargePoint", _agent.transform.position, out _gameObject, out _rememberedPosition))
             {
-                // first one, so choose it for now
-                closest = battery;
-                closestDist = (battery.gameObject.transform.position - agent.transform.position).magnitude;
-            }
-            else
-            {
-                // is this one closer than the last?
-                float dist = (battery.gameObject.transform.position - agent.transform.position).magnitude;
-                if (dist < closestDist)
-                {
-                    // we found a closer one, use it
-                    closest = battery;
-                    closestDist = dist;
-                }
+                target = _gameObject;
+                targetPosition = _rememberedPosition;
+                return true;
             }
         }
-        if (closest == null)
-            return false;
+        else Debug.LogError(this + " cannot find Agent Memory!");
 
-        targetBase = closest;
-        target = targetBase.gameObject;
-
-        return closest != null;
+        return false;
     }
 
     public override bool ExecuteAction(GameObject agent)

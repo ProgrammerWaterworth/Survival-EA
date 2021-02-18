@@ -8,11 +8,20 @@ using UnityEngine;
 /// </summary>
 public abstract class BaseAgent : MonoBehaviour, IGoap
 {
+    /// <summary>
+    /// The prioirty of the current goal to pursue.
+    /// </summary>
+    protected int goalPriorityChoice;
+
     public virtual void ActionsFinished()
     {
         Debug.Log("<color=cyan>Actions completed!</color>");
     }
 
+    /// <summary>
+    /// Handles the decision making and assignment of the goal here.
+    /// </summary>
+    /// <returns></returns>
     public virtual HashSet<KeyValuePair<string, object>> CreateGoalState()
     {
         //This should be overwritten in a child class.
@@ -39,12 +48,15 @@ public abstract class BaseAgent : MonoBehaviour, IGoap
     public virtual void PlanFailed(HashSet<KeyValuePair<string, object>> _failedGoal)
     {
         //Child class should implement manage switching of goal or waiting for world state to change.
-
+        goalPriorityChoice++;
         //By Default it should idle.
     }
 
     public virtual void PlanFound(HashSet<KeyValuePair<string, object>> _goalState, Queue<GoapAction> _actions)
     {
+        //Reset position working through list of goals.
+        goalPriorityChoice = 0;
+
         Debug.Log("<color=green>Plan found</color> - " + GoapAgent.PrintActionPlan(_actions));
     }
 }

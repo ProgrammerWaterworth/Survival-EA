@@ -69,7 +69,10 @@ public abstract class GoapAction : MonoBehaviour
     /// </summary>
     /// <param name="_agent">The GOAP agent performing the action.</param>
     /// <returns>True if preconditions are met.</returns>
-    public abstract bool CheckProceduralPrecondition(GameObject _agent);
+    public virtual bool CheckProceduralPrecondition(GameObject _agent)
+    {
+        return FindTargetObject(_agent);
+    }
 
     /// <summary>
     /// Execute an action.
@@ -92,6 +95,13 @@ public abstract class GoapAction : MonoBehaviour
     {
         return inRange;
     }
+
+    /// <summary>
+    /// Check if Target object is present for executing action.
+    /// </summary>
+    /// <returns></returns>
+    protected abstract bool FindTargetObject(GameObject _agent);
+ 
 
     /// <summary>
     /// Get the cost of executing this action.
