@@ -14,7 +14,7 @@ public class ChromosomeEditor : EditorWindow
 
     private ChromosomeData data;
 
-    public const string PathToDataAssets = "Assets/Genetic Algorithm";
+    public const string PathToDataAssets = "Assets/Genetic Algorithm/Data";
 
     [MenuItem("Genetic Algorithm/Show Chromosome Editor")]
     public static void ShowChromosomeEditor()
@@ -54,7 +54,7 @@ public class ChromosomeEditor : EditorWindow
         }
     }
 
-    public const string PathToAsset = "Assets/Genetic Algorithm/ChromosomeData.asset";
+    public const string PathToAsset = "Assets/Genetic Algorithm/Data/ChromosomeData.asset";
 
     public static ChromosomeData SetDefaultData()
     {
