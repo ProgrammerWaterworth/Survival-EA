@@ -13,15 +13,12 @@ using System.Threading;
 /// </summary>
 public class InformationPort : MonoBehaviour
 {
-    public string ip = "127.0.0.1";
-    public int port = 6000;
+    string ip = "127.0.0.1";
+    int port = 6000;
     Thread receiveThread;
     private Socket client;
-    [SerializeField]
-    private float[] dataOut; //debugging
-
-    [SerializeField]
-    private float[] myArray; //debugging
+    private float[] dataOut;
+    private float[] myArray; 
     private void Update()
     {
     }
@@ -39,10 +36,9 @@ public class InformationPort : MonoBehaviour
         receiveThread.Start();
     }
 
-    public void SetDataOut(float _out)
+    public void SetDataOut(float[] _out)
     {
-        dataOut[0] = _out;
-        Debug.Log("data out: " + dataOut[0]);
+        dataOut = _out;
     }
 
     public float[] GetArray()
@@ -61,7 +57,6 @@ public class InformationPort : MonoBehaviour
        
         while (true)
         {
-            Debug.Log("SendAndReceive");
             //initialize socket
             float[] floatsReceived;
             client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -79,12 +74,9 @@ public class InformationPort : MonoBehaviour
 
                     //copies float dataOut into byteArray as bytes. 4 bytes in float.
 
-                    Debug.Log("data out: " + dataOut[0]);
                     Buffer.BlockCopy(dataOut, 0, byteArray, 0, byteArray.Length);
                     client.Send(byteArray);
-                    Debug.Log("Sending");
                     dataOut[0] = 0;
-                    Debug.Log("Data now: " + dataOut[0]);
 
                     //allocate and receive bytes
                     byte[] bytes = new byte[4000];
@@ -92,12 +84,8 @@ public class InformationPort : MonoBehaviour
 
                     if (idxUsedBytes > 0)
                     {
-                        //print(idxUsedBytes + " new bytes received.");
-                        Debug.Log("used bytes:" + idxUsedBytes);
-
                         //convert bytes to floats
                         floatsReceived = new float[idxUsedBytes / 4];
-                        Debug.Log("Receiving");
                         Buffer.BlockCopy(bytes, 0, floatsReceived, 0, idxUsedBytes);
                         foreach (float f in floatsReceived)
                         {

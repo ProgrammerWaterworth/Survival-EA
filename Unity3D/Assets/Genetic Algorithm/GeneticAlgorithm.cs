@@ -52,6 +52,12 @@ public class GeneticAlgorithm : MonoBehaviour
 
     IEnumerator DelayedFitnessReport()
     {
+        if (port != null)
+        {
+            port.SetDataOut(genes);
+        }
+
+
         while (true)
         {
             yield return new WaitForSeconds(.1f);
@@ -67,8 +73,8 @@ public class GeneticAlgorithm : MonoBehaviour
         if (!port.GetArray().Equals(genes))
         {
             genes = port.GetArray();
-            float _fitness = CalculateFitness();
-            Debug.Log("fitness: " + _fitness);
+            float[] _fitness = new float[1];
+            _fitness[0] = CalculateFitness();
             port.SetDataOut(_fitness);
         }
         else
