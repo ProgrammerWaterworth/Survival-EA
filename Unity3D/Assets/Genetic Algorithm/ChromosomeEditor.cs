@@ -5,7 +5,7 @@ using System.Linq;
 
 public class ChromosomeEditor : EditorWindow
 {
-    private enum View { BeatList, Beat, DataList }
+    private enum View { GeneList, Gene, ChromosomeList }
 
     private Vector2 _scroll = new Vector2();
     private int _currentIndex = -1;
@@ -54,16 +54,40 @@ public class ChromosomeEditor : EditorWindow
         }
     }
 
-    public const string PathToAsset = "Assets/Genetic Algorithm/Data/ChromosomeData.asset";
-
-    public static ChromosomeData SetDefaultData()
+    public static ChromosomeData CreateNewChromosome()
     {
+        int attempts = 2;
+        int maxAttempts = 100;
+        string PathToAsset = "Assets/Genetic Algorithm/Data/ChromosomeData.asset";
         ChromosomeData newData = AssetDatabase.LoadAssetAtPath<ChromosomeData>(PathToAsset);
+        while (attempts < maxAttempts)
+        {          
+            if (newData == null)
+            {
+                Debug.Log("data set to default!");
+                newData = CreateInstance<ChromosomeData>();
+                AssetDatabase.CreateAsset(newData, PathToAsset);
+                Debug.Log(newData);
+                return newData;
+            }
+
+            PathToAsset = "Assets/Genetic Algorithm/Data/ChromosomeData" + attempts.ToString() + ".asset";
+            newData = AssetDatabase.LoadAssetAtPath<ChromosomeData>(PathToAsset);
+        }
+        Debug.Log("<color=orange>Attempts to create assets exceeded: </color>" + maxAttempts);
+        return newData;
+    }
+
+    public static ChromosomeData SetDefaultChromsome()
+    {
+        string _pathToAsset = "Assets/Genetic Algorithm/Data/ChromosomeData.asset";
+
+        ChromosomeData newData = AssetDatabase.LoadAssetAtPath<ChromosomeData>(_pathToAsset);
         if (newData == null)
         {
             Debug.Log("data set to default!");
             newData = CreateInstance<ChromosomeData>();
-            AssetDatabase.CreateAsset(newData, PathToAsset);
+            AssetDatabase.CreateAsset(newData, _pathToAsset);
             Debug.Log(newData);
         }
 
@@ -75,7 +99,7 @@ public class ChromosomeEditor : EditorWindow
     {
         //Try set data to default
         if (data == null)
-            data = SetDefaultData();
+            data = SetDefaultChromsome();
 
         // if returned data is null, do not continue.
         if (data == null)
@@ -90,11 +114,11 @@ public class ChromosomeEditor : EditorWindow
         EditorGUILayout.BeginVertical();
         _scroll = EditorGUILayout.BeginScrollView(_scroll);
 
-        if (_view == View.Beat && _currentIndex != -1)
+        if (_view == View.Gene && _currentIndex != -1)
         {
             OnGUI_GeneView(beatList, _currentIndex);
         }
-        else if (_view == View.DataList)
+        else if (_view == View.ChromosomeList)
         {
             //Declare a list to store all found story data
             List<ChromosomeData> allData = new List<ChromosomeData>();
@@ -142,7 +166,7 @@ public class ChromosomeEditor : EditorWindow
 
             if (GUILayout.Button("Edit"))
             {
-                _view = View.Beat;
+                _view = View.Gene;
                 _currentIndex = count;
                 break;
             }
@@ -164,7 +188,7 @@ public class ChromosomeEditor : EditorWindow
 
         if (GUILayout.Button("Return to Chromosome List", GUILayout.Height(50)))
         {
-            _view = View.DataList;
+            _view = View.ChromosomeList;
             _dataIndex = -1;
         }
     }
@@ -194,13 +218,17 @@ public class ChromosomeEditor : EditorWindow
                 _dataIndex = count;
                 nextData = dataList[count];
                 data = nextData;
-                _view = View.BeatList;
+                _view = View.GeneList;
                 break;
             }
 
             EditorGUILayout.EndHorizontal();
         }
 
+        if (GUILayout.Button("Edit Chromosome"))
+        {
+            CreateNewChromosome();
+        }
         EditorGUILayout.EndVertical();
     }
 
@@ -224,7 +252,7 @@ public class ChromosomeEditor : EditorWindow
 
         if (GUILayout.Button("Return to Beat List", GUILayout.Height(50)))
         {
-            _view = View.BeatList;
+            _view = View.GeneList;
             _currentIndex = -1;
         }
     }
