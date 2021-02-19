@@ -7,12 +7,12 @@ public class ChromosomeEditor : EditorWindow
 {
     private enum View { GeneList, Gene, ChromosomeList }
 
-    private Vector2 _scroll = new Vector2();
-    private int _currentIndex = -1;
-    private int _dataIndex = -1;
-    private View _view;
+    private Vector2 scroll = new Vector2();
+    private int currentIndex = -1;
+    private int chromosomeIndex = -1;
+    private View view;
 
-    private ChromosomeData data;
+    private ChromosomeData chromosomeData;
 
     public const string PathToDataAssets = "Assets/Genetic Algorithm/Data";
 
@@ -73,6 +73,7 @@ public class ChromosomeEditor : EditorWindow
 
             PathToAsset = "Assets/Genetic Algorithm/Data/ChromosomeData" + attempts.ToString() + ".asset";
             newData = AssetDatabase.LoadAssetAtPath<ChromosomeData>(PathToAsset);
+            attempts++;
         }
         Debug.Log("<color=orange>Attempts to create assets exceeded: </color>" + maxAttempts);
         return newData;
@@ -98,27 +99,27 @@ public class ChromosomeEditor : EditorWindow
     void OnGUI()
     {
         //Try set data to default
-        if (data == null)
-            data = SetDefaultChromsome();
+        if (chromosomeData == null)
+            chromosomeData = SetDefaultChromsome();
 
         // if returned data is null, do not continue.
-        if (data == null)
+        if (chromosomeData == null)
         {
-            Debug.LogWarning(this + "'s data == " + data);
+            Debug.LogWarning(this + "'s data == " + chromosomeData);
             return;
         }
-        SerializedObject dataObj = new SerializedObject(data);
+        SerializedObject dataObj = new SerializedObject(chromosomeData);
 
-        SerializedProperty beatList = dataObj.FindProperty("genes");
+        SerializedProperty geneList = dataObj.FindProperty("genes");
 
         EditorGUILayout.BeginVertical();
-        _scroll = EditorGUILayout.BeginScrollView(_scroll);
+        scroll = EditorGUILayout.BeginScrollView(scroll);
 
-        if (_view == View.Gene && _currentIndex != -1)
+        if (view == View.Gene && currentIndex != -1)
         {
-            OnGUI_GeneView(beatList, _currentIndex);
+            OnGUI_GeneView(geneList, currentIndex);
         }
-        else if (_view == View.ChromosomeList)
+        else if (view == View.ChromosomeList)
         {
             //Declare a list to store all found story data
             List<ChromosomeData> allData = new List<ChromosomeData>();
@@ -126,11 +127,11 @@ public class ChromosomeEditor : EditorWindow
             //All StoryData that can be found in PathToDataAssets
             TryGetUnityObjectsOfTypeFromPath(PathToDataAssets, allData);
 
-            OnGUI_DataView(allData);
+            OnGUI_ChromosomeView(allData);
         }
         else
         {
-            OnGUI_ListView(beatList);
+            OnGUI_ListView(geneList);
         }
 
         EditorGUILayout.EndScrollView();
@@ -146,12 +147,7 @@ public class ChromosomeEditor : EditorWindow
     private void OnGUI_ListView(SerializedProperty genesList)
     {
         EditorGUILayout.BeginVertical();
-
-        if (genesList.arraySize == 0)
-        {
-            AddBeat(genesList, 1, "First gene");
-        }
-        EditorGUILayout.LabelField(data.name + " genes: ", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField(chromosomeData.name + " genes: ", EditorStyles.boldLabel);
         EditorGUILayout.Separator();
 
         for (int count = 0; count < genesList.arraySize; ++count)
@@ -163,7 +159,7 @@ public class ChromosomeEditor : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(id.floatValue.ToString());
-
+            /*
             if (GUILayout.Button("Edit"))
             {
                 _view = View.Gene;
@@ -176,7 +172,7 @@ public class ChromosomeEditor : EditorWindow
                 genesList.DeleteArrayElementAtIndex(count);
                 break;
             }
-
+            */
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
@@ -188,12 +184,12 @@ public class ChromosomeEditor : EditorWindow
 
         if (GUILayout.Button("Return to Chromosome List", GUILayout.Height(50)))
         {
-            _view = View.ChromosomeList;
-            _dataIndex = -1;
+            view = View.ChromosomeList;
+            chromosomeIndex = -1;
         }
     }
 
-    private void OnGUI_DataView(List<ChromosomeData> dataList)
+    private void OnGUI_ChromosomeView(List<ChromosomeData> dataList)
     {
         EditorGUILayout.BeginVertical();
 
@@ -215,17 +211,17 @@ public class ChromosomeEditor : EditorWindow
 
             if (GUILayout.Button("Edit Chromosome"))
             {
-                _dataIndex = count;
+                chromosomeIndex = count;
                 nextData = dataList[count];
-                data = nextData;
-                _view = View.GeneList;
+                chromosomeData = nextData;
+                view = View.GeneList;
                 break;
             }
 
             EditorGUILayout.EndHorizontal();
         }
 
-        if (GUILayout.Button("Edit Chromosome"))
+        if (GUILayout.Button("Add New Chromosome"))
         {
             CreateNewChromosome();
         }
@@ -242,127 +238,17 @@ public class ChromosomeEditor : EditorWindow
 
         EditorGUILayout.BeginVertical();
 
-        EditorGUILayout.LabelField(data.name + " gene ID: " + name.ToString(), EditorStyles.boldLabel);
+        EditorGUILayout.LabelField(chromosomeData.name + " gene ID: " + name.ToString(), EditorStyles.boldLabel);
         EditorGUILayout.Separator();
         //min.stringValue = EditorGUILayout.TextArea(min.stringValue, GUILayout.Height(200));
 
-        OnGUI_BeatViewDecision(weight, geneList);
-
         EditorGUILayout.EndVertical();
 
-        if (GUILayout.Button("Return to Beat List", GUILayout.Height(50)))
+        if (GUILayout.Button("Return to Gene List", GUILayout.Height(50)))
         {
-            _view = View.GeneList;
-            _currentIndex = -1;
+            view = View.GeneList;
+            currentIndex = -1;
         }
-    }
-
-    private void OnGUI_BeatViewDecision(SerializedProperty choiceList, SerializedProperty beatList)
-    {
-        EditorGUILayout.BeginHorizontal();
-
-        for (int count = 0; count < choiceList.arraySize; ++count)
-        {
-            OnGUI_BeatViewChoice(choiceList, count, beatList);
-        }
-
-        if (GUILayout.Button((choiceList.arraySize == 0 ? "Add Choice" : "Add Another Choice"), GUILayout.Height(100)))
-        {
-            int newBeatId = FindUniqueId(beatList);
-            AddBeat(beatList, newBeatId);
-            AddChoice(choiceList, newBeatId);
-        }
-
-        EditorGUILayout.EndHorizontal();
-    }
-
-    private void OnGUI_BeatViewChoice(SerializedProperty choiceList, int index, SerializedProperty beatList)
-    {
-        SerializedProperty arrayElement = choiceList.GetArrayElementAtIndex(index);
-        SerializedProperty text = arrayElement.FindPropertyRelative("_text");
-        SerializedProperty beatId = arrayElement.FindPropertyRelative("_beatId");
-
-        EditorGUILayout.BeginVertical();
-
-        text.stringValue = EditorGUILayout.TextArea(text.stringValue, GUILayout.Height(50));
-        EditorGUILayout.LabelField("Leads to Beat ID: " + beatId.intValue.ToString());
-
-        if (GUILayout.Button("Go to Beat"))
-        {
-            _currentIndex = FindIndexOfBeatId(beatList, beatId.intValue);
-            GUI.FocusControl(null);
-            Repaint();
-        }
-
-        EditorGUILayout.EndVertical();
-    }
-
-    private int FindUniqueId(SerializedProperty beatList)
-    {
-        int result = 1;
-
-        while (IsIdInList(beatList, result))
-        {
-            ++result;
-        }
-
-        return result;
-    }
-
-    private bool IsIdInList(SerializedProperty beatList, int beatId)
-    {
-        bool result = false;
-
-        for (int count = 0; count < beatList.arraySize && !result; ++count)
-        {
-            SerializedProperty arrayElement = beatList.GetArrayElementAtIndex(count);
-            SerializedProperty id = arrayElement.FindPropertyRelative("_id");
-            result = id.intValue == beatId;
-        }
-
-        return result;
-    }
-
-    private int FindIndexOfBeatId(SerializedProperty beatList, int beatId)
-    {
-        int result = -1;
-
-        for (int count = 0; count < beatList.arraySize; ++count)
-        {
-            SerializedProperty arrayElement = beatList.GetArrayElementAtIndex(count);
-            SerializedProperty id = arrayElement.FindPropertyRelative("_id");
-            if (id.intValue == beatId)
-            {
-                result = count;
-                break;
-            }
-        }
-
-        return result;
-    }
-
-    private void AddBeat(SerializedProperty beatList, int beatId, string initialText = "New Story Beat")
-    {
-        int index = beatList.arraySize;
-        beatList.arraySize += 1;
-        SerializedProperty arrayElement = beatList.GetArrayElementAtIndex(index);
-        SerializedProperty text = arrayElement.FindPropertyRelative("_text");
-        SerializedProperty id = arrayElement.FindPropertyRelative("_id");
-
-        text.stringValue = initialText;
-        id.intValue = beatId;
-    }
-
-    private void AddChoice(SerializedProperty choiceList, int beatId, string initialText = "New Beat Choice")
-    {
-        int index = choiceList.arraySize;
-        choiceList.arraySize += 1;
-        SerializedProperty arrayElement = choiceList.GetArrayElementAtIndex(index);
-        SerializedProperty text = arrayElement.FindPropertyRelative("_text");
-        SerializedProperty nextId = arrayElement.FindPropertyRelative("_beatId");
-
-        text.stringValue = initialText;
-        nextId.intValue = beatId;
     }
 }
 
