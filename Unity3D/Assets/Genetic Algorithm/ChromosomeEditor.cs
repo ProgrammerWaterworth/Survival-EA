@@ -11,6 +11,7 @@ public class ChromosomeEditor : EditorWindow
     private int currentIndex = -1;
     private int chromosomeIndex = -1;
     private View view;
+    Object source;
 
     private ChromosomeData chromosomeData;
 
@@ -111,6 +112,7 @@ public class ChromosomeEditor : EditorWindow
         SerializedObject dataObj = new SerializedObject(chromosomeData);
 
         SerializedProperty geneList = dataObj.FindProperty("genes");
+        SerializedProperty individual = dataObj.FindProperty("gameObject");
 
         EditorGUILayout.BeginVertical();
         scroll = EditorGUILayout.BeginScrollView(scroll);
@@ -131,7 +133,7 @@ public class ChromosomeEditor : EditorWindow
         }
         else
         {
-            OnGUI_ListView(geneList);
+            OnGUI_ListView(geneList, individual);
         }
 
         EditorGUILayout.EndScrollView();
@@ -144,40 +146,61 @@ public class ChromosomeEditor : EditorWindow
 
 #endif
 
-    private void OnGUI_ListView(SerializedProperty genesList)
+    private void OnGUI_ListView(SerializedProperty genesList, SerializedProperty individual)
     {
         EditorGUILayout.BeginVertical();
+
         EditorGUILayout.LabelField(chromosomeData.name + " genes: ", EditorStyles.boldLabel);
         EditorGUILayout.Separator();
 
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.PropertyField(individual);
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.Separator();
         for (int count = 0; count < genesList.arraySize; ++count)
         {
             SerializedProperty arrayElement = genesList.GetArrayElementAtIndex(count);
-            SerializedProperty choiceList = arrayElement.FindPropertyRelative("weight");
-            SerializedProperty text = arrayElement.FindPropertyRelative("minValue");
-            SerializedProperty id = arrayElement.FindPropertyRelative("maxValue");
+            SerializedProperty weight = arrayElement.FindPropertyRelative("weight");
+            SerializedProperty min = arrayElement.FindPropertyRelative("minValue");
+            SerializedProperty max = arrayElement.FindPropertyRelative("maxValue");
+            SerializedProperty value = arrayElement.FindPropertyRelative("value");
+            SerializedProperty name = arrayElement.FindPropertyRelative("name");
 
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(id.floatValue.ToString());
-            /*
-            if (GUILayout.Button("Edit"))
+            if (name != null)
             {
-                _view = View.Gene;
-                _currentIndex = count;
-                break;
+                EditorGUILayout.LabelField(name.ToString(), EditorStyles.boldLabel);
             }
-
-            if (GUILayout.Button("Delete"))
-            {
-                genesList.DeleteArrayElementAtIndex(count);
-                break;
-            }
-            */
+            else
+                EditorGUILayout.LabelField("gene "+ count.ToString(), EditorStyles.boldLabel);
             EditorGUILayout.EndHorizontal();
 
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PropertyField(text);
-            EditorGUILayout.EndHorizontal();
+
+
+            if (weight != null)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.PropertyField(weight);
+                EditorGUILayout.EndHorizontal();
+            }
+            if (min != null)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.PropertyField(min);
+                EditorGUILayout.EndHorizontal();
+            }
+            if (max != null)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.PropertyField(max);
+                EditorGUILayout.EndHorizontal();
+            }
+            if (value != null)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.PropertyField(value);
+                EditorGUILayout.EndHorizontal();
+            }
         }
 
         EditorGUILayout.EndVertical();
