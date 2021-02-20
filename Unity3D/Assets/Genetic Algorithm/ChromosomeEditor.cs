@@ -153,7 +153,7 @@ public class ChromosomeEditor : EditorWindow
         EditorGUILayout.LabelField(chromosomeData.name + " genes: ", EditorStyles.boldLabel);
         EditorGUILayout.Separator();
 
-        EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.BeginHorizontal();
         EditorGUILayout.PropertyField(individual);
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.Separator();
@@ -164,48 +164,59 @@ public class ChromosomeEditor : EditorWindow
             SerializedProperty min = arrayElement.FindPropertyRelative("minValue");
             SerializedProperty max = arrayElement.FindPropertyRelative("maxValue");
             SerializedProperty value = arrayElement.FindPropertyRelative("value");
-            SerializedProperty name = arrayElement.FindPropertyRelative("name");
+            SerializedProperty geneName = arrayElement.FindPropertyRelative("geneName");
 
             EditorGUILayout.BeginHorizontal();
-            if (name != null)
+            if (geneName != null)
             {
-                EditorGUILayout.LabelField(name.ToString(), EditorStyles.boldLabel);
+                EditorGUILayout.LabelField(geneName.stringValue, EditorStyles.boldLabel);
             }
             else
                 EditorGUILayout.LabelField("gene "+ count.ToString(), EditorStyles.boldLabel);
+
             EditorGUILayout.EndHorizontal();
-
-
-
+            EditorGUILayout.BeginHorizontal();
             if (weight != null)
             {
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.PropertyField(weight);
-                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.LabelField("Weight", GUILayout.MaxWidth(40));
+                EditorGUILayout.PropertyField(weight, GUIContent.none, true);
+                GUILayout.Space(10);
             }
             if (min != null)
             {
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.PropertyField(min);
-                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.LabelField("Min Value", GUILayout.MaxWidth(60));
+                EditorGUILayout.PropertyField(min, GUIContent.none, true);
+                GUILayout.Space(10);
             }
             if (max != null)
             {
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.PropertyField(max);
-                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.LabelField("Max Value", GUILayout.MaxWidth(60));
+                EditorGUILayout.PropertyField(max, GUIContent.none, true);
+                GUILayout.Space(10);
             }
             if (value != null)
             {
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.PropertyField(value);
-                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.LabelField("Value", GUILayout.MaxWidth(35));
+                EditorGUILayout.PropertyField(value, GUIContent.none, true);
+                GUILayout.Space(10);
             }
+            EditorGUILayout.EndHorizontal();
+            GUILayout.Space(10);
         }
 
         EditorGUILayout.EndVertical();
+        GUILayout.Space(20);
+        if (GUILayout.Button("Apply Genes to GameObject", GUILayout.Height(30)))
+        {
+            chromosomeData.ApplyGenesToGameObject();
+        }
 
-        if (GUILayout.Button("Return to Chromosome List", GUILayout.Height(50)))
+        if (GUILayout.Button("Get Current GameObject Genes", GUILayout.Height(30)))
+        {
+            chromosomeData.GetCurrentGameObjectGenes();
+        }
+
+        if (GUILayout.Button("Return to Chromosome List", GUILayout.Height(30)))
         {
             view = View.ChromosomeList;
             chromosomeIndex = -1;
@@ -234,7 +245,8 @@ public class ChromosomeEditor : EditorWindow
 
             if (GUILayout.Button("Edit Chromosome"))
             {
-                chromosomeData.GetGameObjectProperties();
+                //chromosomeData.GetGameObjectProperties();
+             
                 chromosomeIndex = count;
                 nextData = dataList[count];
                 chromosomeData = nextData;
