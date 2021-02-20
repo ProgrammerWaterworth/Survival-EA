@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33a634517227eea439bd11a37374b37c, type: 3}
+  m_Name: Robot2
+  m_EditorClassIdentifier: 
+  gameObject: {fileID: 8594544343367576398, guid: 7b178f1e3e4105f4591d864574b3937e,
+    type: 3}
+  genes:
+  - geneName: PickUpBatteryAction - pickUpDuration
+    weight: 1
+    minValue: 0
+    maxValue: 0.5
+    value: 0.5
+  - geneName: PickUpBatteryAction - cost
+    weight: 1
+    minValue: 0
+    maxValue: 2
+    value: 2
+  - geneName: Sensor - viewDistance
+    weight: 1
+    minValue: 0
+    maxValue: 3
+    value: 3
+  - geneName: Sensor - viewAngle
+    weight: 1
+    minValue: 0
+    maxValue: 60
+    value: 60
+  - geneName: ChargingBot - maxMoveSpeed
+    weight: 1
+    minValue: 0
+    maxValue: 200
+    value: 200
+  - geneName: ChargingBot - range
+    weight: 1
+    minValue: 0
+    maxValue: 5
+    value: 5
+  - geneName: ChargeBaseAction - chargeDuration
+    weight: 1
+    minValue: 0
+    maxValue: 5
+    value: 5
+  - geneName: ChargeBaseAction - cost
+    weight: 1
+    minValue: 0
+    maxValue: 2
+    value: 2

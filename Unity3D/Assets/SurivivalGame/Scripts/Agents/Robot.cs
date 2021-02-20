@@ -33,6 +33,11 @@ public abstract class Robot : BaseAgent
             MoveAgentToTarget();
     }
 
+    private void OnValidate()
+    {
+        Debug.Log("maxspeed:" + maxMoveSpeed);
+    }
+
     /// <summary>
     /// Set up the components required for the robot to function.
     /// </summary>

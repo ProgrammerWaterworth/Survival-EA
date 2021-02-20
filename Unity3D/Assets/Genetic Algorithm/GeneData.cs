@@ -34,4 +34,9 @@ public class GeneData
         return value;
     }
 
+    public string GetName()
+    {
+        return geneName;
+    }
+
 }

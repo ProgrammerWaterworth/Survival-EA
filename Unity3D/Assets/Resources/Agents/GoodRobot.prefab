@@ -1316,7 +1316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c5302f6c86e294aa962374d892db68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 1
+  cost: 2
   target: {fileID: 0}
   targetPosition: {x: 0, y: 0, z: 0}
   pickUpDuration: 0.5
@@ -1345,7 +1345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewDistance: 6
-  viewAngle: 80
+  viewAngle: 81.76
   senseActive: 0
   numViewRangeRays: 5
   avoidenceSensitivity: 0
@@ -1381,8 +1381,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 1588968577895314944}
-  maxMoveSpeed: 170
-  range: 1
+  maxMoveSpeed: 70
+  range: 2
   rotationStepAngle: 0.02
   targetPosition: {x: 0, y: 0, z: 0}
   moving: 0
@@ -1398,10 +1398,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d698c47d91dfac4da4deed8a764c75d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 1
+  cost: 2
   target: {fileID: 0}
   targetPosition: {x: 0, y: 0, z: 0}
-  chargeDuration: 1
+  chargeDuration: 2
 --- !u!1 &7010083767718676380
 GameObject:
   m_ObjectHideFlags: 0

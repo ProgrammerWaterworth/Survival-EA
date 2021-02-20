@@ -1319,21 +1319,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e491ea43603aedf4c9bba2bb7e77106b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ip: 127.0.0.1
-  port: 6000
-  dataOut:
-  - 0
-  myArray:
-  - 1
-  - 2
-  - 6
-  - 5
-  - 5
-  - 46
-  - 565
-  - 8
-  - 8
-  - 5
 --- !u!114 &413754657
 MonoBehaviour:
   m_ObjectHideFlags: 0

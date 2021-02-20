@@ -43,12 +43,11 @@ public class ChromosomeData : ScriptableObject
         {
             foreach (FieldInfo fi in c.GetType().GetFields())
             {
-                System.Object obj = (System.Object)c;
-                if (fi.GetValue(obj).GetType().Equals(typeof(System.Single)))
+                if (fi.GetValue(c).GetType().Equals(typeof(System.Single)))
                 {
-                    GeneData gd = new GeneData(c.GetType().Name + " - "+fi.Name, (float)fi.GetValue(obj));
+                    GeneData gd = new GeneData(c.GetType().Name + " - "+fi.Name, (float)fi.GetValue(c));
                     genes.Add(gd);
-                    Debug.Log("field name " + fi.Name + " val " + fi.GetValue(obj));
+                    Debug.Log("field name " + fi.Name + " val " + fi.GetValue(c));
                 }
             }
 
@@ -56,7 +55,7 @@ public class ChromosomeData : ScriptableObject
     }
 
     /// <summary>
-    /// Updates the genes of the gameobject. Will no function properly if the ordering of components is altered or genes have been removed/added.
+    /// Updates the genes of the gameobject. Will not function properly if the ordering of components is altered or genes have been removed/added.
     /// </summary>
     public void ApplyGenesToGameObject()
     {
@@ -70,19 +69,18 @@ public class ChromosomeData : ScriptableObject
         {
             foreach (FieldInfo fi in c.GetType().GetFields())
             {
-                System.Object obj = (System.Object)c;
-                if (fi.GetValue(obj).GetType().Equals(typeof(System.Single)))
+                if (fi.GetValue(c).GetType().Equals(typeof(System.Single)))
                 {
                     //if the retrieved value == the index of current one update its value.
-                    if (genes[index].Equals(fi))
+                    if (genes[index].GetName().Equals(c.GetType().Name + " - " + fi.Name))
                     {
-                        fi.SetValue(obj,genes[index].GetValue());
+                        Debug.Log("Found gene, altering: " + genes[index].GetName() +" from "+ fi.GetValue(c) + " to " + genes[index].GetValue());
+                        fi.SetValue(c,genes[index].GetValue());
+
+                        //inform Unity that the insance has been modified
+                        EditorUtility.SetDirty(c);
+                        index++;
                     }
-
-
-                    GeneData gd = new GeneData(c.GetType().Name + " - " + fi.Name, (float)fi.GetValue(obj));
-                    genes.Add(gd);
-                    Debug.Log("field name " + fi.Name + " val " + fi.GetValue(obj));
                 }
             }
 

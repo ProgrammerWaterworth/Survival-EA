@@ -23,8 +23,8 @@ MonoBehaviour:
   - geneName: PickUpBatteryAction - cost
     weight: 1
     minValue: 0
-    maxValue: 1
-    value: 1
+    maxValue: 2
+    value: 2
   - geneName: Sensor - viewDistance
     weight: 1
     minValue: 0
@@ -33,25 +33,25 @@ MonoBehaviour:
   - geneName: Sensor - viewAngle
     weight: 1
     minValue: 0
-    maxValue: 80
-    value: 80
+    maxValue: 81.76
+    value: 81.76
   - geneName: ChargingBot - maxMoveSpeed
     weight: 1
     minValue: 0
-    maxValue: 170
-    value: 170
+    maxValue: 70
+    value: 70
   - geneName: ChargingBot - range
     weight: 1
     minValue: 0
-    maxValue: 1
-    value: 1
+    maxValue: 2
+    value: 2
   - geneName: ChargeBaseAction - chargeDuration
     weight: 1
     minValue: 0
-    maxValue: 1
-    value: 1
+    maxValue: 2
+    value: 2
   - geneName: ChargeBaseAction - cost
     weight: 1
     minValue: 0
-    maxValue: 1
-    value: 1
+    maxValue: 2
+    value: 2
