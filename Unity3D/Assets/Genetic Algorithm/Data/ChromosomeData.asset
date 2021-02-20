@@ -17,4 +17,4 @@ MonoBehaviour:
   genes:
   - weight: 0.1
     minValue: 1.45
-    maxValue: 10
+    maxValue: 15.24

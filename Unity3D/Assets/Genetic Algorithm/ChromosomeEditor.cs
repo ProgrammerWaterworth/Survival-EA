@@ -109,8 +109,8 @@ public class ChromosomeEditor : EditorWindow
             Debug.LogWarning(this + "'s data == " + chromosomeData);
             return;
         }
-        SerializedObject dataObj = new SerializedObject(chromosomeData);
 
+        SerializedObject dataObj = new SerializedObject(chromosomeData);
         SerializedProperty geneList = dataObj.FindProperty("genes");
         SerializedProperty individual = dataObj.FindProperty("gameObject");
 
@@ -132,7 +132,7 @@ public class ChromosomeEditor : EditorWindow
             OnGUI_ChromosomeView(allData);
         }
         else
-        {
+        {           
             OnGUI_ListView(geneList, individual);
         }
 
@@ -234,6 +234,7 @@ public class ChromosomeEditor : EditorWindow
 
             if (GUILayout.Button("Edit Chromosome"))
             {
+                chromosomeData.GetGameObjectProperties();
                 chromosomeIndex = count;
                 nextData = dataList[count];
                 chromosomeData = nextData;

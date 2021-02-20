@@ -24,7 +24,7 @@ public abstract class GoapAction : MonoBehaviour
     /// <summary>
     /// Cost of an action. Affects the actions chosen when planning to reach goal.
     /// </summary>
-    [SerializeField] float cost = 1f;
+    public float cost = 1f;
 
     /// <summary>
     /// Target that the action must be performed on, if not null.

@@ -1318,6 +1318,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 1
   target: {fileID: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
   pickUpDuration: 0.5
 --- !u!114 &1588968577895314944
 MonoBehaviour:
@@ -1345,7 +1346,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewDistance: 6
   viewAngle: 80
-  visibleTargets: []
+  senseActive: 0
+  numViewRangeRays: 5
+  avoidenceSensitivity: 0
+  visibleInteractables: []
   obstacleMask:
     serializedVersion: 2
     m_Bits: 2048
@@ -1380,7 +1384,8 @@ MonoBehaviour:
   maxMoveSpeed: 170
   range: 1
   rotationStepAngle: 0.02
-  targetLocation: {fileID: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
+  moving: 0
 --- !u!114 &1588968577895314948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1395,6 +1400,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 1
   target: {fileID: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
   chargeDuration: 1
 --- !u!1 &7010083767718676380
 GameObject:
