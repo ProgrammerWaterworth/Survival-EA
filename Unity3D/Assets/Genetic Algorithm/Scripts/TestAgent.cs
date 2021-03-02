@@ -5,7 +5,8 @@ using UnityEngine;
 public class TestAgent : MonoBehaviour
 {
     public float range;
-
+    public float posX;
+    public float posY;
     private void Update()
     {
         

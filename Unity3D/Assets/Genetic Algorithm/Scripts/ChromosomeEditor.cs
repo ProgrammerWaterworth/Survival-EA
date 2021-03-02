@@ -180,7 +180,12 @@ public class ChromosomeEditor : EditorWindow
         if (geneInfoDisplayed)
         {
             EditorGUILayout.HelpBox("Game Object is the prefab that the genetic algorithm will be applied to.", MessageType.Info, true);
-            EditorGUILayout.HelpBox("The Button - \"Get Current GameObject Genes\" - Will search the Game Object for numerical data variables (E.g. float, int) and set each one to be a gene." , MessageType.Info, true);
+            var oldColor = GUI.backgroundColor;
+            GUI.backgroundColor = new Color(1, 0, 0, .5f);
+            EditorGUILayout.HelpBox("The Button - \"Reset Genes\" - Will search the Game Object for numerical data variables (E.g. float, int) and set each one to be a gene with a default min and max dependant on the value.", MessageType.Info, true);
+            GUI.backgroundColor = new Color(0, 1, 0, .5f);
+            EditorGUILayout.HelpBox("The Button - \"Get Current Gene Values\" - Will update the Editor genes with the values from the GameObject.", MessageType.Info, true);
+            GUI.backgroundColor = oldColor;
             EditorGUILayout.HelpBox("The Button - \"Apply Genes to GameObject\" - Applies the values of the genes in this Editor Window to the Game Object Prefab. (May require re-selecting prefab for changes to take place).", MessageType.Info, true);
             EditorGUILayout.HelpBox("Chromosome - A chromosome is comprised of a number of genes which affect the behaviour of the individual (Game Object)." +
                 " Running the genetic algorithm once defining the fitness of the individual will cause the individual to adapt to it's environment over a series of generations by altering it's genes.", MessageType.Info, true);
@@ -214,7 +219,8 @@ public class ChromosomeEditor : EditorWindow
                 if (weight != null)
                 {
                     EditorGUILayout.LabelField("Weight", GUILayout.MaxWidth(40));
-                    EditorGUILayout.PropertyField(weight, GUIContent.none, true);
+                    //EditorGUILayout.PropertyField(weight, GUIContent.none, true);
+                    weight.floatValue = EditorGUILayout.Slider(weight.floatValue, 0,1);
                     GUILayout.Space(10);
                 }
                 if (min != null)
@@ -229,11 +235,20 @@ public class ChromosomeEditor : EditorWindow
                     EditorGUILayout.PropertyField(max, GUIContent.none, true);
                     GUILayout.Space(10);
                 }
-                if (value != null)
+                if (value != null )
                 {
+                    if (weight != null && max != null && min != null)
+                        GUI.enabled = false;
+
                     EditorGUILayout.LabelField("Value", GUILayout.MaxWidth(35));
                     EditorGUILayout.PropertyField(value, GUIContent.none, true);
+
+                    if (weight != null && max != null && min != null)
+                        value.floatValue = Mathf.Lerp(min.floatValue, max.floatValue, weight.floatValue);
+
                     GUILayout.Space(10);
+                    if (weight != null && max != null && min != null)
+                        GUI.enabled = true;
                 }
                 EditorGUILayout.EndHorizontal();
                 GUILayout.Space(10);
@@ -244,10 +259,20 @@ public class ChromosomeEditor : EditorWindow
 
         if (genesDisplayed)
         {
-            if (GUILayout.Button("Get Current GameObject Genes", GUILayout.Height(30)))
+            EditorGUILayout.BeginHorizontal();
+            var oldColor = GUI.backgroundColor;
+            GUI.backgroundColor = new Color(1,0,0,.5f);
+            if (GUILayout.Button("Reset Genes", GUILayout.Height(30)))
             {
                 chromosomeData.GetCurrentGameObjectGenes();
             }
+            GUI.backgroundColor = new Color(0, 1, 0, .5f);
+            if (GUILayout.Button("Get Current Gene Values", GUILayout.Height(30)))
+            {
+                chromosomeData.UpdateEditorWithGeneValues();
+            }
+            GUI.backgroundColor = oldColor;
+            EditorGUILayout.EndHorizontal();
             if (!UnityEditor.EditorApplication.isPlaying)
             {
                 if (GUILayout.Button("Apply Genes to GameObject", GUILayout.Height(30)))

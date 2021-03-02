@@ -17,6 +17,7 @@ public class GeneticAlgorithm : MonoBehaviour
 
 
     [SerializeField] TestAgent agent;
+    [SerializeField] GameObject individual;
     /// <summary>
     /// The weights of the genes that dictate the agents behaviour.
     /// </summary>
@@ -43,6 +44,11 @@ public class GeneticAlgorithm : MonoBehaviour
         genes = _genes;
     }
 
+    public void SetIndividualToModify(GameObject prefab)
+    {
+        individual = prefab;
+    }
+
     /// <summary>
     /// Calculate fitness from agents ability to survive.
     /// </summary>
@@ -50,7 +56,7 @@ public class GeneticAlgorithm : MonoBehaviour
     {
         float _fitness = 0;
 
-        if (agent != null) //Debug#2 - Testing on agent
+        if (agent != null) //Debug #2 - Testing on agent
         {
             agent.SetRangeGene(genes[0]);
             int _count = agent.CheckForBatteries();

@@ -1334,8 +1334,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 1589808414}
+  individual: {fileID: 1739351498}
   genes:
-  - 50
+  - 60.0767
+  - 5.2027836
+  - 57.758575
 --- !u!114 &413754658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4725,7 +4728,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 7145090965942065555}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1739351498}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 402fd13b61ec2c74fbe57268e636478b, type: 3}
@@ -5143,6 +5146,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1739351498 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7145090966969832590, guid: e58ef6da42d4d644aaea841b6d1861a9,
+    type: 3}
+  m_PrefabInstance: {fileID: 7145090965942065555}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1756184938 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6977369740182708128, guid: e15f1fb2fedeeab4ba2352cb5188ea56,
@@ -5973,7 +5982,7 @@ PrefabInstance:
     - target: {fileID: 7145090966969832590, guid: e58ef6da42d4d644aaea841b6d1861a9,
         type: 3}
       propertyPath: m_Name
-      value: TestAGENT
+      value: TestAGENT23
       objectReference: {fileID: 0}
     - target: {fileID: 7145090966969832625, guid: e58ef6da42d4d644aaea841b6d1861a9,
         type: 3}
