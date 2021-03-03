@@ -39,12 +39,23 @@ public class GeneData
         return geneName;
     }
 
-    public void SetFloat(float val)
+    public void SetValue(float _val)
     {
-        value = val;
-        minValue = Math.Min(val, minValue);
-        maxValue = Math.Max(val, maxValue);
-        weight = Mathf.InverseLerp(minValue, maxValue, val);
+        value = _val;
+        minValue = Math.Min(_val, minValue);
+        maxValue = Math.Max(_val, maxValue);
+        weight = Mathf.InverseLerp(minValue, maxValue, _val);
+    }
+
+    public void SetWeight(float _weight)
+    {
+        weight = _weight;
+        value = Mathf.Lerp(minValue,maxValue,weight);   
+    }
+
+    public float GetWeight()
+    {
+       return weight;
     }
 
 }

@@ -1335,10 +1335,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 1589808414}
   individual: {fileID: 1739351498}
+  data: {fileID: 11400000, guid: 3c26cffbcd22e434babd89f2031b77ee, type: 2}
   genes:
-  - 60.0767
-  - 5.2027836
-  - 57.758575
+  - 0.226
+  - 0
+  - 1
 --- !u!114 &413754658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5979,6 +5980,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7145090966969832589, guid: e58ef6da42d4d644aaea841b6d1861a9,
+        type: 3}
+      propertyPath: range
+      value: 6.29633
+      objectReference: {fileID: 0}
     - target: {fileID: 7145090966969832590, guid: e58ef6da42d4d644aaea841b6d1861a9,
         type: 3}
       propertyPath: m_Name

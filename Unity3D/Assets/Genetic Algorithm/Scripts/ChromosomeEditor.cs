@@ -179,14 +179,15 @@ public class ChromosomeEditor : EditorWindow
         EditorGUILayout.Space(10);
         if (geneInfoDisplayed)
         {
-            EditorGUILayout.HelpBox("Game Object is the prefab that the genetic algorithm will be applied to.", MessageType.Info, true);
+            EditorGUILayout.HelpBox("Game Object is the prefab that the genetic algorithm will be applied to. It will locate an instance of this prefab in scene and alter it.", MessageType.Info, true);
             var oldColor = GUI.backgroundColor;
             GUI.backgroundColor = new Color(1, 0, 0, .5f);
             EditorGUILayout.HelpBox("The Button - \"Reset Genes\" - Will search the Game Object for numerical data variables (E.g. float, int) and set each one to be a gene with a default min and max dependant on the value.", MessageType.Info, true);
+            GUI.backgroundColor = new Color(1, .5f, 0, .5f);
+            EditorGUILayout.HelpBox("The Button - \"Get GameObject Gene Values\" - Will update the Editor genes with the values from the GameObject.", MessageType.Info, true);
             GUI.backgroundColor = new Color(0, 1, 0, .5f);
-            EditorGUILayout.HelpBox("The Button - \"Get Current Gene Values\" - Will update the Editor genes with the values from the GameObject.", MessageType.Info, true);
+            EditorGUILayout.HelpBox("The Button - \"Apply this Chromosome to GameObject\" - Applies the values of the genes in this Editor Window to the Game Object Prefab. (May require re-selecting prefab for changes to take place).", MessageType.Info, true);
             GUI.backgroundColor = oldColor;
-            EditorGUILayout.HelpBox("The Button - \"Apply Genes to GameObject\" - Applies the values of the genes in this Editor Window to the Game Object Prefab. (May require re-selecting prefab for changes to take place).", MessageType.Info, true);
             EditorGUILayout.HelpBox("Chromosome - A chromosome is comprised of a number of genes which affect the behaviour of the individual (Game Object)." +
                 " Running the genetic algorithm once defining the fitness of the individual will cause the individual to adapt to it's environment over a series of generations by altering it's genes.", MessageType.Info, true);
             EditorGUILayout.HelpBox("Genes - A genes value is determine by linearly interpolating the weight between min and max values, not exceeding the range. If the Genes Min and Max range are not valid" +
@@ -257,7 +258,7 @@ public class ChromosomeEditor : EditorWindow
         EditorGUILayout.EndVertical();
         GUILayout.Space(20);
 
-        if (genesDisplayed)
+        if (genesDisplayed && !UnityEditor.EditorApplication.isPlaying)
         {
             EditorGUILayout.BeginHorizontal();
             var oldColor = GUI.backgroundColor;
@@ -266,20 +267,22 @@ public class ChromosomeEditor : EditorWindow
             {
                 chromosomeData.GetCurrentGameObjectGenes();
             }
-            GUI.backgroundColor = new Color(0, 1, 0, .5f);
-            if (GUILayout.Button("Get Current Gene Values", GUILayout.Height(30)))
+            GUI.backgroundColor = new Color(1, .5f, 0, .5f);
+            if (GUILayout.Button("Get GameObject Gene Values", GUILayout.Height(30)))
             {
-                chromosomeData.UpdateEditorWithGeneValues();
+                chromosomeData.UpdateEditorWithPrefabGeneValues();
             }
-            GUI.backgroundColor = oldColor;
-            EditorGUILayout.EndHorizontal();
+            GUI.backgroundColor = new Color(0, 1, 0, .5f);
+
             if (!UnityEditor.EditorApplication.isPlaying)
             {
-                if (GUILayout.Button("Apply Genes to GameObject", GUILayout.Height(30)))
+                if (GUILayout.Button("Apply this Chromosome to GameObject", GUILayout.Height(30)))
                 {
                     chromosomeData.ApplyGenesToGameObject();
                 }
             }
+            GUI.backgroundColor = oldColor;
+            EditorGUILayout.EndHorizontal();
         }
         if (!UnityEditor.EditorApplication.isPlaying)
         {

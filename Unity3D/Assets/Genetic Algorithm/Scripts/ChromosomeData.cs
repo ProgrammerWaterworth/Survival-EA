@@ -13,6 +13,7 @@ public class ChromosomeData : ScriptableObject
 {
     [SerializeField] GameObject gameObject;
     [SerializeField] List<GeneData> genes;
+    GameObject instance;
     public void GetCurrentGameObjectGenes()
     {
         if (gameObject == null)
@@ -36,6 +37,44 @@ public class ChromosomeData : ScriptableObject
     }
 
     /// <summary>
+    /// Update gameobject instance with genes retrieved from genetic algorithm.
+    /// </summary>
+    public void UpdateGenes(float[] _genes)
+    {
+        if (instance == null)
+            return;
+
+        for (int i = 0; i < _genes.Length; i++)
+        {
+            genes[i].SetWeight(_genes[i]);
+        }
+
+        UpdateInstance();
+    }
+
+    public void GetGameObjectInstanceGenes()
+    {
+        if (instance == null)
+            return;
+
+        genes.Clear();
+        Component[] cs = (Component[])instance.GetComponents(typeof(Component));
+        foreach (Component c in cs)
+        {
+            foreach (FieldInfo fi in c.GetType().GetFields())
+            {
+                if (fi.GetValue(c).GetType().Equals(typeof(System.Single)))
+                {
+                    GeneData gd = new GeneData(c.GetType().Name + " - " + fi.Name, (float)fi.GetValue(c));
+                    genes.Add(gd);
+                    Debug.Log("field name " + fi.Name + " val " + fi.GetValue(c));
+                }
+            }
+
+        }
+    }
+
+    /// <summary>
     /// Update Genetic Algorithm with set of genes to iterate on.
     /// </summary>
     public void UpdateGeneticAlgorithm()
@@ -48,13 +87,14 @@ public class ChromosomeData : ScriptableObject
             float[] _genes = new float[genes.Count];
             for(int i = 0; i < genes.Count; i++)
             {
-                _genes[i] = genes[i].GetValue();
+                _genes[i] = genes[i].GetWeight();
             }
             Debug.Log("Setting Genetic Algorithm to " + gameObject.name);
             geneticAlgorithm.SetGenes(_genes);
 
             //find an instance of the gameobject in the scene and set it as the object to modify.
             geneticAlgorithm.SetIndividualToModify(FindPrefabInstance(gameObject));
+            geneticAlgorithm.SetChromosomeData(this);
         }
         else
         {
@@ -74,6 +114,8 @@ public class ChromosomeData : ScriptableObject
                 if (myPrefab == GO_prefab)
                 {
                     Debug.Log("Setting genetic algorithm instance of " + gameObject + " to: "+GO + ". If another instance is wanted manually set in Inspector on Genetic Algorithm Script.");
+                    instance = GO;
+                    Debug.Log("instance:" + instance);
                     return GO;
                 }
             }
@@ -86,6 +128,41 @@ public class ChromosomeData : ScriptableObject
     /// Updates the genes of the gameobject. Will not function properly if the ordering of components is altered or genes have been removed/added.
     /// </summary>
     public void ApplyGenesToGameObject()
+    {
+        UpdatePrefab();
+        UpdateInstance();
+    }
+
+    void UpdateInstance()
+    {
+        if (instance == null)
+            return;
+
+        int index = 0;
+
+        Component[] cs = (Component[])instance.GetComponents(typeof(Component));
+        foreach (Component c in cs)
+        {
+            foreach (FieldInfo fi in c.GetType().GetFields())
+            {
+                if (fi.GetValue(c).GetType().Equals(typeof(System.Single)))
+                {
+                    //if the retrieved value == the index of current one update its value.
+                    if (genes[index].GetName().Equals(c.GetType().Name + " - " + fi.Name))
+                    {
+                        Debug.Log("Found gene, altering: " + genes[index].GetName() + " from " + fi.GetValue(c) + " to " + genes[index].GetValue());
+                        fi.SetValue(c, genes[index].GetValue());
+
+                        //Inform Unity that the instance has been modified
+                        EditorUtility.SetDirty(c);
+                        index++;
+                    }
+                }
+            }
+        }
+    }
+
+    void UpdatePrefab()
     {
         if (gameObject == null)
             return;
@@ -102,23 +179,22 @@ public class ChromosomeData : ScriptableObject
                     //if the retrieved value == the index of current one update its value.
                     if (genes[index].GetName().Equals(c.GetType().Name + " - " + fi.Name))
                     {
-                        Debug.Log("Found gene, altering: " + genes[index].GetName() +" from "+ fi.GetValue(c) + " to " + genes[index].GetValue());
-                        fi.SetValue(c,genes[index].GetValue());
+                        Debug.Log("Found gene, altering: " + genes[index].GetName() + " from " + fi.GetValue(c) + " to " + genes[index].GetValue());
+                        fi.SetValue(c, genes[index].GetValue());
 
-                        //inform Unity that the instance has been modified
+                        //Inform Unity that the instance has been modified
                         EditorUtility.SetDirty(c);
                         index++;
                     }
                 }
             }
-
         }
     }
 
     /// <summary>
     /// Updates the genes of the gameobject. Will not function properly if the ordering of components is altered or genes have been removed/added.
     /// </summary>
-    public void UpdateEditorWithGeneValues()
+    public void UpdateEditorWithPrefabGeneValues()
     {
         if (gameObject == null)
             return;
@@ -136,7 +212,39 @@ public class ChromosomeData : ScriptableObject
                     if (genes[index].GetName().Equals(c.GetType().Name + " - " + fi.Name))
                     {
                         Debug.Log("Found gene, setting value in Editor: " + genes[index].GetName() + " from " + genes[index].GetValue()  + " to " + fi.GetValue(c));
-                        genes[index].SetFloat((float)fi.GetValue(c));
+                        genes[index].SetValue((float)fi.GetValue(c));
+                        //inform Unity that the instance has been modified
+                        EditorUtility.SetDirty(c);
+                        index++;
+                    }
+                }
+            }
+
+        }
+    }
+
+    /// <summary>
+    /// Updates the genes of the gameobject instance. Will not function properly if the ordering of components is altered or genes have been removed/added.
+    /// </summary>
+    public void UpdateEditorWithInstanceGeneValues()
+    {
+        if (instance == null)
+            return;
+
+        int index = 0;
+
+        Component[] cs = (Component[])instance.GetComponents(typeof(Component));
+        foreach (Component c in cs)
+        {
+            foreach (FieldInfo fi in c.GetType().GetFields())
+            {
+                if (fi.GetValue(c).GetType().Equals(typeof(System.Single)))
+                {
+                    //if the retrieved value == the index of current one update its value.
+                    if (genes[index].GetName().Equals(c.GetType().Name + " - " + fi.Name))
+                    {
+                        Debug.Log("Found gene, setting value in Editor: " + genes[index].GetName() + " from " + genes[index].GetValue() + " to " + fi.GetValue(c));
+                        genes[index].SetValue((float)fi.GetValue(c));
                         //inform Unity that the instance has been modified
                         EditorUtility.SetDirty(c);
                         index++;

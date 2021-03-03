@@ -16,17 +16,17 @@ MonoBehaviour:
     type: 3}
   genes:
   - geneName: TestAgent - range
-    weight: 0.49999997
-    minValue: 30.03835
-    maxValue: 90.11505
-    value: 60.0767
+    weight: 0.1311629
+    minValue: 0
+    maxValue: 30
+    value: 3.934887
   - geneName: TestAgent - posX
-    weight: 0.532
-    minValue: -38.900036
-    maxValue: 44
-    value: 5.2027836
+    weight: 0.041030437
+    minValue: 3.7081528
+    maxValue: 13.996046
+    value: 4.1302695
   - geneName: TestAgent - posY
-    weight: 0.5
-    minValue: 28.879288
-    maxValue: 86.63786
-    value: 57.758575
+    weight: 0.4621379
+    minValue: 28.112253
+    maxValue: 84.33676
+    value: 54.09573
