@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Cannot be more than 1 instance of a singleton object: " + this);
+            Debug.LogWarning("Cannot be more than 1 instance of a singleton object: " + this);
             Destroy(gameObject);
         }
     }

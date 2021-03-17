@@ -12,46 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a634517227eea439bd11a37374b37c, type: 3}
   m_Name: ChromosomeData
   m_EditorClassIdentifier: 
-  gameObject: {fileID: 7010083767718676378, guid: 5e340d03064214f498c3eaa60956b926,
-    type: 3}
-  genes:
-  - geneName: PickUpBatteryAction - pickUpDuration
-    weight: 0.05
-    minValue: 0
-    maxValue: 10
-    value: 0.5
-  - geneName: PickUpBatteryAction - cost
-    weight: 0.663
-    minValue: 0
-    maxValue: 2
-    value: 1.326
-  - geneName: Sensor - viewDistance
-    weight: 0.633
-    minValue: 0
-    maxValue: 6
-    value: 3.798
-  - geneName: Sensor - viewAngle
-    weight: 0.563
-    minValue: 0
-    maxValue: 81.76
-    value: 46.030884
-  - geneName: ChargingBot - maxMoveSpeed
-    weight: 0.678
-    minValue: 0
-    maxValue: 150
-    value: 101.7
-  - geneName: ChargingBot - range
-    weight: 0.663
-    minValue: 0
-    maxValue: 2
-    value: 1.326
-  - geneName: ChargeBaseAction - chargeDuration
-    weight: 0.693
-    minValue: 0
-    maxValue: 2
-    value: 1.386
-  - geneName: ChargeBaseAction - cost
-    weight: 0.674
-    minValue: 0
-    maxValue: 2
-    value: 1.348
+  gameObject: {fileID: 0}
+  genes: []

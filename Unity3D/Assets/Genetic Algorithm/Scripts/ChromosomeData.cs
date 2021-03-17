@@ -14,6 +14,11 @@ public class ChromosomeData : ScriptableObject
     [SerializeField] GameObject gameObject;
     [SerializeField] List<GeneData> genes;
     GameObject instance;
+
+
+    /// <summary>
+    /// Get's the genes of the currently set GameObject. Resets Genes to default values.
+    /// </summary>
     public void GetCurrentGameObjectGenes()
     {
         if (gameObject == null)
@@ -44,10 +49,20 @@ public class ChromosomeData : ScriptableObject
         if (instance == null)
             return;
 
-        for (int i = 0; i < _genes.Length; i++)
+        int index = 0;
+
+        for (int i = 0; i < genes.Count; i++)
         {
-            genes[i].SetWeight(_genes[i]);
+            
+            if (genes[i].IsActive())
+            {
+                Debug.Log(genes[i].GetWeight());
+                genes[i].SetWeight(_genes[index]);
+                index++;
+            }
         }
+        if (index != _genes.Length)
+            Debug.LogError(this + " has not updated all genes. Error has occured. Updated index = "+index+ ". Number of genes = "+_genes.Length);
 
         UpdateInstance();
     }
@@ -75,7 +90,7 @@ public class ChromosomeData : ScriptableObject
     }
 
     /// <summary>
-    /// Update Genetic Algorithm with set of genes to iterate on.
+    /// Update Genetic Algorithm with set of genes to iterate on. (Initial Population)
     /// </summary>
     public void UpdateGeneticAlgorithm()
     {
@@ -84,11 +99,15 @@ public class ChromosomeData : ScriptableObject
         if (geneticAlgorithm != null)
         {
             //Get the genes of the current individual and apply them to the genetic algorithm.
-            float[] _genes = new float[genes.Count];
+            
+            List<float> _genesList = new List<float>();
             for(int i = 0; i < genes.Count; i++)
             {
-                _genes[i] = genes[i].GetWeight();
+                if(genes[i].IsActive())
+                    _genesList.Add(genes[i].GetWeight());               
             }
+            float[] _genes = new float[_genesList.Count];
+            _genes = _genesList.ToArray();
             Debug.Log("Setting Genetic Algorithm to " + gameObject.name);
             geneticAlgorithm.SetGenes(_genes);
 
@@ -132,20 +151,27 @@ public class ChromosomeData : ScriptableObject
         UpdatePrefab();
         UpdateInstance();
     }
-
+    /// <summary>
+    /// Updates the already selected instance with the values from the Chromosome in Editor
+    /// </summary>
     void UpdateInstance()
     {
         if (instance == null)
             return;
 
         int index = 0;
-
+        Debug.Log("updating: " + instance);
         Component[] cs = (Component[])instance.GetComponents(typeof(Component));
         foreach (Component c in cs)
         {
             foreach (FieldInfo fi in c.GetType().GetFields())
             {
-                if (fi.GetValue(c).GetType().Equals(typeof(System.Single)))
+                Debug.Log("field variable: " + fi);
+                if (!genes[index].IsActive())
+                {
+                    index++;
+                }
+                else if (fi.GetValue(c) != null && fi.GetValue(c).GetType().Equals(typeof(System.Single)))
                 {
                     //if the retrieved value == the index of current one update its value.
                     if (genes[index].GetName().Equals(c.GetType().Name + " - " + fi.Name))
@@ -158,10 +184,16 @@ public class ChromosomeData : ScriptableObject
                         index++;
                     }
                 }
+                if (genes.Count <= index)
+                    return;
             }
         }
     }
 
+
+    /// <summary>
+    /// Updates the already selected prefab with the values from the Chromosome in Editor
+    /// </summary>
     void UpdatePrefab()
     {
         if (gameObject == null)
@@ -174,7 +206,11 @@ public class ChromosomeData : ScriptableObject
         {
             foreach (FieldInfo fi in c.GetType().GetFields())
             {
-                if (fi.GetValue(c).GetType().Equals(typeof(System.Single)))
+                if (!genes[index].IsActive())
+                {
+                    index++;
+                }
+                else if (fi.GetValue(c).GetType().Equals(typeof(System.Single)))
                 {
                     //if the retrieved value == the index of current one update its value.
                     if (genes[index].GetName().Equals(c.GetType().Name + " - " + fi.Name))
@@ -187,6 +223,8 @@ public class ChromosomeData : ScriptableObject
                         index++;
                     }
                 }
+                if (genes.Count <= index)
+                    return;
             }
         }
     }

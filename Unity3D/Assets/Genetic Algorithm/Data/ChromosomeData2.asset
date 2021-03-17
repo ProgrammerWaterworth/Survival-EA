@@ -12,5 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a634517227eea439bd11a37374b37c, type: 3}
   m_Name: ChromosomeData2
   m_EditorClassIdentifier: 
-  gameObject: {fileID: 0}
-  genes: []
+  gameObject: {fileID: 7145090966969832590, guid: e58ef6da42d4d644aaea841b6d1861a9,
+    type: 3}
+  genes:
+  - geneName: TestAgent - range
+    weight: 0
+    minValue: 9.857202
+    maxValue: 29.571606
+    value: 9.857202
+  - geneName: TestAgent - posX
+    weight: 0.02
+    minValue: 9.96811
+    maxValue: 29.904331
+    value: 10.366835
+  - geneName: TestAgent - posY
+    weight: 0.12
+    minValue: 10.99385
+    maxValue: 32.98155
+    value: 13.632374

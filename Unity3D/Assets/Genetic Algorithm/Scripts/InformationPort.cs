@@ -87,12 +87,13 @@ public class InformationPort : MonoBehaviour
                         //convert bytes to floats
                         floatsReceived = new float[idxUsedBytes / 4];
                         Buffer.BlockCopy(bytes, 0, floatsReceived, 0, idxUsedBytes);
+                        /*
                         foreach (float f in floatsReceived)
                         {
                             Debug.Log(f);
                         }
                         //Debug.Log(floatsReceived);
-
+                        */
                         myArray = floatsReceived;
                     }
                     client.Close();

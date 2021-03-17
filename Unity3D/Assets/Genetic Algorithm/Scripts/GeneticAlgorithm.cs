@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class GeneticAlgorithm : MonoBehaviour
 {
+    public enum GeneticAlgorithmState
+    {
+        WaitingForGenes,
+        WaitingForFitness,
+        FitnessFunctionNotPresent
+    }
+
+    GeneticAlgorithmState state;
+
     public static GeneticAlgorithm Instance { get; private set; }
 
     private void Awake()
@@ -15,9 +24,8 @@ public class GeneticAlgorithm : MonoBehaviour
         }
     }
 
-
-    [SerializeField] TestAgent agent;
     [SerializeField] GameObject individual;
+    IFitnessFunction individualFitnessFunction;
     [SerializeField] ChromosomeData data;
     /// <summary>
     /// The weights of the genes that dictate the agents behaviour.
@@ -36,8 +44,10 @@ public class GeneticAlgorithm : MonoBehaviour
             port = GetComponent<InformationPort>();
         }
         else Debug.LogError(this + " requires an information port component");
-
-        StartCoroutine(DelayedFitnessReport());
+        if(CheckIndividualFitnessFunction())
+            StartCoroutine(DelayedFitnessReport());
+        else
+            Debug.LogError(this + " requires the indivual: "+ individual + " to implement IFitnessFunction Interface in one of it's scripts.");
     }
 
     public void SetGenes(float[] _genes)
@@ -62,26 +72,29 @@ public class GeneticAlgorithm : MonoBehaviour
     {
         float _fitness = 0;
 
-        if (agent != null) //Debug #2 - Testing on agent
-        {
-            //agent.SetRangeGene(genes[0]);
-            if (data != null)
-            {
-                data.UpdateGenes(genes);
-                //data.UpdateEditorWithInstanceGeneValues();
-            }
-            int _count = agent.CheckForBatteries();
-            _fitness = _count +1;
+        if (individual != null) //Debug #2 - Testing on agent
+        {      
+            _fitness = individualFitnessFunction.GetFitness();
+            if (_fitness == 0)
+                _fitness = 0.01f;
         }
-        else //Debug #1 - Testing if fitness affects ga
-        {
-            for (int i = 0; i < genes.Length; i++)
-            {
-                _fitness = genes[i];
-            }
-            _fitness /= genes.Length;
-        }
+        else Debug.LogError(this + " does not have an individual assigned.");
         return _fitness;
+    }
+
+    /// <summary>
+    /// Checks if the individual that is being attempted to test implements fitness function.
+    /// </summary>
+    /// <returns></returns>
+    bool CheckIndividualFitnessFunction()
+    {
+        individualFitnessFunction = individual.GetComponent<IFitnessFunction>();
+
+        if (individualFitnessFunction != null)
+        {
+            return true;
+        }
+        return false;
     }
 
     IEnumerator DelayedFitnessReport()
@@ -95,25 +108,69 @@ public class GeneticAlgorithm : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(.1f);
-            SendFitness();
+
+            if (state == GeneticAlgorithmState.WaitingForGenes)
+            {
+                RecieveGenes();              
+            } 
+            else if (state == GeneticAlgorithmState.WaitingForFitness)
+            {                
+                WaitForFitness();
+            }
         }
     }
 
     /// <summary>
     /// Sends fitness 
     /// </summary>
-    void SendFitness()
+    void RecieveGenes()
     {
         Debug.Log(port);
+        Debug.Log("Receiving");
         if (!port.GetArray().Equals(genes))
         {
+            //Get new genes + apply to individual.            
             genes = port.GetArray();
 
-            float[] _fitness = new float[1];
-            _fitness[0] = CalculateFitness();
-            port.SetDataOut(_fitness);
+            if (data != null)
+            {
+                data.UpdateGenes(genes);
+                SwitchState(GeneticAlgorithmState.WaitingForFitness);
+            }
+            else Debug.LogError(this + " data is null. Cannot update genes.");                           
         }
         else
             Debug.Log("genes are still the same...");
+    }
+
+    void WaitForFitness()
+    {
+        if (individual != null && individualFitnessFunction.IsEvalutionComplete())
+        {
+            Debug.Log("Sending");
+            SwitchState(GeneticAlgorithmState.WaitingForGenes);
+            //Get fitness from running surivival.
+            float[] _fitness = new float[1];
+            _fitness[0] = CalculateFitness();
+            port.SetDataOut(_fitness);
+            
+        }      
+    }
+
+    /// <summary>
+    /// Play game and await a fitness report.
+    /// </summary>
+    void Simulate()
+    {
+
+    }
+
+    /// <summary>
+    /// Switch State of the Genetic algorothm.
+    /// </summary>
+    /// <param name="_newState"></param>
+    void SwitchState(GeneticAlgorithmState _newState)
+    {
+        state = _newState;
     }
 }

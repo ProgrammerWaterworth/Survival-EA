@@ -5,7 +5,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     float charge = 100;
-    float chargeUsageRate = 5f;
+    public float chargeUsageRate = 5f;
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +35,14 @@ public class Inventory : MonoBehaviour
     {
         return charge;
     }
+
+    public bool HasChargeLeft()
+    {
+        if (charge > 0)
+            return true;
+        return false;
+    }
+
     /*
     public Weapon GetWeapon()
     {

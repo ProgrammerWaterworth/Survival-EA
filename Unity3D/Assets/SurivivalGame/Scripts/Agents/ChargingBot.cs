@@ -2,12 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChargingBot : Robot
+public class ChargingBot : Robot, IFitnessFunction
 {
     /**
 	 * Our only goal will ever be to get batteries
 	 * The PickUpBatteryAction will be able to fulfill this goal.
 	 */
+    [SerializeField] bool isComplete;
+    private float lifetime = 0;
+
+    private void Update()
+    {
+        lifetime += Time.deltaTime;
+    }
+
     public override HashSet<KeyValuePair<string, object>> CreateGoalState()
     {
         int _numberOfGoals = 2;
@@ -27,6 +35,27 @@ public class ChargingBot : Robot
 
         return goal;
     }
+
+    public float GetFitness()
+    {        
+        return lifetime;
+    }
+
+    public bool IsEvalutionComplete()
+    {
+        if (inventory != null)
+        {
+            return !inventory.HasChargeLeft();
+        }
+        else
+        {
+            Debug.LogError(this + "has no inventory assigned.");
+            return false;
+        }
+        
+    }
+
+
 
     HashSet<KeyValuePair<string, object>> ChargeBaseGoal()
     {

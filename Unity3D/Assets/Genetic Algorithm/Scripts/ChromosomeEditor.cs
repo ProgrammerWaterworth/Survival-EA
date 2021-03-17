@@ -206,6 +206,7 @@ public class ChromosomeEditor : EditorWindow
                 SerializedProperty max = arrayElement.FindPropertyRelative("maxValue");
                 SerializedProperty value = arrayElement.FindPropertyRelative("value");
                 SerializedProperty geneName = arrayElement.FindPropertyRelative("geneName");
+                SerializedProperty geneActive = arrayElement.FindPropertyRelative("activeGene");
 
                 EditorGUILayout.BeginHorizontal();
                 if (geneName != null)
@@ -251,6 +252,17 @@ public class ChromosomeEditor : EditorWindow
                     if (weight != null && max != null && min != null)
                         GUI.enabled = true;
                 }
+
+                if (geneActive != null)
+                {
+                    if (UnityEditor.EditorApplication.isPlaying)
+                        GUI.enabled = false;
+                    EditorGUILayout.LabelField("Modify", GUILayout.MaxWidth(40));
+                    geneActive.boolValue = EditorGUILayout.Toggle(geneActive.boolValue);
+                    if (UnityEditor.EditorApplication.isPlaying)
+                        GUI.enabled = true;
+                }
+
                 EditorGUILayout.EndHorizontal();
                 GUILayout.Space(10);
             }

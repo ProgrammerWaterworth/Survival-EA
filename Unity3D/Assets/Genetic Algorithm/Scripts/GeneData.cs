@@ -10,6 +10,7 @@ public class GeneData
     [SerializeField] [Tooltip("Minimum possible value of the gene.")]  float minValue;
     [SerializeField] [Tooltip("Maximum possible value of the gene.")]  float maxValue;
     [SerializeField] [Tooltip("Actual value of gene.")] float value;
+    [SerializeField] [Tooltip("Determines the value of the gene by lerping between it minimum and maximum possible value by the weight value.")] bool activeGene;
 
     public GeneData(string name, float weight, float minValue, float maxValue, float value)
     {
@@ -27,6 +28,7 @@ public class GeneData
         this.minValue = value/2;
         this.maxValue = value*1.5f;
         this.value = value;
+        this.activeGene = false;
     }
 
     public float GetValue()
@@ -58,4 +60,8 @@ public class GeneData
        return weight;
     }
 
+    public bool IsActive()
+    {
+        return activeGene;
+    }
 }
