@@ -23,7 +23,7 @@ public class GeneticAlgorithm : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-
+    [SerializeField] GameObject prefab;
     [SerializeField] GameObject individual;
     IFitnessFunction individualFitnessFunction;
     [SerializeField] ChromosomeData data;
@@ -39,6 +39,7 @@ public class GeneticAlgorithm : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SetIndividual();
         if (GetComponent<InformationPort>() != null)
         {
             port = GetComponent<InformationPort>();
@@ -55,14 +56,24 @@ public class GeneticAlgorithm : MonoBehaviour
         genes = _genes;
     }
 
-    public void SetIndividualToModify(GameObject prefab)
+    public void SetIndividualToModify(GameObject _prefab)
     {
-        individual = prefab;
+        prefab = _prefab;
     }
 
     public void SetChromosomeData(ChromosomeData _data)
     {
         data = _data;
+    }
+
+    void SetIndividual()
+    {
+        if (prefab != null)
+        {
+            individual = Instantiate(prefab, transform.position, Quaternion.identity);
+            data.SetInstance(individual);
+        }
+        else Debug.LogError(this+" prefab is null");
     }
 
     /// <summary>

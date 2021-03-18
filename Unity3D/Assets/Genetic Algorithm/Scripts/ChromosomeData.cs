@@ -112,7 +112,7 @@ public class ChromosomeData : ScriptableObject
             geneticAlgorithm.SetGenes(_genes);
 
             //find an instance of the gameobject in the scene and set it as the object to modify.
-            geneticAlgorithm.SetIndividualToModify(FindPrefabInstance(gameObject));
+            geneticAlgorithm.SetIndividualToModify(gameObject);
             geneticAlgorithm.SetChromosomeData(this);
         }
         else
@@ -120,6 +120,8 @@ public class ChromosomeData : ScriptableObject
             Debug.LogError("No existing Genetic Algorithm. Create one.");
         }
     }
+
+
 
     GameObject FindPrefabInstance(UnityEngine.Object myPrefab)
     {
@@ -149,7 +151,12 @@ public class ChromosomeData : ScriptableObject
     public void ApplyGenesToGameObject()
     {
         UpdatePrefab();
-        UpdateInstance();
+        //UpdateInstance();
+    }
+
+    public void SetInstance(GameObject _instance)
+    {
+        instance = _instance;
     }
     /// <summary>
     /// Updates the already selected instance with the values from the Chromosome in Editor
