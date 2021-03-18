@@ -1900,6 +1900,7 @@ GameObject:
   - component: {fileID: 8706834616695631455}
   - component: {fileID: 8706834616695631454}
   - component: {fileID: 6084042902173927208}
+  - component: {fileID: 128813252}
   m_Layer: 0
   m_Name: GoodRobot
   m_TagString: Untagged
@@ -1993,7 +1994,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad706608022833547bd6521d894a29a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chargeUsageRate: 5
+  chargeUsageRate: 20
 --- !u!114 &8706834616695631453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2076,9 +2077,22 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 1
+  m_Height: 1.8
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &128813252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8594544343367576398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c0f8379661c7924eb30532b63af8c16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showDebugLog: 1
 --- !u!1 &8594544343367576400
 GameObject:
   m_ObjectHideFlags: 0

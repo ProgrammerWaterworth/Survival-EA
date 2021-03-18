@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GeneticAlgorithm : MonoBehaviour
 {
@@ -8,10 +9,11 @@ public class GeneticAlgorithm : MonoBehaviour
     {
         WaitingForGenes,
         WaitingForFitness,
-        FitnessFunctionNotPresent
+        FitnessFunctionNotPresent,
+        ResettingScene
     }
 
-    GeneticAlgorithmState state;
+    [SerializeField]GeneticAlgorithmState state;
 
     public static GeneticAlgorithm Instance { get; private set; }
 
@@ -31,7 +33,7 @@ public class GeneticAlgorithm : MonoBehaviour
     /// The weights of the genes that dictate the agents behaviour.
     /// </summary>
     [SerializeField] float[] genes;
-
+    AsyncOperation operation;
     /// <summary>
     /// Port to Python Implementation of Genetic Algorithm. Feed it a fitness and it will return chromosome weights.
     /// </summary>
@@ -123,7 +125,11 @@ public class GeneticAlgorithm : MonoBehaviour
             if (state == GeneticAlgorithmState.WaitingForGenes)
             {
                 RecieveGenes();              
-            } 
+            }
+            if (state == GeneticAlgorithmState.ResettingScene)
+            {
+                RestartSimulation();
+            }
             else if (state == GeneticAlgorithmState.WaitingForFitness)
             {                
                 WaitForFitness();
@@ -156,24 +162,26 @@ public class GeneticAlgorithm : MonoBehaviour
 
     void WaitForFitness()
     {
-        if (individual != null && individualFitnessFunction.IsEvalutionComplete())
+        if (individual != null && CheckIndividualFitnessFunction() &&  individualFitnessFunction.IsEvalutionComplete())
         {
             Debug.Log("Sending");
-            SwitchState(GeneticAlgorithmState.WaitingForGenes);
+            SwitchState(GeneticAlgorithmState.ResettingScene);
             //Get fitness from running surivival.
             float[] _fitness = new float[1];
             _fitness[0] = CalculateFitness();
             port.SetDataOut(_fitness);
-            
+
+            operation = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
         }      
     }
 
-    /// <summary>
-    /// Play game and await a fitness report.
-    /// </summary>
-    void Simulate()
+    void RestartSimulation()
     {
-
+        if (operation!=null && operation.isDone)
+        {
+            SetIndividual();
+            SwitchState(GeneticAlgorithmState.WaitingForGenes);
+        }
     }
 
     /// <summary>
