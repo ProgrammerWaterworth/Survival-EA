@@ -16,56 +16,74 @@ MonoBehaviour:
     type: 3}
   genes:
   - geneName: PickUpBatteryAction - pickUpDuration
-    weight: 0.038
-    minValue: 0.10128288
-    maxValue: 0.30384862
-    value: 0.10898038
-    activeGene: 1
+    weight: 0.49999997
+    minValue: 0.08436716
+    maxValue: 0.2531015
+    value: 0.16873433
+    activeGene: 0
   - geneName: PickUpBatteryAction - cost
-    weight: 0.42
-    minValue: 0.6283808
-    maxValue: 1.8851423
-    value: 1.1562206
-    activeGene: 1
-  - geneName: Inventory - chargeUsageRate
     weight: 0.5
-    minValue: 10
-    maxValue: 30
-    value: 20
+    minValue: 0.9309888
+    maxValue: 2.7929664
+    value: 1.8619776
+    activeGene: 0
+  - geneName: Inventory - chargeUsageRate
+    weight: 0.49999997
+    minValue: 12.3165
+    maxValue: 36.9495
+    value: 24.633
     activeGene: 0
   - geneName: Sensor - viewDistance
-    weight: 0.357
-    minValue: 5.25
-    maxValue: 15.75
-    value: 8.9985
-    activeGene: 0
+    weight: 0.53
+    minValue: 4.385
+    maxValue: 20
+    value: 12.66095
+    activeGene: 1
   - geneName: Sensor - viewAngle
-    weight: 0.331
-    minValue: 30
-    maxValue: 90
-    value: 49.86
-    activeGene: 0
+    weight: 0.65
+    minValue: 34.394398
+    maxValue: 103.1832
+    value: 79.10712
+    activeGene: 1
   - geneName: ChargingBot - maxMoveSpeed
-    weight: 0.382
-    minValue: 80.6
-    maxValue: 241.79999
-    value: 142.17839
-    activeGene: 0
+    weight: 0.49999997
+    minValue: 54.66759
+    maxValue: 164.00278
+    value: 109.33518
+    activeGene: 1
   - geneName: ChargingBot - range
-    weight: 0.439
-    minValue: 3.6120224
-    maxValue: 10.836067
-    value: 6.783378
+    weight: 0.50000006
+    minValue: 1.9075
+    maxValue: 5.7225
+    value: 3.815
     activeGene: 0
+  - geneName: ChargingBot - posX
+    weight: 0.49000004
+    minValue: 10
+    maxValue: 40
+    value: 24.7
+    activeGene: 1
+  - geneName: ChargingBot - posY
+    weight: 0
+    minValue: 4.9
+    maxValue: 4.9
+    value: 4.9
+    activeGene: 1
+  - geneName: ChargingBot - RotY
+    weight: 0.8761473
+    minValue: 0
+    maxValue: 360
+    value: 315.41302
+    activeGene: 1
   - geneName: ChargeBaseAction - chargeDuration
-    weight: 0.592
-    minValue: 0.625
-    maxValue: 1.875
-    value: 1.365
-    activeGene: 1
+    weight: 0.50000006
+    minValue: 0.73914754
+    maxValue: 2.2174425
+    value: 1.4782951
+    activeGene: 0
   - geneName: ChargeBaseAction - cost
-    weight: 0.663
-    minValue: 1.3561556
-    maxValue: 4.068467
-    value: 3.1544182
-    activeGene: 1
+    weight: 0.5
+    minValue: 2.014096
+    maxValue: 6.042288
+    value: 4.028192
+    activeGene: 0

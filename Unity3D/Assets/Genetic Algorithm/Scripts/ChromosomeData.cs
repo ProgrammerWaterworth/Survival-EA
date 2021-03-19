@@ -72,6 +72,7 @@ public class ChromosomeData : ScriptableObject
         if (index != _genes.Length)
             Debug.LogError(this + " has not updated all genes. Error has occured. Updated index = "+index+ ". Number of genes = "+_genes.Length);
 
+        UpdatePrefab();
         UpdateInstance();
     }
 

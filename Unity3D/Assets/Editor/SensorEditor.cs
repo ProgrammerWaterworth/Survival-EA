@@ -22,7 +22,8 @@ public class SensorEditor : Editor
 
         foreach (Transform _target in _view.visibleInteractables)
         {
-            Handles.DrawLine(_view.transform.position, _target.transform.position);
+            if(_target!=null)
+                Handles.DrawLine(_view.transform.position, _target.transform.position);
         }
     }
 }

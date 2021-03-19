@@ -10,7 +10,7 @@ using UnityEngine;
 public class AgentMemory : MonoBehaviour
 {
     Sensor sensor;
-
+    [SerializeField] float memories;
     [SerializeField] [Tooltip("Show the debug information for processing memories.")] bool showDebugLog;
 
     /// <summary>
@@ -45,6 +45,7 @@ public class AgentMemory : MonoBehaviour
     void Update()
     {
         GetWorldInformation();
+        memories = agentMemories.Count;
     }
 
     /// <summary>
@@ -106,6 +107,8 @@ public class AgentMemory : MonoBehaviour
         return _foundObject;
     }
 
+    //Memory check for when an object isn't present which it is expecting. Using name of expected object.
+
     public void RemoveObjectFromMemory(GameObject _object)
     {
         if (agentMemories.ContainsKey(_object.name))
@@ -123,6 +126,25 @@ public class AgentMemory : MonoBehaviour
 
         }
         else Debug.LogError(this + " hasn't recorded memories of this type: " + _object.name);
+    }
+
+    public void RemoveNullObjectFromMemory(string _objectName)
+    {
+        if (agentMemories.ContainsKey(_objectName))
+        {
+            if (agentMemories[_objectName].Count > 0) //Has at least 1 memory of object stored.
+            {
+                if (agentMemories[_objectName].ContainsKey(null))
+                {
+                    Debug.Log(this + " is removing " + agentMemories[_objectName][null]);
+                    agentMemories[_objectName].Remove(null);
+                }
+                else Debug.LogError(this + " cannot find object in memories: " + _objectName);
+            }
+            else Debug.LogError(this + " currently has no memories of type: " + _objectName);
+
+        }
+        else Debug.LogError(this + " hasn't recorded memories of this type: " + _objectName);
     }
 
     /// <summary>

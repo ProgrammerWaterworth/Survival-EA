@@ -126,7 +126,7 @@ public sealed class GoapAgent : MonoBehaviour
         //Invoked when in updating moveTo state.
         moveToState = (fsm, gameObj) => {
             // move the game object
-            Debug.Log(this + " is Moving");
+            //Debug.Log(this + " is Moving");
             GoapAction action = currentPlanActions.Peek();
 
             // get the agent to move itself
@@ -147,7 +147,7 @@ public sealed class GoapAgent : MonoBehaviour
         executeActionState = (fsm, gameObj) => {
             // execute the action
 
-            Debug.Log(this + " is Executing Action.");
+            //Debug.Log(this + " is Executing Action.");
 
             if (!HasPlan())
             {

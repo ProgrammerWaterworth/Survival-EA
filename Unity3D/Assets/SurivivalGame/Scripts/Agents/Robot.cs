@@ -17,9 +17,18 @@ public abstract class Robot : BaseAgent
     [SerializeField] float rotationStepAngle;
     [SerializeField] Vector3 targetPosition;
     [SerializeField] bool moving;
+
+    //Testing Spawn//
+    public float posX;
+    public float posY;
+    public float RotY;
+
     void Start()
     {
         SetUpRobot();
+        //Set spawn point
+        transform.position = new Vector3(posX, transform.position.y, posY);
+        transform.rotation = Quaternion.Euler(transform.eulerAngles.x, RotY, transform.eulerAngles.z);
     }
 
     void Update()

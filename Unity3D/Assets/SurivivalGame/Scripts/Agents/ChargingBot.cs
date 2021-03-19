@@ -11,6 +11,8 @@ public class ChargingBot : Robot, IFitnessFunction
     [SerializeField] bool isComplete;
     private float lifetime = 0;
 
+    
+
     private void Update()
     {
         lifetime += Time.deltaTime;

@@ -1978,10 +1978,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c5302f6c86e294aa962374d892db68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 1.1562206
+  cost: 1.8619776
   target: {fileID: 0}
   targetPosition: {x: 0, y: 0, z: 0}
-  pickUpDuration: 0.10898038
+  pickUpDuration: 0.16873433
 --- !u!114 &8706834616695631450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1994,7 +1994,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad706608022833547bd6521d894a29a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chargeUsageRate: 20
+  chargeUsageRate: 24.633
 --- !u!114 &8706834616695631453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2007,8 +2007,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93de9eb16f9c72c418d625ec829786be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewDistance: 10
-  viewAngle: 60
+  viewDistance: 8.77
+  viewAngle: 68.788795
   senseActive: 0
   numViewRangeRays: 5
   avoidenceSensitivity: 0
@@ -2044,11 +2044,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 8706834616695631450}
-  maxMoveSpeed: 142.17839
-  range: 5
+  maxMoveSpeed: 109.33518
+  range: 3.815
   rotationStepAngle: 0.02
   targetPosition: {x: 0, y: 0, z: 0}
   moving: 1
+  posX: 24.7
+  posY: 4.9
+  RotY: 315.41302
   isComplete: 0
 --- !u!114 &8706834616695631454
 MonoBehaviour:
@@ -2062,10 +2065,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d698c47d91dfac4da4deed8a764c75d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 3.1544182
+  cost: 4.028192
   target: {fileID: 0}
   targetPosition: {x: 0, y: 0, z: 0}
-  chargeDuration: 1.365
+  chargeDuration: 1.4782951
 --- !u!136 &6084042902173927208
 CapsuleCollider:
   m_ObjectHideFlags: 0

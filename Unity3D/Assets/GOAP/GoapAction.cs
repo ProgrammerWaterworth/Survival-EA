@@ -79,7 +79,24 @@ public abstract class GoapAction : MonoBehaviour
     /// </summary>
     /// <param name="_agent">The GOAP agent performing the action.</param>
     /// <returns>True: action performed successfully. False: Can't perform action, clears action queue.</returns>
-    public abstract bool ExecuteAction(GameObject _agent);
+    public virtual bool ExecuteAction(GameObject _agent)
+    {
+        if (target != null)
+        {
+            if (Vector3.Distance(targetPosition, target.transform.position) < 1)
+            {                
+                return true;
+            }
+            else
+            {
+                if (GetComponent<AgentMemory>() != null)
+                {
+                    GetComponent<AgentMemory>().RemoveObjectFromMemory(target);
+                }
+            }
+        }
+        return false;
+    }
 
     /// <summary>
     /// Check if GOAP agent must be in range of target to perform action.

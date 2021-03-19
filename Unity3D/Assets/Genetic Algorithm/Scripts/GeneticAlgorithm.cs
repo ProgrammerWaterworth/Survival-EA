@@ -118,6 +118,7 @@ public class GeneticAlgorithm : MonoBehaviour
     {
         if (port != null)
         {
+            Debug.Log("genes:"+genes.Length);
             port.SetDataOut(genes);
         }
 
@@ -128,14 +129,15 @@ public class GeneticAlgorithm : MonoBehaviour
             {
                 RecieveGenes();              
             }
-            if (state == GeneticAlgorithmState.ResettingScene)
+            else if (state == GeneticAlgorithmState.WaitingForFitness)
+            {
+                WaitForFitness();
+            }
+            else if (state == GeneticAlgorithmState.ResettingScene)
             {
                 RestartSimulation();
             }
-            else if (state == GeneticAlgorithmState.WaitingForFitness)
-            {                
-                WaitForFitness();
-            }
+            
             yield return new WaitForSeconds(.1f);
         }
     }
@@ -154,7 +156,9 @@ public class GeneticAlgorithm : MonoBehaviour
         if (data != null && port.GetArray().Length == data.NumberOfGenes())
         {
             data.UpdateGenes(genes);
-            SwitchState(GeneticAlgorithmState.WaitingForFitness);
+            SwitchState(GeneticAlgorithmState.ResettingScene);
+
+            operation = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
         }
         else Debug.LogError(this + " data is == "+ data + " and incoming num genes == "+ port.GetArray().Length +". Actual genes == "+ data.NumberOfGenes() + ". Cannot update genes.");
         /*
@@ -171,13 +175,11 @@ public class GeneticAlgorithm : MonoBehaviour
         if (individual != null && CheckIndividualFitnessFunction() &&  individualFitnessFunction.IsEvalutionComplete())
         {
             Debug.Log("Sending");
-            SwitchState(GeneticAlgorithmState.ResettingScene);
+            SwitchState(GeneticAlgorithmState.WaitingForGenes);
             //Get fitness from running surivival.
             float[] _fitness = new float[1];
             _fitness[0] = CalculateFitness();
             port.SetDataOut(_fitness);
-
-            operation = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
         }      
     }
 
@@ -186,7 +188,7 @@ public class GeneticAlgorithm : MonoBehaviour
         if (operation!=null && operation.isDone)
         {
             SetIndividual();
-            SwitchState(GeneticAlgorithmState.WaitingForGenes);
+            SwitchState(GeneticAlgorithmState.WaitingForFitness);
         }
     }
 

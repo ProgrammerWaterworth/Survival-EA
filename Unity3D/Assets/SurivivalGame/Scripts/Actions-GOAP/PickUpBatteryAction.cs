@@ -53,8 +53,9 @@ public class PickUpBatteryAction : GoapAction
 
     public override bool ExecuteAction(GameObject _agent)
     {
-        if (FindTargetObject(_agent))
-        {
+        //check if the object is near the remembered location
+        if (base.ExecuteAction(_agent))
+        {          
             if (startTime == 0)
                 startTime = Time.time;
 
@@ -68,9 +69,9 @@ public class PickUpBatteryAction : GoapAction
                 if (GetComponent<AgentMemory>() != null)
                 {
                     GetComponent<AgentMemory>().RemoveObjectFromMemory(target);
-                }
-
+                }               
                 Destroy(target); // For now destroy as if it has been used
+                //target = null;
             }
             return true;
         }
