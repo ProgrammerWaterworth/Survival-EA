@@ -55,12 +55,10 @@ public class ChargingBot : Robot, IFitnessFunction
         
     }
 
-
-
     HashSet<KeyValuePair<string, object>> ChargeBaseGoal()
     {
         HashSet<KeyValuePair<string, object>> _goal = new HashSet<KeyValuePair<string, object>>();
-        _goal.Add(new KeyValuePair<string, object>("chargeBase", true));
+        _goal.Add(new KeyValuePair<string, object>("hasBattery", true));
         return _goal;
     }
 

@@ -14,7 +14,7 @@ public class ChromosomeData : ScriptableObject
     [SerializeField] GameObject gameObject;
     [SerializeField] List<GeneData> genes;
     GameObject instance;
-
+    int numGenes;
 
     /// <summary>
     /// Get's the genes of the currently set GameObject. Resets Genes to default values.
@@ -39,6 +39,14 @@ public class ChromosomeData : ScriptableObject
             }
 
         }
+    }
+    /// <summary>
+    /// Return number of genes that are being updated
+    /// </summary>
+    /// <returns></returns>
+    public int NumberOfGenes()
+    {
+        return numGenes;
     }
 
     /// <summary>
@@ -108,6 +116,7 @@ public class ChromosomeData : ScriptableObject
             }
             float[] _genes = new float[_genesList.Count];
             _genes = _genesList.ToArray();
+            numGenes = _genesList.Count;
             Debug.Log("Setting Genetic Algorithm to " + gameObject.name);
             geneticAlgorithm.SetGenes(_genes);
 
@@ -205,7 +214,6 @@ public class ChromosomeData : ScriptableObject
     {
         if (gameObject == null)
             return;
-
         int index = 0;
 
         Component[] cs = (Component[])gameObject.GetComponents(typeof(Component));

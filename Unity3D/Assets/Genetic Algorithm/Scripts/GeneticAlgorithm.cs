@@ -29,6 +29,7 @@ public class GeneticAlgorithm : MonoBehaviour
     [SerializeField] GameObject individual;
     IFitnessFunction individualFitnessFunction;
     [SerializeField] ChromosomeData data;
+    [SerializeField] Transform spawnPoint;
     /// <summary>
     /// The weights of the genes that dictate the agents behaviour.
     /// </summary>
@@ -72,7 +73,10 @@ public class GeneticAlgorithm : MonoBehaviour
     {
         if (prefab != null)
         {
-            individual = Instantiate(prefab, transform.position, Quaternion.identity);
+            if(spawnPoint!=null)
+                individual = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
+            else
+                individual = Instantiate(prefab, transform.position, Quaternion.identity);
             data.SetInstance(individual);
         }
         else Debug.LogError(this+" prefab is null");
@@ -119,9 +123,7 @@ public class GeneticAlgorithm : MonoBehaviour
 
 
         while (true)
-        {
-            yield return new WaitForSeconds(.1f);
-
+        {          
             if (state == GeneticAlgorithmState.WaitingForGenes)
             {
                 RecieveGenes();              
@@ -134,6 +136,7 @@ public class GeneticAlgorithm : MonoBehaviour
             {                
                 WaitForFitness();
             }
+            yield return new WaitForSeconds(.1f);
         }
     }
 
@@ -144,20 +147,23 @@ public class GeneticAlgorithm : MonoBehaviour
     {
         Debug.Log(port);
         Debug.Log("Receiving");
+
+        //Get new genes + apply to individual.            
+        genes = port.GetArray();
+
+        if (data != null && port.GetArray().Length == data.NumberOfGenes())
+        {
+            data.UpdateGenes(genes);
+            SwitchState(GeneticAlgorithmState.WaitingForFitness);
+        }
+        else Debug.LogError(this + " data is == "+ data + " and incoming num genes == "+ port.GetArray().Length +". Actual genes == "+ data.NumberOfGenes() + ". Cannot update genes.");
+        /*
         if (!port.GetArray().Equals(genes))
         {
-            //Get new genes + apply to individual.            
-            genes = port.GetArray();
-
-            if (data != null)
-            {
-                data.UpdateGenes(genes);
-                SwitchState(GeneticAlgorithmState.WaitingForFitness);
-            }
-            else Debug.LogError(this + " data is null. Cannot update genes.");                           
+                                  
         }
         else
-            Debug.Log("genes are still the same...");
+            Debug.Log("genes are still the same...");*/
     }
 
     void WaitForFitness()

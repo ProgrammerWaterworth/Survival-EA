@@ -8,7 +8,9 @@ public class TestAgent : MonoBehaviour, IFitnessFunction
     public float posX;
     public float posY;
     [SerializeField] bool isComplete;
-    private void Update()
+
+
+    private void Start()
     {
         transform.position = new Vector3(posX, transform.position.y, posY);
     }
@@ -25,6 +27,7 @@ public class TestAgent : MonoBehaviour, IFitnessFunction
                 count++;
             }
         }
+        Debug.Log("Battery Score: " + count);
         return count;
     }
 
@@ -46,6 +49,6 @@ public class TestAgent : MonoBehaviour, IFitnessFunction
 
     public bool IsEvalutionComplete()
     {
-        return isComplete;
+        return true;
     }
 }
