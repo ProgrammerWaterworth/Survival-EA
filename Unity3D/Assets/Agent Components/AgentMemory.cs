@@ -10,29 +10,38 @@ using UnityEngine;
 public class AgentMemory : MonoBehaviour
 {
     Sensor sensor;
-    [SerializeField] float memories;
+    [SerializeField] float memories, objectMemories;
     [SerializeField] [Tooltip("Show the debug information for processing memories.")] bool showDebugLog;
 
+    const string memoryString = "-Memory"; //used to identify an object as a memory object.
     /// <summary>
     /// A memory represents the agents known information about a specific object type.
     /// </summary>
     class Memory
     {
-        public Vector3 worldPosition;
         public GameObject gameObject;
         public float timeStamp;
 
         public Memory(GameObject _gameObject)
         {
-            this.worldPosition = _gameObject.transform.position;
+            GameObject _memoryObject = new GameObject();
+            _memoryObject.name = _gameObject.name + memoryString;
+            _memoryObject.transform.position = _gameObject.transform.position;
+
             this.gameObject = _gameObject;
             this.timeStamp = Time.time;
-        }  
+        }
+        
+
     }
     /// <summary>
-    /// Dictionary for storing and retrieving memories.
+    /// Dictionary for storing and retrieving objects and their memory
     /// </summary>
-    Dictionary<string, Dictionary<GameObject,Memory>> agentMemories = new Dictionary<string, Dictionary<GameObject, Memory>>();
+    Dictionary<string, Dictionary<GameObject,GameObject>> objectMemory = new Dictionary<string, Dictionary<GameObject, GameObject>>();
+    /// <summary>
+    /// Dictionary for storing and retrieving memory and their object
+    /// </summary>
+    Dictionary<string, Dictionary<GameObject, GameObject>> memoryOfObjects = new Dictionary<string, Dictionary<GameObject, GameObject>>();
 
     // Key objects need to be remembered by timestamp, object type and location.
     // Start is called before the first frame update
@@ -45,7 +54,8 @@ public class AgentMemory : MonoBehaviour
     void Update()
     {
         GetWorldInformation();
-        memories = agentMemories.Count;
+        memories = memoryOfObjects.Count;
+        objectMemories = objectMemory.Count;
     }
 
     /// <summary>
@@ -80,26 +90,26 @@ public class AgentMemory : MonoBehaviour
     /// </summary>
     /// <param name="_objectName">object to search for.</param>
     /// <returns>True if it has a memory of an object.</returns>
-    public bool CheckMemoryForObject(string _objectName, Vector3 _agentPosition, out GameObject _object, out Vector3 _memoryPosition)
+    public bool CheckMemoryForObject(string _objectName, Vector3 _agentPosition, out GameObject _targetGameObject, out GameObject _rememberedTarget)
     {
         bool _foundObject = false;
-        _memoryPosition = Vector3.zero;
-        _object = null;
+        _rememberedTarget = null;
+        _targetGameObject = null;
 
-        if (agentMemories.ContainsKey(_objectName))
+        if (memoryOfObjects.ContainsKey(_objectName))
         {
-            if (agentMemories[_objectName].Count > 0) //Has at least 1 memory of object stored.
+            if (memoryOfObjects[_objectName].Count > 0) //Has at least 1 memory of object stored.
             {
                 float closestDistance = Mathf.Infinity;
                 _foundObject = true;
 
-                foreach (KeyValuePair<GameObject, Memory> _pair in agentMemories[_objectName])
+                foreach (KeyValuePair<GameObject, GameObject> _pair in memoryOfObjects[_objectName])
                 {
-                    if (Vector3.Distance(_pair.Value.worldPosition, _agentPosition) < closestDistance)
+                    if (Vector3.Distance(_pair.Key.transform.position, _agentPosition) < closestDistance)
                     {
-                        closestDistance = Vector3.Distance(_pair.Value.worldPosition, _agentPosition);
-                        _object = _pair.Value.gameObject;
-                        _memoryPosition = _pair.Value.worldPosition;
+                        closestDistance = Vector3.Distance(_pair.Key.transform.position, _agentPosition);
+                        _targetGameObject = _pair.Value;
+                        _rememberedTarget = _pair.Key;
                     }
                 }
             }
@@ -109,42 +119,27 @@ public class AgentMemory : MonoBehaviour
 
     //Memory check for when an object isn't present which it is expecting. Using name of expected object.
 
-    public void RemoveObjectFromMemory(GameObject _object)
+    public void RemoveObjectFromMemory(GameObject _memoryObject)
     {
-        if (agentMemories.ContainsKey(_object.name))
+        if (memoryOfObjects.ContainsKey(_memoryObject.name))
         {
-            if (agentMemories[_object.name].Count > 0) //Has at least 1 memory of object stored.
+            if (memoryOfObjects[_memoryObject.name].Count > 0) //Has at least 1 memory of object stored.
             {
-                if (agentMemories[_object.name].ContainsKey(_object))
+                if (memoryOfObjects[_memoryObject.name].ContainsKey(_memoryObject))
                 {
-                    Debug.Log(this + " is removing " + agentMemories[_object.name][_object]);
-                    agentMemories[_object.name].Remove(_object);
+                    GameObject obj = memoryOfObjects[_memoryObject.name][_memoryObject];
+                    Debug.Log(this + " is removing " + memoryOfObjects[_memoryObject.name][_memoryObject]);
+
+                    //remove _memoryObject's value in pair
+                    objectMemory[_memoryObject.name].Remove(obj);
+
+                    memoryOfObjects[_memoryObject.name].Remove(_memoryObject);
                 }
-                else Debug.LogError(this + " cannot find object in memories: " + _object.name);
+                else Debug.LogError(this + " cannot find object in memories: " + _memoryObject.name);
             }
-            else Debug.LogError(this + " currently has no memories of type: " + _object.name);
-
+            else Debug.LogError(this + " currently has no memories of type: " + _memoryObject.name);
         }
-        else Debug.LogError(this + " hasn't recorded memories of this type: " + _object.name);
-    }
-
-    public void RemoveNullObjectFromMemory(string _objectName)
-    {
-        if (agentMemories.ContainsKey(_objectName))
-        {
-            if (agentMemories[_objectName].Count > 0) //Has at least 1 memory of object stored.
-            {
-                if (agentMemories[_objectName].ContainsKey(null))
-                {
-                    Debug.Log(this + " is removing " + agentMemories[_objectName][null]);
-                    agentMemories[_objectName].Remove(null);
-                }
-                else Debug.LogError(this + " cannot find object in memories: " + _objectName);
-            }
-            else Debug.LogError(this + " currently has no memories of type: " + _objectName);
-
-        }
-        else Debug.LogError(this + " hasn't recorded memories of this type: " + _objectName);
+        else Debug.LogError(this + " hasn't recorded memories of this type: " + _memoryObject.name);
     }
 
     /// <summary>
@@ -157,10 +152,17 @@ public class AgentMemory : MonoBehaviour
             if (sensor.visibleInteractables == null)
                 return;
 
+            //Update actual objects in memory - when the agent encounters an object and wants to add or update the current memory of that object
             foreach(Transform _informationTransform in sensor.visibleInteractables)
             {
                 if(_informationTransform!=null)
-                    UpdateMemory(_informationTransform.gameObject);
+                    UpdateObjectInMemory(_informationTransform.gameObject);
+            }
+            //Update memories revisitted - when agent visits a point in which it has a memory it updates with new relevant info
+            foreach (Transform _informationTransform in sensor.visibleMemories)
+            {
+                if (_informationTransform != null)
+                    UpdateMemoryOfObject(_informationTransform.gameObject);
             }
         }
     }
@@ -172,31 +174,62 @@ public class AgentMemory : MonoBehaviour
     {
         Memory _memory = new Memory(_keyObject);
         
-        if (!agentMemories.ContainsKey(_keyObject.name))
+        if (!memoryOfObjects.ContainsKey(_keyObject.name))
         {
-            agentMemories.Add(_keyObject.name, new Dictionary<GameObject, Memory>());
-        }   
-
-        agentMemories[_keyObject.name].Add(_keyObject, _memory);
+            //add to both dictionaries.
+            memoryOfObjects.Add(_keyObject.name + memoryString, new Dictionary<GameObject, GameObject>());
+            objectMemory.Add(_keyObject.name + memoryString, new Dictionary<GameObject, GameObject>());
+        }
+        GameObject memoryObj = CreateMemoryObject(_keyObject);
+        memoryOfObjects[_keyObject.name].Add(memoryObj, _keyObject);
+        objectMemory[_keyObject.name].Add(_keyObject, memoryObj);
 
         if (showDebugLog)
-            Debug.Log(this + " is adding memory: " + agentMemories[_keyObject.name][_keyObject].gameObject);
+            Debug.Log(this + " is adding memory: " + memoryOfObjects[_keyObject.name][_keyObject].gameObject);
     }
 
     /// <summary>
-    /// Updates current memories or adds new ones based on the _keyObject found.
+    /// Updates current memories of object or adds new ones based on the _keyObject found.
     /// </summary>
-    /// <param name="_keyObject"></param>
-    void UpdateMemory(GameObject _keyObject)
+    /// <param name="_actualObject">The object from the scene which a memory needs to be formed from.</param>
+    void UpdateObjectInMemory(GameObject _actualObject)
     {
-        if (agentMemories.ContainsKey(_keyObject.name) && agentMemories[_keyObject.name].ContainsKey(_keyObject))
-        {          
-            Memory _memory = agentMemories[_keyObject.name][_keyObject];
-            _memory.worldPosition = _keyObject.transform.position;
-            _memory.timeStamp = Time.time;           
+        string memoryName = _actualObject.name + memoryString;
+        //Updates memory if a known object if spotted in another location.
+        if (objectMemory.ContainsKey(memoryName) && objectMemory[memoryName].ContainsKey(_actualObject))
+        {
+            GameObject memoryObj = objectMemory[memoryName][_actualObject];
+            memoryObj.transform.position = _actualObject.transform.position;
+           // memoryOfObjects[memoryName][memoryObj].transform.position = _actualObject.transform.position; //should update as its a reference to the actual object.
         }
         else  // Not a memory, make one.
-            AddMemory(_keyObject);
-        
+            AddMemory(_actualObject);      
+    }
+
+    GameObject CreateMemoryObject(GameObject _actualObject)
+    {
+        GameObject _memoryObject = new GameObject(_actualObject.name + memoryString);
+        _memoryObject.transform.position = _actualObject.transform.position;
+        return _memoryObject;
+    }
+
+    /// <summary>
+    /// Updates current memories of object if observing memory is no longer near object.
+    /// </summary>
+    /// <param name="_memoryObject">An existing memory to update.</param>
+    void UpdateMemoryOfObject(GameObject _memoryObject)
+    {
+        string objectName = _memoryObject.name.Substring(0, _memoryObject.name.Length - memoryString.Length);
+
+        //Updates memory of gameObject by 
+        if (memoryOfObjects.ContainsKey(objectName) && memoryOfObjects[objectName].ContainsKey(_memoryObject))
+        {
+            //remove ?
+            if (Vector3.Distance(  memoryOfObjects[objectName][_memoryObject].transform.position, _memoryObject.transform.position) > 1)
+            {
+                RemoveObjectFromMemory(_memoryObject);
+            }          
+        }
+        //otherwise remove object?
     }
 }

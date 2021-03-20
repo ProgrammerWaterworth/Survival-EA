@@ -96,7 +96,7 @@ public abstract class Robot : BaseAgent
 
     public override bool MoveAgent(GoapAction _nextAction)
     {
-        targetPosition = _nextAction.targetPosition;
+        targetPosition = _nextAction.memoryTarget.transform.position;
         moving = true;
         // Set direction the agent is facing.        
         transform.forward = Vector3.RotateTowards(transform.forward, targetPosition - transform.position, rotationStepAngle, 0);

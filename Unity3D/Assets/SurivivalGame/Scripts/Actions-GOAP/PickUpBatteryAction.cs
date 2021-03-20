@@ -37,13 +37,13 @@ public class PickUpBatteryAction : GoapAction
         //Access agent memory and see if there is any knowledge of a battery.
         if (GetComponent<AgentMemory>() != null)
         {
-            GameObject _gameObject;
-            Vector3 _rememberedPosition; //the position that we think the object is in based on agent memory.
+            GameObject _targetGameObject;
+            GameObject _rememberedTarget; //the position that we think the object is in based on agent memory.
 
-            if (GetComponent<AgentMemory>().CheckMemoryForObject("Battery", _agent.transform.position, out _gameObject, out _rememberedPosition))
+            if (GetComponent<AgentMemory>().CheckMemoryForObject("Battery", _agent.transform.position, out _targetGameObject, out _rememberedTarget))
             {
-                target = _gameObject;
-                targetPosition = _rememberedPosition;
+                target = _targetGameObject;
+                memoryTarget = _rememberedTarget;
                 return true;
             }
         }
@@ -68,7 +68,7 @@ public class PickUpBatteryAction : GoapAction
 
                 if (GetComponent<AgentMemory>() != null)
                 {
-                    GetComponent<AgentMemory>().RemoveObjectFromMemory(target);
+                    GetComponent<AgentMemory>().RemoveObjectFromMemory(memoryTarget);
                 }               
                 Destroy(target); // For now destroy as if it has been used
                 //target = null;

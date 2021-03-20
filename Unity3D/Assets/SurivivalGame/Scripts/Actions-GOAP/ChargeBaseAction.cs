@@ -41,12 +41,12 @@ public class ChargeBaseAction : GoapAction
         if (GetComponent<AgentMemory>() != null)
         {
             GameObject _gameObject;
-            Vector3 _rememberedPosition; //the position that we think the object is in based on agent memory.
+            GameObject _rememberedPosition; //the position that we think the object is in based on agent memory.
 
             if (GetComponent<AgentMemory>().CheckMemoryForObject("ChargePoint", _agent.transform.position, out _gameObject, out _rememberedPosition))
             {
                 target = _gameObject;
-                targetPosition = _rememberedPosition;
+                memoryTarget = _rememberedPosition;
                 return true;
             }
         }

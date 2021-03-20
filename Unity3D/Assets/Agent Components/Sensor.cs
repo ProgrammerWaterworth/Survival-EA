@@ -20,11 +20,12 @@ public class Sensor : MonoBehaviour
     Vector3 desiredDirection;
 
     public List<Transform> visibleInteractables = new List<Transform>();
-
+    public List<Transform> visibleMemories = new List<Transform>();
     const float sensorUpdateRate = 0.25f;
 
     [SerializeField] [Tooltip("Mask for objects that block the users vision.")] LayerMask obstacleMask;
     [SerializeField] [Tooltip("Mask for objects the user wants to interact with.")] LayerMask interactableMask;
+    [SerializeField] [Tooltip("Mask for objects representing memories.")] LayerMask memoryMask;
 
     void Start()
     {
@@ -74,6 +75,33 @@ public class Sensor : MonoBehaviour
     }
 
     /// <summary>
+    /// Updates visible target list with visible objects on the interactable mask layer.
+    /// </summary>
+    void FindMemoriesInView()
+    {
+        visibleMemories.Clear();
+
+        Collider[] _targetsInRange = Physics.OverlapSphere(transform.position, viewDistance, memoryMask);
+
+        for (int i = 0; i < _targetsInRange.Length; i++)
+        {
+            Transform _target = _targetsInRange[i].transform;
+            Vector3 _targetDirection = (_target.position - transform.position).normalized;
+
+
+            if (Vector3.Angle(transform.forward, _targetDirection) < viewAngle / 2)
+            {
+                float _targetDistance = Vector3.Distance(_target.position, transform.position);
+
+                if (!Physics.Raycast(transform.position, _targetDirection, _targetDistance, obstacleMask))
+                {
+                    visibleMemories.Add(_target);
+                }
+            }
+        }
+    }
+
+    /// <summary>
     /// Raycast in view range to see what obstacles the agent is facing and update desired direction of movement.
     /// </summary>
     void DetectObstacles()
@@ -99,6 +127,7 @@ public class Sensor : MonoBehaviour
         {
             yield return new WaitForSeconds(_delay);
             FindVisibleInteractables();
+            FindMemoriesInView();
         }
     }
 }

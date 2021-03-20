@@ -34,7 +34,7 @@ public abstract class GoapAction : MonoBehaviour
     /// <summary>
     /// Known location of target - could be different to true target position
     /// </summary>
-    public Vector3 targetPosition;
+    public GameObject memoryTarget;
 
     public GoapAction()
     {
@@ -83,12 +83,14 @@ public abstract class GoapAction : MonoBehaviour
     {
         if (target != null)
         {
-            if (Vector3.Distance(targetPosition, target.transform.position) < 1)
+            //if target is within distance of remmebered position continue.
+            if (Vector3.Distance(memoryTarget.transform.position, target.transform.position) < 1)
             {                
                 return true;
             }
             else
             {
+                //otherwise remove target from memory.
                 if (GetComponent<AgentMemory>() != null)
                 {
                     GetComponent<AgentMemory>().RemoveObjectFromMemory(target);
