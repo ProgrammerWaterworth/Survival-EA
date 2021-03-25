@@ -54,8 +54,10 @@ public class AgentMemory : MonoBehaviour
     void Update()
     {
         GetWorldInformation();
-        memories = memoryOfObjects.Count;
-        objectMemories = objectMemory.Count;
+        if(memoryOfObjects.Count > 0)
+            memories = memoryOfObjects["Battery"].Count;
+        if (objectMemory.Count > 0)
+            objectMemories = objectMemory["Battery"].Count;
     }
 
     /// <summary>
@@ -121,25 +123,26 @@ public class AgentMemory : MonoBehaviour
 
     public void RemoveObjectFromMemory(GameObject _memoryObject)
     {
-        if (memoryOfObjects.ContainsKey(_memoryObject.name))
+        string objectName = _memoryObject.name.Substring(0, _memoryObject.name.Length - memoryString.Length);
+        if (memoryOfObjects.ContainsKey(objectName))
         {
-            if (memoryOfObjects[_memoryObject.name].Count > 0) //Has at least 1 memory of object stored.
+            if (memoryOfObjects[objectName].Count > 0) //Has at least 1 memory of object stored.
             {
-                if (memoryOfObjects[_memoryObject.name].ContainsKey(_memoryObject))
+                if (memoryOfObjects[objectName].ContainsKey(_memoryObject))
                 {
-                    GameObject obj = memoryOfObjects[_memoryObject.name][_memoryObject];
-                    Debug.Log(this + " is removing " + memoryOfObjects[_memoryObject.name][_memoryObject]);
+                    GameObject obj = memoryOfObjects[objectName][_memoryObject];
+                    Debug.Log(this + " is removing " + memoryOfObjects[objectName][_memoryObject]);
 
                     //remove _memoryObject's value in pair
-                    objectMemory[_memoryObject.name].Remove(obj);
-
-                    memoryOfObjects[_memoryObject.name].Remove(_memoryObject);
+                    objectMemory[objectName].Remove(obj);
+                    memoryOfObjects[objectName].Remove(_memoryObject);
+                    Destroy(_memoryObject); //destory real world memory representation
                 }
-                else Debug.LogError(this + " cannot find object in memories: " + _memoryObject.name);
+                else Debug.LogError(this + " cannot find object in memories: " + objectName);
             }
-            else Debug.LogError(this + " currently has no memories of type: " + _memoryObject.name);
+            else Debug.LogError(this + " currently has no memories of type: " + objectName);
         }
-        else Debug.LogError(this + " hasn't recorded memories of this type: " + _memoryObject.name);
+        else Debug.LogError(this + " hasn't recorded memories of this type: " + objectName);
     }
 
     /// <summary>
@@ -172,20 +175,20 @@ public class AgentMemory : MonoBehaviour
     /// </summary>
     void AddMemory(GameObject _keyObject)
     {
-        Memory _memory = new Memory(_keyObject);
+        //Memory _memory = new Memory(_keyObject);
         
         if (!memoryOfObjects.ContainsKey(_keyObject.name))
         {
             //add to both dictionaries.
-            memoryOfObjects.Add(_keyObject.name + memoryString, new Dictionary<GameObject, GameObject>());
-            objectMemory.Add(_keyObject.name + memoryString, new Dictionary<GameObject, GameObject>());
+            memoryOfObjects.Add(_keyObject.name, new Dictionary<GameObject, GameObject>());
+            objectMemory.Add(_keyObject.name, new Dictionary<GameObject, GameObject>());
         }
         GameObject memoryObj = CreateMemoryObject(_keyObject);
         memoryOfObjects[_keyObject.name].Add(memoryObj, _keyObject);
         objectMemory[_keyObject.name].Add(_keyObject, memoryObj);
 
         if (showDebugLog)
-            Debug.Log(this + " is adding memory: " + memoryOfObjects[_keyObject.name][_keyObject].gameObject);
+            Debug.Log(this + " is adding memory: " + objectMemory[_keyObject.name][_keyObject].gameObject);
     }
 
     /// <summary>
@@ -194,11 +197,10 @@ public class AgentMemory : MonoBehaviour
     /// <param name="_actualObject">The object from the scene which a memory needs to be formed from.</param>
     void UpdateObjectInMemory(GameObject _actualObject)
     {
-        string memoryName = _actualObject.name + memoryString;
         //Updates memory if a known object if spotted in another location.
-        if (objectMemory.ContainsKey(memoryName) && objectMemory[memoryName].ContainsKey(_actualObject))
+        if (objectMemory.ContainsKey(_actualObject.name) && objectMemory[_actualObject.name].ContainsKey(_actualObject))
         {
-            GameObject memoryObj = objectMemory[memoryName][_actualObject];
+            GameObject memoryObj = objectMemory[_actualObject.name][_actualObject];
             memoryObj.transform.position = _actualObject.transform.position;
            // memoryOfObjects[memoryName][memoryObj].transform.position = _actualObject.transform.position; //should update as its a reference to the actual object.
         }
