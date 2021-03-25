@@ -11,13 +11,14 @@ public class ChargingBot : Robot, IFitnessFunction
     [SerializeField] bool isComplete;
     private float lifetime = 0;
 
-    
 
-    private void Update()
+
+    protected override void Update()
     {
+        base.Update();
+
         lifetime += Time.deltaTime;
     }
-
     public override HashSet<KeyValuePair<string, object>> CreateGoalState()
     {
         int _numberOfGoals = 2;

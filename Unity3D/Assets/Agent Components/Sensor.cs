@@ -22,6 +22,9 @@ public class Sensor : MonoBehaviour
     public List<Transform> visibleInteractables = new List<Transform>();
     public List<Transform> visibleMemories = new List<Transform>();
     const float sensorUpdateRate = 0.25f;
+    Vector3 preferedMovementDirection;
+
+    [SerializeField] AnimationCurve avoidanceOverDistance;
 
     [SerializeField] [Tooltip("Mask for objects that block the users vision.")] LayerMask obstacleMask;
     [SerializeField] [Tooltip("Mask for objects the user wants to interact with.")] LayerMask interactableMask;
@@ -32,6 +35,10 @@ public class Sensor : MonoBehaviour
         StartCoroutine(FindTargetsWithDelay(sensorUpdateRate));
     }
 
+    private void Update()
+    {
+        UpdateObstacleAvoidanceDirection();
+    }
 
 
     /// <summary>
@@ -104,20 +111,34 @@ public class Sensor : MonoBehaviour
     /// <summary>
     /// Raycast in view range to see what obstacles the agent is facing and update desired direction of movement.
     /// </summary>
-    void DetectObstacles()
+    void UpdateObstacleAvoidanceDirection()
     {
+        preferedMovementDirection = Vector3.zero;
+        //Accumulate the detection ray values 
         for (int i = 0; i < numViewRangeRays; i++)
         {
             RaycastHit _hit;
-            float _angle = -(viewAngle / 2) + ((float)(i / numViewRangeRays) * viewAngle);
+            float _angle = -(viewAngle / 2) + (((float)i / (float)numViewRangeRays) * viewAngle);
             Vector3 _direction = Quaternion.Euler(0, _angle, 0) * transform.forward;
-
+            Debug.DrawLine(transform.position, transform.position + _direction * 5, Color.cyan);
             // Does the ray intersect any objects excluding the player layer
             if (Physics.Raycast(transform.position, _direction, out _hit, viewDistance, obstacleMask))
             {
-                
+                Vector3 _dir = -_direction.normalized * (avoidanceOverDistance.Evaluate(1 - (_hit.distance / viewDistance)));
+                Debug.DrawLine(transform.position, transform.position + _dir * 7, Color.yellow);
+                preferedMovementDirection += _dir;
             }
         }
+        Debug.DrawLine(transform.position, transform.position + preferedMovementDirection*6, Color.red);
+    }
+
+    /// <summary>
+    /// Returns a direction vector which indicates the best direction to move based on detected obstacles.
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 GetObstacleAvoidanceDirection()
+    {
+        return preferedMovementDirection;
     }
 
     IEnumerator FindTargetsWithDelay(float _delay)

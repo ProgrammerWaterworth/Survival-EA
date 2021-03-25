@@ -34,11 +34,10 @@ public abstract class Robot : BaseAgent
         transform.rotation = Quaternion.Euler(transform.eulerAngles.x, RotY, transform.eulerAngles.z);
     }
 
-    void Update()
+    protected virtual void Update()
     {
         AnimateMovement();
     }
-
     private void FixedUpdate()
     {
         if(moving)
@@ -168,11 +167,11 @@ public abstract class Robot : BaseAgent
     {      
         if (animator != null)
         {
-            if (rb != null)
+            if (navAgent != null)
             {
-                animator.SetFloat("Movespeed", rb.velocity.magnitude);
+                animator.SetFloat("Movespeed", navAgent.velocity.magnitude);
             }
-            else Debug.LogWarning(this + " hasn't set Rigidbody Component!");
+            else Debug.LogWarning(this + " hasn't set NavMeshAgent Component!");
         }
         else Debug.LogWarning(this + " hasn't set Animator Component!");
     }

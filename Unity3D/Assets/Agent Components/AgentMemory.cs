@@ -234,4 +234,19 @@ public class AgentMemory : MonoBehaviour
         }
         //otherwise remove object?
     }
+
+    /// <summary>
+    /// Gets a direction for agent movement based on sensory information.
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 GetReactiveDirection()
+    {
+        if (sensor != null)
+        {
+            return sensor.GetObstacleAvoidanceDirection();
+        }
+        else Debug.Log(this + " has no sensor component!");
+
+        return Vector3.zero;
+    }
 }
