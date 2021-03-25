@@ -10866,6 +10866,7 @@ GameObject:
   - component: {fileID: 5647018348177777788}
   - component: {fileID: 7692392444203484910}
   - component: {fileID: 4228439163100618798}
+  - component: {fileID: 4776026390477934187}
   m_Layer: 11
   m_Name: Base
   m_TagString: Untagged
@@ -10974,6 +10975,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.4, y: 2, z: 5}
   m_Center: {x: 2.62, y: 1.41, z: -9.64}
+--- !u!208 &4776026390477934187
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8553363343276663829}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 5.2, y: 2.5, z: 10.05}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -2.5, y: 0, z: -5.82}
+  m_TimeToStationary: 0.5
 --- !u!1 &8553363343278314911
 GameObject:
   m_ObjectHideFlags: 0
@@ -11461,6 +11478,7 @@ GameObject:
   - component: {fileID: 8553363343635696530}
   - component: {fileID: 8553363343636706068}
   - component: {fileID: 8553363343646218732}
+  - component: {fileID: 5652994027330343150}
   m_Layer: 11
   m_Name: door_3
   m_TagString: Untagged
@@ -11552,6 +11570,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!208 &5652994027330343150
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8553363343638809304}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 3.6, y: 2.0240002, z: 2.35}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 2.0240002, z: -2}
+  m_TimeToStationary: 0.5
 --- !u!1 &8553363343644889485
 GameObject:
   m_ObjectHideFlags: 0
@@ -13241,6 +13275,7 @@ GameObject:
   - component: {fileID: 8553363344767789629}
   - component: {fileID: 8553363344764847675}
   - component: {fileID: 8553363344765901139}
+  - component: {fileID: 537218407915697846}
   m_Layer: 11
   m_Name: generator (1)
   m_TagString: Untagged
@@ -13311,6 +13346,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!208 &537218407915697846
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8553363344767878847}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.205, y: 1.215, z: 2.328}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 1.215, z: 0.039}
+  m_TimeToStationary: 0.5
 --- !u!1 &8553363344847425747
 GameObject:
   m_ObjectHideFlags: 0

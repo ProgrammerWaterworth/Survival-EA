@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.AI;
 /// <summary>
 /// A Goap agent implemenation.
 /// </summary>
@@ -22,6 +22,9 @@ public abstract class Robot : BaseAgent
     public float posX;
     public float posY;
     public float RotY;
+
+    //Navigation
+    NavMeshAgent navAgent;
 
     void Start()
     {
@@ -62,6 +65,18 @@ public abstract class Robot : BaseAgent
             rb = gameObject.AddComponent<Rigidbody>() as Rigidbody;
             Debug.LogWarning(this + " has no Rigidbody Component, adding one.");
         }
+
+        if (GetComponent<NavMeshAgent>() != null)
+        {
+            navAgent = GetComponent<NavMeshAgent>();
+            navAgent.speed = maxMoveSpeed;
+            navAgent.angularSpeed = rotationStepAngle;
+        }
+        else
+        {
+            Debug.LogWarning(this + " has no NavMeshAgent Component!");
+        }
+
         /*
         if (inventory.GetWeapon() == null)
         {
@@ -96,12 +111,19 @@ public abstract class Robot : BaseAgent
 
     public override bool MoveAgent(GoapAction _nextAction)
     {
+        
+        if (navAgent != null)
+        {
+            navAgent.SetDestination(_nextAction.memoryTarget.transform.position);
+        }
+             
         targetPosition = _nextAction.memoryTarget.transform.position;
-        moving = true;
         // Set direction the agent is facing.        
+        /*      
+        moving = true;
         transform.forward = Vector3.RotateTowards(transform.forward, targetPosition - transform.position, rotationStepAngle, 0);
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-
+        */
         //Debug.Log(this + " distance from target: "+ Vector3.Distance(transform.position, targetLocation.position));
         if (Vector3.Distance(transform.position,targetPosition) < range)
         {

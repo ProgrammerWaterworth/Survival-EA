@@ -67,7 +67,7 @@ public class ChargingBot : Robot, IFitnessFunction
     HashSet<KeyValuePair<string, object>> FindInteractables()
     {
         HashSet<KeyValuePair<string, object>> _goal = new HashSet<KeyValuePair<string, object>>();
-        _goal.Add(new KeyValuePair<string, object>("seek", true));
+        _goal.Add(new KeyValuePair<string, object>("explored", true));
         return _goal;
     }
 

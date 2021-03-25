@@ -29,27 +29,35 @@ public class ExploreAction : GoapAction
 
     protected override bool FindTargetObject(GameObject _agent)
     {
-        //Access agent memory and get information on where to move.
+        //Needs to create a destiantion point.
+        GameObject _destinationPoint = new GameObject("ExplorePoint");
+        //Get a point that's on the navmesh.
+
+        //_destinationPoint.
+
+        target = _destinationPoint;
+        memoryTarget = target;
+
+        //Access agent memory and see if there is any knowledge of a battery.
         if (GetComponent<AgentMemory>() != null)
         {
-            GameObject _gameObject;
-            GameObject _rememberedPosition; //the position that we think the object is in based on agent memory.
+            GameObject _targetGameObject;
+            GameObject _rememberedTarget; //the position that we think the object is in based on agent memory.
 
-            if (GetComponent<AgentMemory>().CheckMemoryForObject("ChargePoint", _agent.transform.position, out _gameObject, out _rememberedPosition))
+            if (GetComponent<AgentMemory>().CheckMemoryForObject("ExplorePoint", _agent.transform.position, out _targetGameObject, out _rememberedTarget))
             {
-                target = _gameObject;
-                memoryTarget = _rememberedPosition;
+                target = _targetGameObject;
+                memoryTarget = _rememberedTarget;
                 return true;
             }
         }
-        else Debug.LogError(this + " cannot find Agent Memory!");
 
         return false;
     }
 
     public override bool ExecuteAction(GameObject agent)
     {
-        //look around
+        //look around for a bit
 
             
         return true;
