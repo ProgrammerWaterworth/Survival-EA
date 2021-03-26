@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class Battery : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] float charge;
 
-    // Update is called once per frame
-    void Update()
+
+    public float GetCharge()
     {
-        
+        return charge;
     }
 }

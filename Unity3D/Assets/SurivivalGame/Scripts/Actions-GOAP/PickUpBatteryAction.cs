@@ -63,7 +63,12 @@ public class PickUpBatteryAction : GoapAction
             {
                 // finished charging
                 Inventory inventory = (Inventory)_agent.GetComponent(typeof(Inventory));
-                inventory.IncreaseCharge(20);
+
+                if (target.GetComponent<Battery>() != null)
+                    inventory.IncreaseCharge(target.GetComponent<Battery>().GetCharge());
+                else
+                    Debug.LogError(this + " target is not a battery.");
+
                 pickedUp = true;
 
                 if (GetComponent<AgentMemory>() != null)

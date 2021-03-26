@@ -43,8 +43,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.46306515, g: 0.804357, b: 0.8113208, a: 1}
-  m_Intensity: 2
-  m_Range: 15
+  m_Intensity: 3
+  m_Range: 2.99
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -77,7 +77,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -264,6 +264,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6971687877686710742}
   - component: {fileID: 3779233853568179300}
+  - component: {fileID: 1131417246}
   m_Layer: 10
   m_Name: Battery
   m_TagString: Untagged
@@ -303,6 +304,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.3, z: 0.3}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1131417246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6977369740182708128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 353eaffd5882cc044bfa5acff62c5540, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  charge: 20
 --- !u!1 &6977895163710420068
 GameObject:
   m_ObjectHideFlags: 0

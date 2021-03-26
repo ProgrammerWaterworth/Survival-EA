@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
 
+    [SerializeField] float timeSpeed;
+
     public void Awake()
     {
         if (Instance == null)
@@ -58,6 +60,8 @@ public class GameManager : MonoBehaviour
     {
         currentState = GameState.Playing;
         StartLevel();
+
+        Time.timeScale = timeSpeed;
     }
 
     // Update is called once per frame
