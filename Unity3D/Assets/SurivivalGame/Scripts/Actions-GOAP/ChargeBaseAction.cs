@@ -17,9 +17,9 @@ public class ChargeBaseAction : GoapAction
         AddEffect("hasBattery", false);
     }
 
-
-    public override void ResetVariables()
+    public override void ResetAction()
     {
+        base.ResetAction();
         charged = false;
         targetBase = null;
         startTime = 0;

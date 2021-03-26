@@ -17,9 +17,9 @@ public class ExploreAction : GoapAction
         AddEffect("explored", true);
     }
 
-
-    public override void ResetVariables()
+    public override void ResetAction()
     {
+        inRange = false;
         explored = false;
     }
 

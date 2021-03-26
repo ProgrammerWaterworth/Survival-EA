@@ -14,9 +14,9 @@ public class PickUpBatteryAction : GoapAction
         AddEffect("hasBattery", true);
     }
 
-
-    public override void ResetVariables()
+    public override void ResetAction()
     {
+        base.ResetAction();
         pickedUp = false;
         startTime = 0;
     }

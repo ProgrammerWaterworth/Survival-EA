@@ -580,8 +580,8 @@ MonoBehaviour:
   memoryTarget: {fileID: 0}
   exploreSteerWeight: 0.4
   exploreSteerSubWeight: 1
-  avoidanceSteerWeight: 0.1
-  movementDistanceIncrements: 2
+  avoidanceSteerWeight: 1
+  movementDistanceIncrements: 4
 --- !u!4 &136151050 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6971687877686710742, guid: e15f1fb2fedeeab4ba2352cb5188ea56,
@@ -910,7 +910,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1984e3ba6bd2c4db654dbc9e698ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeSpeed: 5
+  timeSpeed: 1
   highScoreText: {fileID: 1878418769}
   scoreText: {fileID: 1111706892}
   comboText: {fileID: 783858515}

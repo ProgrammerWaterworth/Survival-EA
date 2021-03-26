@@ -19,7 +19,7 @@ public abstract class GoapAction : MonoBehaviour
     /// <summary>
     /// Indicator of whether GOAP agent is within range to perform this action.
     /// </summary>
-    private bool inRange = false;
+    protected bool inRange = false;
 
     /// <summary>
     /// Cost of an action. Affects the actions chosen when planning to reach goal.
@@ -45,17 +45,11 @@ public abstract class GoapAction : MonoBehaviour
     /// <summary>
     /// Reset action for reuse.
     /// </summary>
-    public void ResetAction()
+    public virtual void ResetAction()
     {
         inRange = false;
         target = null;
-        ResetVariables();
     }
-
-    /// <summary>
-    /// Reset action variables.
-    /// </summary>
-    public abstract void ResetVariables();
 
 
     /// <summary>
