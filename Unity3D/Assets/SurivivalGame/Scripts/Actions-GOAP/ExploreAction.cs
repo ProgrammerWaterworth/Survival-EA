@@ -5,22 +5,49 @@ using UnityEngine.AI;
 
 public class ExploreAction : GoapAction
 {
+
+    public enum ExploreType
+    {
+        Wandering,
+        NewArea
+    }
+
     bool explored;
+    float searchTurn; //dir + mag of turn when searching
+    private float startTime = 0;
     Vector3 steeringDirection;
+
+    [Header("Movement")]
+    public int actionType;
+    [SerializeField] ExploreType exploreType;
     [SerializeField] float exploreSteerWeight;
     [SerializeField] float exploreSteerSubWeight;
     [SerializeField] float avoidanceSteerWeight;
     [SerializeField] float movementDistanceIncrements;
 
+    [Header("Search")]
+    float searchTime;
+    [SerializeField][Tooltip("Used to evaluate search time producing different search times.")] AnimationCurve searchTimeCurve;
+    [SerializeField] float maxSearchTime;
+    [SerializeField][Range(1,10f)] float searchRotationMagnitude;
+    [SerializeField][Range(0,1f)] float percentageSearchChance;
     public ExploreAction()
     {
         AddEffect("explored", true);
+    }
+
+    private void OnValidate()
+    {
+        //When action type changes update explore type.       
+        int num = System.Enum.GetNames(typeof(ExploreType)).Length;
+        exploreType = (ExploreType)(actionType % num);
     }
 
     public override void ResetAction()
     {
         inRange = false;
         explored = false;
+        startTime = 0;
     }
 
     public override bool IsDone()
@@ -48,6 +75,17 @@ public class ExploreAction : GoapAction
                 _destinationPoint.transform.position = hit.position;
             else
                 Debug.LogWarning(this + " could not find a point on navmesh.");
+
+            //Set search time.
+            if (Random.value < percentageSearchChance)
+            {
+                searchTime = maxSearchTime * searchTimeCurve.Evaluate(Random.Range(0.0f, 1.0f));
+                searchTurn = (Random.value - .5f) * 2; //gets float between -1f <-> 1f
+            }
+            else
+                searchTime = 0;
+            
+
             target = _destinationPoint;
             memoryTarget = target;
         }
@@ -56,13 +94,23 @@ public class ExploreAction : GoapAction
 
     public override bool ExecuteAction(GameObject agent)
     {
-        //look around for a bit
-       
-
         if (memoryTarget != null && target != null)
         {
-            Destroy(target);
-            explored = true;
+            if (startTime == 0)
+                startTime = Time.time;
+
+            //look around for a bit
+            if (Time.time - startTime < searchTime)
+            {
+                transform.rotation = Quaternion.RotateTowards(Quaternion.LookRotation(transform.forward, transform.up), Quaternion.LookRotation(transform.right, transform.up), searchTurn*searchRotationMagnitude);
+               
+            }
+            else
+            {
+                Destroy(target);
+                explored = true;
+                
+            }
             return true;
         }
         return false;          
@@ -76,7 +124,16 @@ public class ExploreAction : GoapAction
         Vector3 _point = transform.position;
         Vector3 _direction = transform.forward;
         //apply random steering to direction
-        steeringDirection +=  (exploreSteerSubWeight* new Vector3(Random.Range(-1f, 1f),0, Random.Range(-1f, 1f)));
+        steeringDirection += (exploreSteerSubWeight * new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)));
+
+        if (exploreType == ExploreType.NewArea)
+        {
+            if (GetComponent<AgentMemory>() != null)
+            {
+                steeringDirection += (exploreSteerSubWeight * GetComponent<AgentMemory>().GetUncommonDirection());
+            }
+        }
+       
         _direction += (exploreSteerWeight * steeringDirection);
         _direction = _direction.normalized;
         //apply obstacle detection change to direction.

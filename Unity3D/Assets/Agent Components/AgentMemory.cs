@@ -10,8 +10,11 @@ using UnityEngine;
 public class AgentMemory : MonoBehaviour
 {
     Sensor sensor;
-    [SerializeField] float memories, objectMemories;
     [SerializeField] [Tooltip("Show the debug information for processing memories.")] bool showDebugLog;
+
+    
+    int pointsVisited;
+    Vector3 avergeVisitedPoint;
 
     const string memoryString = "-Memory"; //used to identify an object as a memory object.
     /// <summary>
@@ -54,10 +57,6 @@ public class AgentMemory : MonoBehaviour
     void Update()
     {
         GetWorldInformation();
-        if(memoryOfObjects.Count > 0)
-            memories = memoryOfObjects["Battery"].Count;
-        if (objectMemory.Count > 0)
-            objectMemories = objectMemory["Battery"].Count;
     }
 
     /// <summary>
@@ -248,5 +247,14 @@ public class AgentMemory : MonoBehaviour
         else Debug.Log(this + " has no sensor component!");
 
         return Vector3.zero;
+    }
+
+    /// <summary>
+    /// Gets a direction for agent movement based on the opposite of the average of positions already visited.
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 GetUncommonDirection()
+    {
+        return avergeVisitedPoint;
     }
 }

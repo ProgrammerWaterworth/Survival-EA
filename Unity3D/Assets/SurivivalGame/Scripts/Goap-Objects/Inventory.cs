@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    //Player stats
+
+
     float charge = 100;
     public float chargeUsageRate = 5f;
 

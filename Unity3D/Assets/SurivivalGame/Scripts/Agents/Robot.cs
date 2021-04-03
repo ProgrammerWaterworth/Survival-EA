@@ -7,7 +7,18 @@ using UnityEngine.AI;
 /// </summary>
 public abstract class Robot : BaseAgent
 {
+    [Header("Survival Stats")]
+    [SerializeField] float maxHealth;
+    [SerializeField] float maxThirst, maxHunger;
+    [SerializeField] float hungerIncreaseRate, thirstIncreaseRate;
+    AgentUI agentUI;
+
+    float health, thirst, hunger;
+    bool dead;
+
     public Inventory inventory;
+    
+    [Header("Movement")]
     public float maxMoveSpeed = 1;
     public float range = 2;
     float moveSpeed;
@@ -37,6 +48,8 @@ public abstract class Robot : BaseAgent
     protected virtual void Update()
     {
         AnimateMovement();
+        Metabolise();
+        UpdateUI();
     }
     private void FixedUpdate()
     {
@@ -76,16 +89,25 @@ public abstract class Robot : BaseAgent
             Debug.LogWarning(this + " has no NavMeshAgent Component!");
         }
 
-        /*
-        if (inventory.GetWeapon() == null)
-        {
-            GameObject prefab = Resources.Load<GameObject>(inventory.toolType);
-            GameObject tool = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
-            inventory.SetWeapon(tool);
-        }
-        */
+        //Set up stats
+        health = maxHealth;
+        hunger = maxHunger;
+        thirst = maxThirst;
 
-        if (GetComponent<Animator>() != null)
+        if (GetComponent<AgentUI>() != null)
+            agentUI = GetComponent<AgentUI>();
+        else
+            Debug.LogWarning(this + " has no AgentUI Component!");
+            /*
+            if (inventory.GetWeapon() == null)
+            {
+                GameObject prefab = Resources.Load<GameObject>(inventory.toolType);
+                GameObject tool = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
+                inventory.SetWeapon(tool);
+            }
+            */
+
+            if (GetComponent<Animator>() != null)
         {
             animator = GetComponent<Animator>();
         }
@@ -174,5 +196,38 @@ public abstract class Robot : BaseAgent
             else Debug.LogWarning(this + " hasn't set NavMeshAgent Component!");
         }
         else Debug.LogWarning(this + " hasn't set Animator Component!");
+    }
+
+    /// <summary>
+    /// Increase Hunger and Thirst over time.
+    /// </summary>
+    void Metabolise()
+    {
+        if (!dead)
+        {
+            hunger -= hungerIncreaseRate * Time.deltaTime;
+            thirst -= thirstIncreaseRate * Time.deltaTime;
+        }
+
+        if (thirst <= 0 || hunger <= 0)
+            Die();
+    }
+
+    /// <summary>
+    /// Cause the player to die.
+    /// </summary>
+    void Die()
+    {
+        dead = true;
+    }
+
+    void UpdateUI()
+    {
+        if (agentUI != null)
+        {
+            agentUI.UpdateHunger(hunger / maxHunger);
+            agentUI.UpdateThirst(thirst / maxThirst);
+            agentUI.UpdateHealth(health / maxHealth);
+        }
     }
 }
