@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.AI;
+
 /// <summary>
 /// A Component of a GOAP Plan executed by a GOAP agent to achieve their goal.
 /// </summary>
@@ -122,7 +124,27 @@ public abstract class GoapAction : MonoBehaviour
     /// <returns>Cost of action.</returns>
     public virtual float GetCost()
     {
-        return cost;
+        return cost + GetTravelCost();
+    }
+
+
+    protected virtual float GetTravelCost()
+    {
+        if (RequiresInRange())
+        {      
+            NavMeshPath _path = new NavMeshPath();
+            if (NavMesh.CalculatePath(transform.position, memoryTarget.transform.position, NavMesh.AllAreas, _path))
+            {
+                float _distance = 0;
+                for (int i = 1; i < _path.corners.Length; i++)
+                {
+                    _distance += Vector3.Distance(_path.corners[i - 1], _path.corners[i]);
+                }
+                Debug.Log(this + " distance: " + _distance);
+                return _distance;
+            }
+        }
+        return 0;
     }
 
     /// <summary>

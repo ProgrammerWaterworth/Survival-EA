@@ -60,6 +60,7 @@ public class ExploreAction : GoapAction
         return true; // yes we need to be near the destination point
     }
 
+
     protected override bool FindTargetObject(GameObject _agent)
     {
         //Needs to create a destiantion point.

@@ -8,12 +8,12 @@ using UnityEngine.AI;
 public abstract class Robot : BaseAgent
 {
     [Header("Survival Stats")]
-    [SerializeField] float maxHealth;
-    [SerializeField] float maxThirst, maxHunger;
-    [SerializeField] float hungerIncreaseRate, thirstIncreaseRate;
+    [SerializeField] protected float maxHealth;
+    [SerializeField] protected float maxHunger;
+    [SerializeField] protected float hungerIncreaseRate;
     AgentUI agentUI;
 
-    float health, thirst, hunger;
+    protected float health, hunger;
     bool dead;
 
     public Inventory inventory;
@@ -53,8 +53,6 @@ public abstract class Robot : BaseAgent
     }
     private void FixedUpdate()
     {
-        if(moving)
-            MoveAgentToTarget();
     }
 
     /// <summary>
@@ -92,7 +90,6 @@ public abstract class Robot : BaseAgent
         //Set up stats
         health = maxHealth;
         hunger = maxHunger;
-        thirst = maxThirst;
 
         if (GetComponent<AgentUI>() != null)
             agentUI = GetComponent<AgentUI>();
@@ -206,10 +203,9 @@ public abstract class Robot : BaseAgent
         if (!dead)
         {
             hunger -= hungerIncreaseRate * Time.deltaTime;
-            thirst -= thirstIncreaseRate * Time.deltaTime;
         }
 
-        if (thirst <= 0 || hunger <= 0)
+        if (hunger <= 0)
             Die();
     }
 
@@ -221,12 +217,23 @@ public abstract class Robot : BaseAgent
         dead = true;
     }
 
+    public void ReduceHunger(float _ammount)
+    {
+        hunger += _ammount*maxHunger;
+        hunger = Mathf.Clamp(hunger, 0, maxHunger);
+    }
+
+    public void AlterHealth(float _ammount)
+    {
+        health += _ammount*maxHealth;
+        health = Mathf.Clamp(health, 0, maxHealth);
+    }
+
     void UpdateUI()
     {
         if (agentUI != null)
         {
             agentUI.UpdateHunger(hunger / maxHunger);
-            agentUI.UpdateThirst(thirst / maxThirst);
             agentUI.UpdateHealth(health / maxHealth);
         }
     }

@@ -6,7 +6,6 @@ public class Battery : MonoBehaviour
 {
     [SerializeField] float charge;
 
-
     public float GetCharge()
     {
         return charge;

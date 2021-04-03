@@ -21,7 +21,7 @@ public class ChargingBot : Robot, IFitnessFunction
     }
     public override HashSet<KeyValuePair<string, object>> CreateGoalState()
     {
-        int _numberOfGoals = 2;
+        int _numberOfGoals = 3;
         goalPriorityChoice %= _numberOfGoals;
         HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
 
@@ -29,19 +29,24 @@ public class ChargingBot : Robot, IFitnessFunction
         switch (goalPriorityChoice)
         {
             case 0:
-                goal = ChargeBaseGoal();
+                goal = MaintainHunger();
                 break;
             case 1:
+                goal = GetCharge();
+                break;
+            case 2:
                 goal = FindInteractables();
                 break;
+
         }
 
         return goal;
     }
 
     public float GetFitness()
-    {        
-        return lifetime;
+    {
+        float _fitness = (hunger / maxHunger) + (health / maxHealth);
+        return _fitness;
     }
 
     public bool IsEvalutionComplete()
@@ -58,7 +63,7 @@ public class ChargingBot : Robot, IFitnessFunction
         
     }
 
-    HashSet<KeyValuePair<string, object>> ChargeBaseGoal()
+    HashSet<KeyValuePair<string, object>> GetCharge()
     {
         HashSet<KeyValuePair<string, object>> _goal = new HashSet<KeyValuePair<string, object>>();
         _goal.Add(new KeyValuePair<string, object>("hasBattery", true));
@@ -69,6 +74,20 @@ public class ChargingBot : Robot, IFitnessFunction
     {
         HashSet<KeyValuePair<string, object>> _goal = new HashSet<KeyValuePair<string, object>>();
         _goal.Add(new KeyValuePair<string, object>("explored", true));
+        return _goal;
+    }
+
+    HashSet<KeyValuePair<string, object>> MaintainHunger()
+    {
+        HashSet<KeyValuePair<string, object>> _goal = new HashSet<KeyValuePair<string, object>>();
+        _goal.Add(new KeyValuePair<string, object>("isHungry", false));
+        return _goal;
+    }
+
+    HashSet<KeyValuePair<string, object>> OvercomeThreat()
+    {
+        HashSet<KeyValuePair<string, object>> _goal = new HashSet<KeyValuePair<string, object>>();
+        _goal.Add(new KeyValuePair<string, object>("threatened", false));
         return _goal;
     }
 
