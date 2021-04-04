@@ -20,9 +20,9 @@ public class ChargingBot : Robot, IFitnessFunction
     }
     public override HashSet<KeyValuePair<string, object>> CreateGoalState()
     {
+
         HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
 
-        //Prioritise Goals.
         switch (goalIndex)
         {
             case 0:
@@ -36,8 +36,26 @@ public class ChargingBot : Robot, IFitnessFunction
                 break;
 
         }
-        goalIndex++;
         return goal;
+    }
+
+
+
+    public override float GetGoalMultiplier()
+    {
+        float _multiplier = 1;
+        //Return a value between 0 and 1 to determine how it modifies cost of a plan. Lowest is chosen as plan.
+        switch (goalIndex)
+        {
+            case 0:
+                if(inventory!=null)
+                    _multiplier = (inventory.GetCharge() / inventory.GetMaxCharge());
+                break;
+            case 1:
+                _multiplier = (hunger / maxHunger);
+                break;
+        }
+        return _multiplier;
     }
 
     public float GetFitness()

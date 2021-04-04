@@ -21,6 +21,18 @@ public interface IGoap
 	HashSet<KeyValuePair<string, object>> CreateGoalState();
 
 	/// <summary>
+	/// Gets the multiplier that modifies the goal cost.
+	///	Acts as utility function for determining more important goals.
+	/// </summary>
+	/// <returns></returns>
+	float GetGoalMultiplier();
+
+	/// <summary>
+	/// Increase goal index so a new goal is chosen with the next plan.
+	/// </summary>
+	void NextGoal();
+
+	/// <summary>
 	/// No sequence of actions could be found for the supplied goal.
 	/// You will need to try another goal or try again once world state has changed.
 	/// </summary>

@@ -18,7 +18,7 @@ public class GoapPlanner
     public Queue<GoapAction> Plan(GameObject _agent,
                                   HashSet<GoapAction> _availableActions,
                                   HashSet<KeyValuePair<string, object>> _worldState,
-                                  HashSet<KeyValuePair<string, object>> _goal, out float _planCost)
+                                  HashSet<KeyValuePair<string, object>> _goal,float _goalCostMultiplier, out float _planCost)
     {
         _planCost = Mathf.Infinity;
 
@@ -80,7 +80,7 @@ public class GoapPlanner
         List<GoapAction> _goalActionSequence = new List<GoapAction>();
         ActionNode _currentNode = _cheapestGoalNode;
         //Set plan cost for evaluation
-        _planCost = _cheapestGoalNode.cumulitiveCost;
+        _planCost = _cheapestGoalNode.cumulitiveCost * _goalCostMultiplier;
 
         while (_currentNode != null)
         {

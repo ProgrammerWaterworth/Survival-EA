@@ -29,6 +29,12 @@ public abstract class BaseAgent : MonoBehaviour, IGoap
         throw new System.NotImplementedException();
     }
 
+    public virtual float GetGoalMultiplier()
+    {
+        //by default return 1. Meaning Utility function not in use.
+        return 1;
+    }
+
     public virtual HashSet<KeyValuePair<string, object>> GetWorldState()
     {
         //Child class should implement state of agent in world.
@@ -39,7 +45,7 @@ public abstract class BaseAgent : MonoBehaviour, IGoap
     {
         if (goalIndex < totalNumGoals)
             return true;
-        goalIndex = 0;
+        goalIndex =0;
         return false;
     }
 
@@ -47,6 +53,11 @@ public abstract class BaseAgent : MonoBehaviour, IGoap
     {
         //Implement the agents movement in a child class.
         throw new System.NotImplementedException();
+    }
+
+    public void NextGoal()
+    {
+        goalIndex++;
     }
 
     public virtual void PlanAborted(GoapAction _aborter)

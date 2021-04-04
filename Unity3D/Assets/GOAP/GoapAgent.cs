@@ -121,8 +121,8 @@ public sealed class GoapAgent : MonoBehaviour
             {
                 //Create plan with different goal.
                 _goal = dataProvider.CreateGoalState();
-                _currentPlan = goapPlanner.Plan(gameObject, availableActions, _worldState, _goal, out _currentPlanCost);
                 Debug.Log("<color=cyan>Planning for goal: </color> - " + PrintStateConditions(_goal));
+                _currentPlan = goapPlanner.Plan(gameObject, availableActions, _worldState, _goal, dataProvider.GetGoalMultiplier(), out _currentPlanCost);
                 if (_currentPlan != null)
                 {
                     dataProvider.PlanFound(_goal, _currentPlan,_currentPlanCost);
@@ -139,6 +139,8 @@ public sealed class GoapAgent : MonoBehaviour
                     Debug.Log("<color=orange>Failed to plan for goal with conditions: </color>" + PrintStateConditions(_goal));
                     dataProvider.PlanFailed(_goal);
                 } //Report failed to plan.
+
+                dataProvider.NextGoal();
             }
 
             if (_plan != null)
