@@ -34,6 +34,9 @@ public class ChargingBot : Robot, IFitnessFunction
             case 2:
                 goal = FindInteractables();
                 break;
+            case 3:
+                goal = FindFood();
+                break;
 
         }
         return goal;
@@ -53,6 +56,9 @@ public class ChargingBot : Robot, IFitnessFunction
                 break;
             case 1:
                 _multiplier = (hunger / maxHunger);
+                break;
+            case 3:
+                _multiplier = (hunger / maxHunger); //find food is dependant on hunger.
                 break;
         }
         return _multiplier;
@@ -96,6 +102,13 @@ public class ChargingBot : Robot, IFitnessFunction
     {
         HashSet<KeyValuePair<string, object>> _goal = new HashSet<KeyValuePair<string, object>>();
         _goal.Add(new KeyValuePair<string, object>("isHungry", false));
+        return _goal;
+    }
+
+    HashSet<KeyValuePair<string, object>> FindFood()
+    {
+        HashSet<KeyValuePair<string, object>> _goal = new HashSet<KeyValuePair<string, object>>();
+        _goal.Add(new KeyValuePair<string, object>("searchFood", true));
         return _goal;
     }
 

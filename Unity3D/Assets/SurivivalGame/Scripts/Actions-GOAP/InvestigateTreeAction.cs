@@ -10,7 +10,7 @@ public class InvestigateTreeAction : GoapAction
 
     public InvestigateTreeAction()
     {
-        AddEffect("explored", true);
+        AddEffect("searchFood", true);
     }
 
     public override void ResetAction()
@@ -38,7 +38,7 @@ public class InvestigateTreeAction : GoapAction
             GameObject _targetGameObject;
             GameObject _rememberedTarget; //the position that we think the object is in based on agent memory.
 
-            if (GetComponent<AgentMemory>().CheckMemoryForObject("Fruit", _agent.transform.position, out _targetGameObject, out _rememberedTarget))
+            if (GetComponent<AgentMemory>().CheckWeightedMemoryForObject("Fruit Tree", _agent.transform.position, out _targetGameObject, out _rememberedTarget))
             {
                 target = _targetGameObject;
                 memoryTarget = _rememberedTarget;

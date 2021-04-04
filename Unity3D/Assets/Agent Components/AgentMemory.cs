@@ -11,32 +11,18 @@ public class AgentMemory : MonoBehaviour
 {
     Sensor sensor;
     [SerializeField] [Tooltip("Show the debug information for processing memories.")] bool showDebugLog;
-
-    
+    public float memoryTimeLength = 100;
+    [SerializeField][Tooltip("probability of pursuing a memory based on time since encountered if doing a random search.")] AnimationCurve memoryRetentionCurve;
     int pointsVisited;
     Vector3 avergeVisitedPoint;
+
+    List<GameObject> memoryRemovalList;
 
     const string memoryString = "-Memory"; //used to identify an object as a memory object.
     /// <summary>
     /// A memory represents the agents known information about a specific object type.
     /// </summary>
-    class Memory
-    {
-        public GameObject gameObject;
-        public float timeStamp;
-
-        public Memory(GameObject _gameObject)
-        {
-            GameObject _memoryObject = new GameObject();
-            _memoryObject.name = _gameObject.name + memoryString;
-            _memoryObject.transform.position = _gameObject.transform.position;
-
-            this.gameObject = _gameObject;
-            this.timeStamp = Time.time;
-        }
-        
-
-    }
+  
     /// <summary>
     /// Dictionary for storing and retrieving objects and their memory
     /// </summary>
@@ -69,6 +55,8 @@ public class AgentMemory : MonoBehaviour
             sensor = GetComponent<Sensor>();
         }
         else Debug.LogError(this+" does not have a sensor component to detect new information.");
+
+        memoryRemovalList = new List<GameObject>();
     }
 
     /// <summary>
@@ -106,15 +94,28 @@ public class AgentMemory : MonoBehaviour
 
                 foreach (KeyValuePair<GameObject, GameObject> _pair in memoryOfObjects[_objectName])
                 {
-                    if (Vector3.Distance(_pair.Key.transform.position, _agentPosition) < closestDistance)
+                    if (_pair.Key.GetComponent<Memory>() != null)
                     {
-                        closestDistance = Vector3.Distance(_pair.Key.transform.position, _agentPosition);
-                        _targetGameObject = _pair.Value;
-                        _rememberedTarget = _pair.Key;
+                        if (Time.time - _pair.Key.GetComponent<Memory>().GetTimeStamp() < memoryTimeLength)
+                        {
+                            if (Vector3.Distance(_pair.Key.transform.position, _agentPosition) < closestDistance)
+                            {
+                                closestDistance = Vector3.Distance(_pair.Key.transform.position, _agentPosition);
+                                _targetGameObject = _pair.Value;
+                                _rememberedTarget = _pair.Key;
+                            }
+                        }
+                        else
+                            memoryRemovalList.Add(_pair.Key);
                     }
+                    else Debug.LogError(this + " memory: "+ _pair.Key + " has no Memory Component ");
                 }
             }
         }
+
+        foreach (GameObject _memory in memoryRemovalList)
+            RemoveObjectFromMemory(_memory);
+        memoryRemovalList.Clear();
         return _foundObject;
     }
 
@@ -182,9 +183,10 @@ public class AgentMemory : MonoBehaviour
             memoryOfObjects.Add(_keyObject.name, new Dictionary<GameObject, GameObject>());
             objectMemory.Add(_keyObject.name, new Dictionary<GameObject, GameObject>());
         }
-        GameObject memoryObj = CreateMemoryObject(_keyObject);
-        memoryOfObjects[_keyObject.name].Add(memoryObj, _keyObject);
-        objectMemory[_keyObject.name].Add(_keyObject, memoryObj);
+        GameObject _memoryObj = CreateMemoryObject(_keyObject);
+
+        memoryOfObjects[_keyObject.name].Add(_memoryObj, _keyObject);
+        objectMemory[_keyObject.name].Add(_keyObject, _memoryObj);
 
         if (showDebugLog)
             Debug.Log(this + " is adding memory: " + objectMemory[_keyObject.name][_keyObject].gameObject);
@@ -211,6 +213,8 @@ public class AgentMemory : MonoBehaviour
     {
         GameObject _memoryObject = new GameObject(_actualObject.name + memoryString);
         _memoryObject.transform.position = _actualObject.transform.position;
+        _memoryObject.AddComponent<Memory>();
+        _memoryObject.GetComponent<Memory>().SetTimeStamp();
         return _memoryObject;
     }
 
@@ -256,5 +260,51 @@ public class AgentMemory : MonoBehaviour
     public Vector3 GetUncommonDirection()
     {
         return avergeVisitedPoint;
+    }
+
+    /// <summary>
+    /// Checks if there is a memory of an object with the name _objectName. 
+    /// Memory returned is random 
+    /// </summary>
+    /// <param name="_objectName">object to search for.</param>
+    /// <returns>True if it has a memory of an object.</returns>
+    public bool CheckWeightedMemoryForObject(string _objectName, Vector3 _agentPosition, out GameObject _targetGameObject, out GameObject _rememberedTarget)
+    {
+        bool _foundObject = false;
+        _rememberedTarget = null;
+        _targetGameObject = null;
+
+
+        if (memoryOfObjects.ContainsKey(_objectName))
+        {
+            if (memoryOfObjects[_objectName].Count > 0) //Has at least 1 memory of object stored.
+            {               
+                foreach (KeyValuePair<GameObject, GameObject> _pair in memoryOfObjects[_objectName])
+                {
+                    if (_pair.Key.GetComponent<Memory>() != null)
+                    {
+                        if (Time.time - _pair.Key.GetComponent<Memory>().GetTimeStamp() < memoryTimeLength)
+                        {
+                            float _objectProbability = memoryRetentionCurve.Evaluate(_pair.Key.GetComponent<Memory>().GetTimeStamp() / memoryTimeLength) * (1.0f / memoryOfObjects[_objectName].Count);
+                            if (Random.Range(0.0f, 1.0f) < _objectProbability)
+                            {
+                                //Only found object when object has been set as it's not certain one will be set beforehand.
+                                _targetGameObject = _pair.Value;
+                                _rememberedTarget = _pair.Key;
+                                _foundObject = true;
+                            }
+                        }
+                        else
+                            memoryRemovalList.Add(_pair.Key);
+                    }
+                }
+            }
+        }
+
+        foreach (GameObject _memory in memoryRemovalList)
+            RemoveObjectFromMemory(_memory);
+        memoryRemovalList.Clear();
+
+        return _foundObject;
     }
 }

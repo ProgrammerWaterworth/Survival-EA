@@ -44,7 +44,7 @@ public abstract class Robot : BaseAgent
         transform.position = new Vector3(posX, transform.position.y, posY);
         transform.rotation = Quaternion.Euler(transform.eulerAngles.x, RotY, transform.eulerAngles.z);
 
-        totalNumGoals = 3;
+        totalNumGoals = 4;
     }
 
     protected virtual void Update()
