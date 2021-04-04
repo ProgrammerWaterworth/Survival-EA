@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class AgentUI : MonoBehaviour
 {
-    [SerializeField] Slider healthBar, hungerBar;
+    [SerializeField] Slider healthBar, hungerBar, chargeBar;
 
 
     private void Start()
@@ -21,6 +21,8 @@ public class AgentUI : MonoBehaviour
         if (healthBar == null)
             Debug.LogError(this + " does not have a health Bar assigned!");
         if (hungerBar == null)
+            Debug.LogError(this + " does not have a hunger Bar  assigned!");
+        if (chargeBar == null)
             Debug.LogError(this + " does not have a hunger Bar  assigned!");
     }
 
@@ -46,5 +48,18 @@ public class AgentUI : MonoBehaviour
     {
         if (hungerBar != null)
             hungerBar.value = _percentage;
+    }
+
+    /// <summary>
+    /// Update charge bar with _percentage filled.
+    /// </summary>
+    /// <param name="_percentage"></param>
+    public void UpdateCharge(float _percentage)
+    {
+        if (chargeBar != null)
+        {
+            chargeBar.value = _percentage;
+        }
+
     }
 }

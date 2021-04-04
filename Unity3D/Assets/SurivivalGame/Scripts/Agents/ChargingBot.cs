@@ -11,11 +11,6 @@ public class ChargingBot : Robot, IFitnessFunction
     [SerializeField] bool isComplete;
     private float lifetime = 0;
 
-    private void Start()
-    {
-        totalNumGoals = 3;
-    }
-
 
     protected override void Update()
     {
@@ -31,10 +26,10 @@ public class ChargingBot : Robot, IFitnessFunction
         switch (goalIndex)
         {
             case 0:
-                goal = MaintainHunger();
+                goal = GetCharge();
                 break;
             case 1:
-                goal = GetCharge();
+                goal = MaintainHunger();
                 break;
             case 2:
                 goal = FindInteractables();

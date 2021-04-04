@@ -29,6 +29,11 @@ public abstract class GoapAction : MonoBehaviour
     public float cost = 1f;
 
     /// <summary>
+    /// Cost applied per distance of movement.
+    /// </summary>
+    float movementCostMultiplier = 1f;
+
+    /// <summary>
     /// Target that the action must be performed on, if not null.
     /// </summary>
     public GameObject target;
@@ -140,8 +145,8 @@ public abstract class GoapAction : MonoBehaviour
                 {
                     _distance += Vector3.Distance(_path.corners[i - 1], _path.corners[i]);
                 }
-                Debug.Log(this + " distance: " + _distance);
-                return _distance;
+                Debug.Log(this + " distance: " + _distance+ " distance cost: "+_distance*movementCostMultiplier);
+                return _distance* movementCostMultiplier;
             }
         }
         return 0;
@@ -228,5 +233,14 @@ public abstract class GoapAction : MonoBehaviour
         {
             return effects;
         }
+    }
+
+    /// <summary>
+    /// Set the cost for movement per distance.
+    /// </summary>
+    /// <param name="_movementCostPerDistance"></param>
+    public void SetMovementCostMultiplier(float _movementCostPerDistance)
+    {
+        movementCostMultiplier = _movementCostPerDistance;
     }
 }

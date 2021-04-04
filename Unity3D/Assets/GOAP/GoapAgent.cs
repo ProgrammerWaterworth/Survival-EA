@@ -33,6 +33,8 @@ public sealed class GoapAgent : MonoBehaviour
     /// Actions the agent must execute to reach their goal.
     /// </summary>
     private Queue<GoapAction> currentPlanActions;
+
+    public float movementCostMultiplier;
     #endregion
 
     /// <summary>
@@ -68,7 +70,22 @@ public sealed class GoapAgent : MonoBehaviour
         CreateMoveToState();
         CreateExecuteActionState();
         stateMachine.PushState(idleState);
+        SetActionsMovementCosts();
         LoadActions();
+        
+    }
+
+    /// <summary>
+    /// Sets all the actions available for this agent to have the same movement cost.
+    /// </summary>
+    void SetActionsMovementCosts()
+    {
+        GoapAction[] _actions = GetComponents<GoapAction>();
+
+        foreach(GoapAction _action in _actions)
+        {
+            _action.SetMovementCostMultiplier(movementCostMultiplier);
+        }
     }
 
     /// <summary>
@@ -98,33 +115,36 @@ public sealed class GoapAgent : MonoBehaviour
 
             // Get the world state and the goal we want to plan for
             HashSet<KeyValuePair<string, object>> _worldState = dataProvider.GetWorldState();
-            HashSet<KeyValuePair<string, object>> _goal = dataProvider.CreateGoalState();
+            HashSet<KeyValuePair<string, object>> _goal = null;
 
             while (dataProvider.HasGoalsLeft()) //number of goals
             {
                 //Create plan with different goal.
                 _goal = dataProvider.CreateGoalState();
                 _currentPlan = goapPlanner.Plan(gameObject, availableActions, _worldState, _goal, out _currentPlanCost);
+                Debug.Log("<color=cyan>Planning for goal: </color> - " + PrintStateConditions(_goal));
+                if (_currentPlan != null)
+                {
+                    dataProvider.PlanFound(_goal, _currentPlan,_currentPlanCost);
 
-                if(_currentPlan == null)
+                    if (_currentPlanCost < _lowestPlanCost)
+                    {
+                        _plan = _currentPlan;
+                        _lowestPlanCost = _currentPlanCost;
+                    }
+                }
+                else
                 {
                     // Failed to make a plan.
                     Debug.Log("<color=orange>Failed to plan for goal with conditions: </color>" + PrintStateConditions(_goal));
                     dataProvider.PlanFailed(_goal);
                 } //Report failed to plan.
-
-                if (_currentPlanCost < _lowestPlanCost)
-                {
-                    _plan = _currentPlan;
-                    _lowestPlanCost = _currentPlanCost;
-                }
             }
 
             if (_plan != null)
             {
                 // Obtained plan successfully.
                 currentPlanActions = _plan;
-                dataProvider.PlanFound(_goal, _plan);
 
                 _fsm.PopState(); // move to executeAction state
                 _fsm.PushState(executeActionState);
@@ -259,7 +279,7 @@ public sealed class GoapAgent : MonoBehaviour
         String _allStates = "";
         foreach (KeyValuePair<string, object> _condition in _state)
         {
-            _allStates += _condition.Key + ":" + _condition.Value.ToString();
+            _allStates += _condition.Key + " : " + _condition.Value.ToString();
             _allStates += ", ";
         }
         return _allStates;

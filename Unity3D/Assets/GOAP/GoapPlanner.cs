@@ -64,6 +64,7 @@ public class GoapPlanner
 
         // Get the lowest cost plan out the solutions found.
         ActionNode _cheapestGoalNode = null;
+
         foreach (ActionNode _leaf in _leafNodes)
         {
             if (_cheapestGoalNode == null)

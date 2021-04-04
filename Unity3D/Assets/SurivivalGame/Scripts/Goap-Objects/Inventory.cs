@@ -7,13 +7,19 @@ public class Inventory : MonoBehaviour
     //Player stats
 
 
-    float charge = 100;
+    float charge;
+    [SerializeField] float maxCharge;
     public float chargeUsageRate = 5f;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        charge = maxCharge;
+    }
+
+    public float GetMaxCharge()
+    {
+        return maxCharge;
     }
 
     // Update is called once per frame
@@ -26,12 +32,12 @@ public class Inventory : MonoBehaviour
 
     public void IncreaseCharge(float increaseAmmount)
     {
-        charge += increaseAmmount;
+        charge = Mathf.Clamp(charge + increaseAmmount, 0, maxCharge);
     }
 
     public void DecreaseCharge(float decreaseAmmount)
     {
-        charge -= decreaseAmmount;
+        charge = Mathf.Clamp(charge - decreaseAmmount, 0, maxCharge);
     }
 
     public float GetCharge()

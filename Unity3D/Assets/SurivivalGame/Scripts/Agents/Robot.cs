@@ -43,6 +43,8 @@ public abstract class Robot : BaseAgent
         //Set spawn point
         transform.position = new Vector3(posX, transform.position.y, posY);
         transform.rotation = Quaternion.Euler(transform.eulerAngles.x, RotY, transform.eulerAngles.z);
+
+        totalNumGoals = 3;
     }
 
     protected virtual void Update()
@@ -122,9 +124,9 @@ public abstract class Robot : BaseAgent
         return worldData;
     }
 
-    public override void PlanFound(HashSet<KeyValuePair<string, object>> goal, Queue<GoapAction> actions)
+    public override void PlanFound(HashSet<KeyValuePair<string, object>> _goal, Queue<GoapAction> _actions, float _planCost)
     {
-        base.PlanFound(goal, actions);
+        base.PlanFound(_goal, _actions, _planCost);
     }
 
     public override bool MoveAgent(GoapAction _nextAction)
@@ -235,6 +237,8 @@ public abstract class Robot : BaseAgent
         {
             agentUI.UpdateHunger(hunger / maxHunger);
             agentUI.UpdateHealth(health / maxHealth);
+            if (inventory != null)
+                agentUI.UpdateCharge(inventory.GetCharge() / inventory.GetMaxCharge());
         }
     }
 }

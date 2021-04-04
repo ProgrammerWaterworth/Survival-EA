@@ -61,11 +61,11 @@ public abstract class BaseAgent : MonoBehaviour, IGoap
         //By Default it should idle.
     }
 
-    public virtual void PlanFound(HashSet<KeyValuePair<string, object>> _goalState, Queue<GoapAction> _actions)
+    public virtual void PlanFound(HashSet<KeyValuePair<string, object>> _goalState, Queue<GoapAction> _actions, float _planCost)
     {
         //Reset position working through list of goals.
         //goalPriorityChoice = 0;
 
-        Debug.Log("<color=green>Plan found</color> - " + GoapAgent.PrintActionPlan(_actions));
+        Debug.Log("<color=green>Plan found with cost: "+ _planCost + "</color> - " + GoapAgent.PrintActionPlan(_actions));
     }
 }

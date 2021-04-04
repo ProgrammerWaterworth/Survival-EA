@@ -32,7 +32,7 @@ public interface IGoap
 	/// </summary>
 	/// <param name="_goalState">Goal to plan for.</param>
 	/// <param name="_actions">Ordered queue of actions the GOAP Agent will perform</param>
-	void PlanFound(HashSet<KeyValuePair<string, object>> _goalState, Queue<GoapAction> _actions);
+	void PlanFound(HashSet<KeyValuePair<string, object>> _goalState, Queue<GoapAction> _actions, float _planCost);
 
 	/// <summary>
 	/// Goal reached and all actions completed.
