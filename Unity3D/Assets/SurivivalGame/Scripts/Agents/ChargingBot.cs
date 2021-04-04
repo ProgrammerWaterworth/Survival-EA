@@ -11,6 +11,10 @@ public class ChargingBot : Robot, IFitnessFunction
     [SerializeField] bool isComplete;
     private float lifetime = 0;
 
+    private void Start()
+    {
+        totalNumGoals = 3;
+    }
 
 
     protected override void Update()
@@ -21,12 +25,10 @@ public class ChargingBot : Robot, IFitnessFunction
     }
     public override HashSet<KeyValuePair<string, object>> CreateGoalState()
     {
-        int _numberOfGoals = 3;
-        goalPriorityChoice %= _numberOfGoals;
         HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
 
         //Prioritise Goals.
-        switch (goalPriorityChoice)
+        switch (goalIndex)
         {
             case 0:
                 goal = MaintainHunger();
@@ -39,7 +41,7 @@ public class ChargingBot : Robot, IFitnessFunction
                 break;
 
         }
-
+        goalIndex++;
         return goal;
     }
 

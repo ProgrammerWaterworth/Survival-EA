@@ -11,7 +11,8 @@ public abstract class BaseAgent : MonoBehaviour, IGoap
     /// <summary>
     /// The prioirty of the current goal to pursue.
     /// </summary>
-    protected int goalPriorityChoice;
+    protected int goalIndex;
+    protected int totalNumGoals; //must be declared in implementation.
 
     public virtual void ActionsFinished()
     {
@@ -34,6 +35,14 @@ public abstract class BaseAgent : MonoBehaviour, IGoap
         throw new System.NotImplementedException();
     }
 
+    public bool HasGoalsLeft()
+    {
+        if (goalIndex < totalNumGoals)
+            return true;
+        goalIndex = 0;
+        return false;
+    }
+
     public virtual bool MoveAgent(GoapAction _nextAction)
     {
         //Implement the agents movement in a child class.
@@ -48,14 +57,14 @@ public abstract class BaseAgent : MonoBehaviour, IGoap
     public virtual void PlanFailed(HashSet<KeyValuePair<string, object>> _failedGoal)
     {
         //Child class should implement manage switching of goal or waiting for world state to change.
-        goalPriorityChoice++;
+       // goalPriorityChoice++;
         //By Default it should idle.
     }
 
     public virtual void PlanFound(HashSet<KeyValuePair<string, object>> _goalState, Queue<GoapAction> _actions)
     {
         //Reset position working through list of goals.
-        goalPriorityChoice = 0;
+        //goalPriorityChoice = 0;
 
         Debug.Log("<color=green>Plan found</color> - " + GoapAgent.PrintActionPlan(_actions));
     }

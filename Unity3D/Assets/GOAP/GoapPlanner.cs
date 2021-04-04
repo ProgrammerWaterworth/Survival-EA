@@ -18,10 +18,12 @@ public class GoapPlanner
     public Queue<GoapAction> Plan(GameObject _agent,
                                   HashSet<GoapAction> _availableActions,
                                   HashSet<KeyValuePair<string, object>> _worldState,
-                                  HashSet<KeyValuePair<string, object>> _goal)
+                                  HashSet<KeyValuePair<string, object>> _goal, out float _planCost)
     {
+        _planCost = Mathf.Infinity;
+
         //Ensure there are available actions.
-        if(_availableActions == null)
+        if (_availableActions == null)
         {
             Debug.Log("<color=red>" + this +" has no available actions to form a plan with. </color>");
             return null;
@@ -76,6 +78,9 @@ public class GoapPlanner
         // Backtrack through parent nodes required to get to _cheapestGoalNode.
         List<GoapAction> _goalActionSequence = new List<GoapAction>();
         ActionNode _currentNode = _cheapestGoalNode;
+        //Set plan cost for evaluation
+        _planCost = _cheapestGoalNode.cumulitiveCost;
+
         while (_currentNode != null)
         {
             if (_currentNode.action != null)

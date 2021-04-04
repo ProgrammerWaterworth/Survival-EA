@@ -51,5 +51,11 @@ public interface IGoap
 	/// <param name="_nextAction">Next action to perform once in range.</param>
 	/// <returns>Return true if can perform action. False if not in range.</returns>
 	bool MoveAgent(GoapAction _nextAction);
+
+	/// <summary>
+	/// Checks to see if there are any goals to try plan for.
+	/// </summary>
+	/// <returns></returns>
+	bool HasGoalsLeft();
 }
 

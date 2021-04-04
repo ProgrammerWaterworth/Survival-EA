@@ -88,16 +88,38 @@ public sealed class GoapAgent : MonoBehaviour
     {
         //Invoked when updating idle state.
         idleState = (_fsm, _agentObj) => {
-            // GOAP planning
+
+            Debug.Log(this + " is Idle");
+
+            float _lowestPlanCost = Mathf.Infinity;
+            float _currentPlanCost = Mathf.Infinity;
+            Queue<GoapAction> _currentPlan;
+            Queue<GoapAction> _plan = null;
 
             // Get the world state and the goal we want to plan for
             HashSet<KeyValuePair<string, object>> _worldState = dataProvider.GetWorldState();
             HashSet<KeyValuePair<string, object>> _goal = dataProvider.CreateGoalState();
 
-            Debug.Log(this + " is Idle");
+            while (dataProvider.HasGoalsLeft()) //number of goals
+            {
+                //Create plan with different goal.
+                _goal = dataProvider.CreateGoalState();
+                _currentPlan = goapPlanner.Plan(gameObject, availableActions, _worldState, _goal, out _currentPlanCost);
 
-            // Plan
-            Queue<GoapAction> _plan = goapPlanner.Plan(gameObject, availableActions, _worldState, _goal);
+                if(_currentPlan == null)
+                {
+                    // Failed to make a plan.
+                    Debug.Log("<color=orange>Failed to plan for goal with conditions: </color>" + PrintStateConditions(_goal));
+                    dataProvider.PlanFailed(_goal);
+                } //Report failed to plan.
+
+                if (_currentPlanCost < _lowestPlanCost)
+                {
+                    _plan = _currentPlan;
+                    _lowestPlanCost = _currentPlanCost;
+                }
+            }
+
             if (_plan != null)
             {
                 // Obtained plan successfully.
@@ -107,12 +129,6 @@ public sealed class GoapAgent : MonoBehaviour
                 _fsm.PopState(); // move to executeAction state
                 _fsm.PushState(executeActionState);
 
-            }
-            else
-            {
-                // Failed to make a plan.
-                Debug.Log("<color=orange>Failed to plan for goal with conditions: </color>" + PrintStateConditions(_goal));
-                dataProvider.PlanFailed(_goal);
             }
         };
     }
