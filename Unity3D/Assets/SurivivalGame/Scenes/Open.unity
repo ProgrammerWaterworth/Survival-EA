@@ -2433,6 +2433,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fruit Tree
       objectReference: {fileID: 0}
+    - target: {fileID: 3558251190391032807, guid: 0ad8175d1ca1e2f4cade9dbfddbf5a8d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3560929181825415413, guid: 0ad8175d1ca1e2f4cade9dbfddbf5a8d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3344,6 +3349,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Fruit Tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 3558251190391032807, guid: 0ad8175d1ca1e2f4cade9dbfddbf5a8d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3560929181825415413, guid: 0ad8175d1ca1e2f4cade9dbfddbf5a8d,
         type: 3}
@@ -5121,6 +5131,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fruit Tree
       objectReference: {fileID: 0}
+    - target: {fileID: 3558251190391032807, guid: 0ad8175d1ca1e2f4cade9dbfddbf5a8d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3560929181825415413, guid: 0ad8175d1ca1e2f4cade9dbfddbf5a8d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5881,6 +5896,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FruitTree
       objectReference: {fileID: 0}
+    - target: {fileID: 3558251190391032807, guid: 0ad8175d1ca1e2f4cade9dbfddbf5a8d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3560929181825415413, guid: 0ad8175d1ca1e2f4cade9dbfddbf5a8d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6019,6 +6039,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8706834616695631448, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: cost
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8706834616695631450, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
