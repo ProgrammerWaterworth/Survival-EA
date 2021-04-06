@@ -13,6 +13,11 @@ public class InvestigateTreeAction : GoapAction
         AddEffect("searchFood", true);
     }
 
+    private void Start()
+    {
+        targetObjectName = "Fruit Tree";
+    }
+
     public override void ResetAction()
     {
         base.ResetAction();

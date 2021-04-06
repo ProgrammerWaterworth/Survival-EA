@@ -43,6 +43,8 @@ public abstract class GoapAction : MonoBehaviour
     /// </summary>
     public GameObject memoryTarget;
 
+    protected string targetObjectName;
+
     public GoapAction()
     {
         preconditions = new HashSet<KeyValuePair<string, object>>();
@@ -120,7 +122,24 @@ public abstract class GoapAction : MonoBehaviour
     /// Check if Target object is present for executing action.
     /// </summary>
     /// <returns></returns>
-    protected abstract bool FindTargetObject(GameObject _agent);
+    protected virtual bool FindTargetObject(GameObject _agent)
+    {
+        //Access agent memory and see if there is any knowledge of a battery.
+        if (GetComponent<AgentMemory>() != null)
+        {
+            GameObject _targetGameObject;
+            GameObject _rememberedTarget; //the position that we think the object is in based on agent memory.
+
+            if (GetComponent<AgentMemory>().CheckMemoryForObject(targetObjectName, _agent.transform.position, out _targetGameObject, out _rememberedTarget))
+            {
+                target = _targetGameObject;
+                memoryTarget = _rememberedTarget;
+                return true;
+            }
+        }
+
+        return false;
+    }
  
 
     /// <summary>
@@ -136,7 +155,10 @@ public abstract class GoapAction : MonoBehaviour
     protected virtual float GetTravelCost()
     {
         if (RequiresInRange())
-        {      
+        {
+           // if (memoryTarget == null)
+            //    return Mathf.Infinity;//shouldn't need this
+
             NavMeshPath _path = new NavMeshPath();
             if (NavMesh.CalculatePath(transform.position, memoryTarget.transform.position, NavMesh.AllAreas, _path))
             {

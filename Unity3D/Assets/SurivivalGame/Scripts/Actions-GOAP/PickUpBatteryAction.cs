@@ -14,6 +14,11 @@ public class PickUpBatteryAction : GoapAction
         AddEffect("hasBattery", true);
     }
 
+    private void Start()
+    {
+        targetObjectName = "Battery";
+    }
+
     public override void ResetAction()
     {
         base.ResetAction();
@@ -29,26 +34,6 @@ public class PickUpBatteryAction : GoapAction
     public override bool RequiresInRange()
     {
         return true; // yes we need to be near the battery
-    }
-
-
-    protected override bool FindTargetObject(GameObject _agent)
-    {
-        //Access agent memory and see if there is any knowledge of a battery.
-        if (GetComponent<AgentMemory>() != null)
-        {
-            GameObject _targetGameObject;
-            GameObject _rememberedTarget; //the position that we think the object is in based on agent memory.
-
-            if (GetComponent<AgentMemory>().CheckMemoryForObject("Battery", _agent.transform.position, out _targetGameObject, out _rememberedTarget))
-            {
-                target = _targetGameObject;
-                memoryTarget = _rememberedTarget;
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public override bool ExecuteAction(GameObject _agent)
@@ -73,6 +58,7 @@ public class PickUpBatteryAction : GoapAction
 
                 if (GetComponent<AgentMemory>() != null)
                 {
+                    Debug.Log(this + " is removing battery from memory.");
                     GetComponent<AgentMemory>().RemoveObjectFromMemory(memoryTarget);
                 }               
                 Destroy(target); // For now destroy as if it has been used

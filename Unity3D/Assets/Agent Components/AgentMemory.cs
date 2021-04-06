@@ -90,7 +90,6 @@ public class AgentMemory : MonoBehaviour
             if (memoryOfObjects[_objectName].Count > 0) //Has at least 1 memory of object stored.
             {
                 float closestDistance = Mathf.Infinity;
-                _foundObject = true;
 
                 foreach (KeyValuePair<GameObject, GameObject> _pair in memoryOfObjects[_objectName])
                 {
@@ -103,6 +102,7 @@ public class AgentMemory : MonoBehaviour
                                 closestDistance = Vector3.Distance(_pair.Key.transform.position, _agentPosition);
                                 _targetGameObject = _pair.Value;
                                 _rememberedTarget = _pair.Key;
+                                _foundObject = true;
                             }
                         }
                         else
@@ -152,20 +152,24 @@ public class AgentMemory : MonoBehaviour
     {
         if (sensor != null)
         {
-            if (sensor.visibleInteractables == null)
-                return;
+            if (sensor.visibleInteractables != null)
+            {
 
-            //Update actual objects in memory - when the agent encounters an object and wants to add or update the current memory of that object
-            foreach(Transform _informationTransform in sensor.visibleInteractables)
-            {
-                if(_informationTransform!=null)
-                    UpdateObjectInMemory(_informationTransform.gameObject);
+                //Update actual objects in memory - when the agent encounters an object and wants to add or update the current memory of that object
+                foreach (Transform _informationTransform in sensor.visibleInteractables)
+                {
+                    if (_informationTransform != null)
+                        UpdateObjectInMemory(_informationTransform.gameObject);
+                }
             }
-            //Update memories revisitted - when agent visits a point in which it has a memory it updates with new relevant info
-            foreach (Transform _informationTransform in sensor.visibleMemories)
+            if (sensor.visibleMemories != null)
             {
-                if (_informationTransform != null)
-                    UpdateMemoryOfObject(_informationTransform.gameObject);
+                //Update memories revisitted - when agent visits a point in which it has a memory it updates with new relevant info
+                foreach (Transform _informationTransform in sensor.visibleMemories)
+                {
+                    if (_informationTransform != null)
+                        UpdateMemoryOfObject(_informationTransform.gameObject);
+                }
             }
         }
     }

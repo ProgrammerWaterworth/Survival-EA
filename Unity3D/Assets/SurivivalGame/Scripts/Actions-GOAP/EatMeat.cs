@@ -13,6 +13,11 @@ public class EatMeat : GoapAction
         AddEffect("isHungry", false);
     }
 
+    private void Start()
+    {
+        targetObjectName = "Meat";
+    }
+
     public override void ResetAction()
     {
         base.ResetAction();
@@ -28,25 +33,6 @@ public class EatMeat : GoapAction
     public override bool RequiresInRange()
     {
         return true;
-    }
-
-    protected override bool FindTargetObject(GameObject _agent)
-    {
-        //Access agent memory and see if there is any knowledge of a battery.
-        if (GetComponent<AgentMemory>() != null)
-        {
-            GameObject _targetGameObject;
-            GameObject _rememberedTarget; //the position that we think the object is in based on agent memory.
-
-            if (GetComponent<AgentMemory>().CheckMemoryForObject("Meat", _agent.transform.position, out _targetGameObject, out _rememberedTarget))
-            {
-                target = _targetGameObject;
-                memoryTarget = _rememberedTarget;
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public override bool ExecuteAction(GameObject _agent)

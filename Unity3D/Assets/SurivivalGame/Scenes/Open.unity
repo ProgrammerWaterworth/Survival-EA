@@ -680,6 +680,22 @@ MonoBehaviour:
   healthBar: {fileID: 1862848938}
   hungerBar: {fileID: 473146988}
   chargeBar: {fileID: 233052077}
+--- !u!114 &128813256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 128813241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28c5302f6c86e294aa962374d892db68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 15
+  target: {fileID: 0}
+  memoryTarget: {fileID: 0}
+  pickUpDuration: 0.3
 --- !u!4 &136151050 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6971687877686710742, guid: e15f1fb2fedeeab4ba2352cb5188ea56,
@@ -3733,7 +3749,7 @@ PrefabInstance:
     - target: {fileID: 6971687877686710742, guid: e15f1fb2fedeeab4ba2352cb5188ea56,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.031502
+      value: -10.706
       objectReference: {fileID: 0}
     - target: {fileID: 6971687877686710742, guid: e15f1fb2fedeeab4ba2352cb5188ea56,
         type: 3}
@@ -6085,6 +6101,14 @@ PrefabInstance:
       propertyPath: memoryRetentionCurve.m_Curve.Array.data[3].inWeight
       value: 0.05391534
       objectReference: {fileID: 0}
+    - target: {fileID: 128813252, guid: 7b178f1e3e4105f4591d864574b3937e, type: 3}
+      propertyPath: showDebugLog
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 128813252, guid: 7b178f1e3e4105f4591d864574b3937e, type: 3}
+      propertyPath: memoryTimeLength
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 6084042902173927208, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
       propertyPath: m_Height
@@ -6265,7 +6289,8 @@ PrefabInstance:
       propertyPath: thirstIncreaseRate
       value: 0.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8706834616695631448, guid: 7b178f1e3e4105f4591d864574b3937e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7b178f1e3e4105f4591d864574b3937e, type: 3}
 --- !u!1001 &8723210673947898459
 PrefabInstance:

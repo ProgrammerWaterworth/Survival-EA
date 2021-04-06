@@ -31,9 +31,15 @@ public class ExploreAction : GoapAction
     [SerializeField] float maxSearchTime;
     [SerializeField][Range(1,10f)] float searchRotationMagnitude;
     [SerializeField][Range(0,1f)] float percentageSearchChance;
+
     public ExploreAction()
     {
         AddEffect("explored", true);
+    }
+
+    private void Start()
+    {
+        targetObjectName = "ExplorePoint";
     }
 
     private void OnValidate()
@@ -66,7 +72,7 @@ public class ExploreAction : GoapAction
         //Needs to create a destiantion point.
         if (target == null)
         {
-            GameObject _destinationPoint = new GameObject("ExplorePoint");
+            GameObject _destinationPoint = new GameObject(targetObjectName);
             //Get a point that's on the navmesh.
 
             _destinationPoint.transform.position = GetPointToMoveTo();
