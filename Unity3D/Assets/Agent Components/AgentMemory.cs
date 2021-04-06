@@ -202,6 +202,9 @@ public class AgentMemory : MonoBehaviour
     /// <param name="_actualObject">The object from the scene which a memory needs to be formed from.</param>
     void UpdateObjectInMemory(GameObject _actualObject)
     {
+        if (_actualObject == null)
+            return;
+
         //Updates memory if a known object if spotted in another location.
         if (objectMemory.ContainsKey(_actualObject.name) && objectMemory[_actualObject.name].ContainsKey(_actualObject))
         {
@@ -233,13 +236,11 @@ public class AgentMemory : MonoBehaviour
         //Updates memory of gameObject by 
         if (memoryOfObjects.ContainsKey(objectName) && memoryOfObjects[objectName].ContainsKey(_memoryObject))
         {
-            //remove ?
             if (Vector3.Distance(  memoryOfObjects[objectName][_memoryObject].transform.position, _memoryObject.transform.position) > 1)
             {
                 RemoveObjectFromMemory(_memoryObject);
             }          
         }
-        //otherwise remove object?
     }
 
     /// <summary>

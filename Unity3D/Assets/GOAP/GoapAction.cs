@@ -84,21 +84,23 @@ public abstract class GoapAction : MonoBehaviour
     /// <returns>True: action performed successfully. False: Can't perform action, clears action queue.</returns>
     public virtual bool ExecuteAction(GameObject _agent)
     {
-        if (memoryTarget != null && target != null)
+        if (memoryTarget != null )
         {
-            //if target is within distance of remmebered position continue.
-            if (Vector3.Distance(memoryTarget.transform.position, target.transform.position) < 1)
-            {                
-                return true;
-            }
-            else
+            if (target != null)
             {
-                //otherwise remove target from memory.
-                if (GetComponent<AgentMemory>() != null)
+                //if target is within distance of remmebered position perform action.
+                if (Vector3.Distance(memoryTarget.transform.position, target.transform.position) < 1)
                 {
-                    GetComponent<AgentMemory>().RemoveObjectFromMemory(memoryTarget);
+                    return true;
                 }
             }
+
+            //if target is null or the target is too far from the memory point, remove the memory of it.
+            if (GetComponent<AgentMemory>() != null)
+            {
+                GetComponent<AgentMemory>().RemoveObjectFromMemory(memoryTarget);
+            }
+            
         }
         return false;
     }

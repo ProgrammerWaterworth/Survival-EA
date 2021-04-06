@@ -56,13 +56,13 @@ public class PickUpBatteryAction : GoapAction
 
                 pickedUp = true;
 
+                Destroy(target);
+
                 if (GetComponent<AgentMemory>() != null)
                 {
                     Debug.Log(this + " is removing battery from memory.");
                     GetComponent<AgentMemory>().RemoveObjectFromMemory(memoryTarget);
                 }               
-                Destroy(target); // For now destroy as if it has been used
-                //target = null;
             }
             return true;
         }
