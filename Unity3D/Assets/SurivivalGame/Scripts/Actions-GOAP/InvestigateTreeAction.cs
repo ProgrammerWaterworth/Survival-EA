@@ -35,6 +35,11 @@ public class InvestigateTreeAction : GoapAction
         return true;
     }
 
+    public override float GetCost()
+    {
+        return base.GetCost();
+    }
+
     protected override bool FindTargetObject(GameObject _agent)
     {
         //Access agent memory and see if there is any knowledge of a battery.
@@ -43,7 +48,7 @@ public class InvestigateTreeAction : GoapAction
             GameObject _targetGameObject;
             GameObject _rememberedTarget; //the position that we think the object is in based on agent memory.
 
-            if (GetComponent<AgentMemory>().CheckWeightedMemoryForObject("Fruit Tree", _agent.transform.position, out _targetGameObject, out _rememberedTarget))
+            if (GetComponent<AgentMemory>().CheckWeightedMemoryForObject(targetObjectName, _agent.transform.position, out _targetGameObject, out _rememberedTarget))
             {
                 target = _targetGameObject;
                 memoryTarget = _rememberedTarget;

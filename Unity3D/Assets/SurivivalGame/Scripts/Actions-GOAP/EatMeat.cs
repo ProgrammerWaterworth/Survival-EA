@@ -48,7 +48,7 @@ public class EatMeat : GoapAction
                 // finished charging
                 Robot _robot = (Robot)_agent.GetComponent(typeof(Robot));
 
-                if (target.name == "Meat")
+                if (target.name == targetObjectName)
                     _robot.ReduceHunger(0.8f);
                 else
                     Debug.LogError(this + " target is not Meat.");

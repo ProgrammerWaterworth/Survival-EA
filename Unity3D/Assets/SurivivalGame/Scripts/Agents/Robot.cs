@@ -37,14 +37,13 @@ public abstract class Robot : BaseAgent
     //Navigation
     NavMeshAgent navAgent;
 
-    void Start()
+    protected virtual void Start()
     {
         SetUpRobot();
         //Set spawn point
         transform.position = new Vector3(posX, transform.position.y, posY);
         transform.rotation = Quaternion.Euler(transform.eulerAngles.x, RotY, transform.eulerAngles.z);
 
-        totalNumGoals = 4;
     }
 
     protected virtual void Update()

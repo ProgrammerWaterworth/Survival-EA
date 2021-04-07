@@ -4,22 +4,41 @@ using UnityEngine;
 
 public class ChargePoint : MonoBehaviour
 {
-    Base parentBase; //The base this charge point charges
+    [SerializeField] float chargeReplenishRate;
+    [SerializeField] float beginReplenishDelay;
+    [SerializeField] Transform spawnPoint;
+    float dispenseTime;
 
-    public void SetBaseToCharge(Base _base)
-    {
-        if (_base != null)
-            parentBase = _base;
-        else Debug.LogError(this + " is attempting to set a null value as the parent base!");
-    }
+    [SerializeField] Battery batteryPrefab;
+    Battery currentBattery;
+    [Header("UI")]
+    [SerializeField] ChargePointUI chargePointUI;
 
-    public void ChargeBase(float _charge)
+    private void Update()
     {
-        if (parentBase != null)
+        if (Time.time - dispenseTime > beginReplenishDelay)
         {
-            parentBase.ChargeBase(_charge);
+            ReplenishCharge();
         }
-        else Debug.LogError(this + " isn't attached to a based.");
     }
 
+    void ReplenishCharge()
+    {
+        if(currentBattery!=null)
+            currentBattery.gameObject.SetActive(true);
+
+        if (currentBattery == null)
+        {
+            currentBattery = Instantiate(batteryPrefab, spawnPoint.position, spawnPoint.rotation, null);
+            currentBattery.gameObject.name = batteryPrefab.name;
+            currentBattery.SetChargePercentage(0);
+            currentBattery.gameObject.SetActive(false);
+            dispenseTime = Time.time;
+        }
+        else
+        {
+            currentBattery.IncreaseCharge(chargeReplenishRate * Time.deltaTime);
+            chargePointUI.UpdateCharge(currentBattery.GetChargePercentage());
+        }
+    }
 }

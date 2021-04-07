@@ -11,13 +11,22 @@ public class ChargingBot : Robot, IFitnessFunction
     [SerializeField] bool isComplete;
     private float lifetime = 0;
 
+    float averageHunger = 1, hungerAccumulation = 1, hungerUpdates = 1;
 
     protected override void Update()
     {
         base.Update();
-
+        UpdateAverageHunger();
         lifetime += Time.deltaTime;
     }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        totalNumGoals = 5;
+    }
+
     public override HashSet<KeyValuePair<string, object>> CreateGoalState()
     {
 
@@ -32,17 +41,25 @@ public class ChargingBot : Robot, IFitnessFunction
                 goal = MaintainHunger();
                 break;
             case 2:
-                goal = FindInteractables();
+                goal = Explore();
                 break;
             case 3:
                 goal = FindFood();
+                break;
+            case 4:
+                goal = FindCharge();
                 break;
 
         }
         return goal;
     }
 
-
+    void UpdateAverageHunger()
+    {
+        hungerAccumulation += hunger;
+        hungerUpdates++;
+        averageHunger = hungerAccumulation / hungerUpdates;
+    }
 
     public override float GetGoalMultiplier()
     {
@@ -60,13 +77,17 @@ public class ChargingBot : Robot, IFitnessFunction
             case 3:
                 _multiplier = (hunger / maxHunger); //find food is dependant on hunger.
                 break;
+            case 4:
+                if (inventory != null)
+                    _multiplier = (inventory.GetCharge() / inventory.GetMaxCharge());
+                break;
         }
         return _multiplier;
     }
 
     public float GetFitness()
     {
-        float _fitness = (hunger / maxHunger) + (health / maxHealth);
+        float _fitness = averageHunger;
         return _fitness;
     }
 
@@ -74,7 +95,7 @@ public class ChargingBot : Robot, IFitnessFunction
     {
         if (inventory != null)
         {
-            return !inventory.HasChargeLeft();
+            return lifetime > 50f;
         }
         else
         {
@@ -91,7 +112,7 @@ public class ChargingBot : Robot, IFitnessFunction
         return _goal;
     }
 
-    HashSet<KeyValuePair<string, object>> FindInteractables()
+    HashSet<KeyValuePair<string, object>> Explore()
     {
         HashSet<KeyValuePair<string, object>> _goal = new HashSet<KeyValuePair<string, object>>();
         _goal.Add(new KeyValuePair<string, object>("explored", true));
@@ -109,6 +130,13 @@ public class ChargingBot : Robot, IFitnessFunction
     {
         HashSet<KeyValuePair<string, object>> _goal = new HashSet<KeyValuePair<string, object>>();
         _goal.Add(new KeyValuePair<string, object>("searchFood", true));
+        return _goal;
+    }
+
+    HashSet<KeyValuePair<string, object>> FindCharge()
+    {
+        HashSet<KeyValuePair<string, object>> _goal = new HashSet<KeyValuePair<string, object>>();
+        _goal.Add(new KeyValuePair<string, object>("searchBattery", true));
         return _goal;
     }
 
