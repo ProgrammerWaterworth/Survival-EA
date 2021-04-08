@@ -33,4 +33,9 @@ public class ChargePointUI : MonoBehaviour
             chargeBar.value = _percentage;
         }
     }
+
+    public void EnableChargeUI(bool _enable)
+    {
+        chargeBar.enabled = _enable;
+    }
 }

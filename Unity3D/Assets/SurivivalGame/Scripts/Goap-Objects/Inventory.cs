@@ -5,7 +5,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     //Player stats
-
+    Sensor sensor;
 
     float charge;
     [SerializeField] float maxCharge;
@@ -15,6 +15,12 @@ public class Inventory : MonoBehaviour
     void Start()
     {
         charge = maxCharge;
+
+        if (GetComponent<Sensor>() != null)
+        {
+            sensor = GetComponent<Sensor>();
+        }
+        else Debug.LogError(this + " does not have a sensor.");
     }
 
     public float GetMaxCharge()
@@ -28,6 +34,16 @@ public class Inventory : MonoBehaviour
         //Reduce charge over time 
         //Could possibly make actions reduce charge faster/slower
         DecreaseCharge(Time.deltaTime*chargeUsageRate);
+        //Charge determines view distance.
+        UpdateViewDistance();
+    }
+
+    void UpdateViewDistance()
+    {
+        if (sensor != null)
+        {
+            sensor.SetViewDistancePercentage(charge / maxCharge);
+        }
     }
 
     public void IncreaseCharge(float increaseAmmount)

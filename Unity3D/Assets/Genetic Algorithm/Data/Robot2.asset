@@ -15,57 +15,117 @@ MonoBehaviour:
   gameObject: {fileID: 8594544343367576398, guid: 7b178f1e3e4105f4591d864574b3937e,
     type: 3}
   genes:
-  - geneName: PickUpBatteryAction - pickUpDuration
-    weight: 0.8
-    minValue: 0.06489781
-    maxValue: 0.19469345
-    value: 0.16873433
-    activeGene: 1
-  - geneName: PickUpBatteryAction - cost
-    weight: 0.82
-    minValue: 0.70529455
-    maxValue: 2.1158836
-    value: 1.8619776
-    activeGene: 1
   - geneName: Inventory - chargeUsageRate
-    weight: 0.65
-    minValue: 10.71
-    maxValue: 32.13
-    value: 24.633
-    activeGene: 1
+    weight: 0.5
+    minValue: 0.5
+    maxValue: 1.5
+    value: 1
+    activeGene: 0
   - geneName: Sensor - viewDistance
     weight: 0.5
     minValue: 4.385
     maxValue: 13.155001
     value: 8.77
-    activeGene: 1
+    activeGene: 0
   - geneName: Sensor - viewAngle
-    weight: 0.86
-    minValue: 25.289999
-    maxValue: 75.869995
+    weight: 0.5
+    minValue: 34.394398
+    maxValue: 103.1832
     value: 68.788795
-    activeGene: 1
+    activeGene: 0
+  - geneName: GoapAgent - movementCostMultiplier
+    weight: 0.5
+    minValue: 0.25
+    maxValue: 0.75
+    value: 0.5
+    activeGene: 0
   - geneName: ChargingBot - maxMoveSpeed
     weight: 0.5
-    minValue: 54.66759
-    maxValue: 164.00278
-    value: 109.33518
-    activeGene: 1
+    minValue: 1.5
+    maxValue: 4.5
+    value: 3
+    activeGene: 0
   - geneName: ChargingBot - range
     weight: 0.5
-    minValue: 1.9075
-    maxValue: 5.7225
-    value: 3.815
-    activeGene: 1
-  - geneName: ChargeBaseAction - chargeDuration
+    minValue: 0.75
+    maxValue: 2.25
+    value: 1.5
+    activeGene: 0
+  - geneName: ChargingBot - posX
     weight: 0.5
-    minValue: 0.73914754
-    maxValue: 2.2174425
-    value: 1.4782951
+    minValue: 12.35
+    maxValue: 37.050003
+    value: 24.7
+    activeGene: 0
+  - geneName: ChargingBot - posY
+    weight: 0.5
+    minValue: 13.040375
+    maxValue: 39.121124
+    value: 26.08075
+    activeGene: 0
+  - geneName: ChargingBot - RotY
+    weight: 0.5
+    minValue: 157.70651
+    maxValue: 473.11954
+    value: 315.41302
+    activeGene: 0
+  - geneName: AgentMemory - memoryTimeLength
+    weight: 0.5
+    minValue: 25
+    maxValue: 75
+    value: 50
+    activeGene: 0
+  - geneName: ExploreAction - cost
+    weight: 0.98
+    minValue: 1
+    maxValue: 100
+    value: 98.020004
     activeGene: 1
-  - geneName: ChargeBaseAction - cost
-    weight: 0.55
-    minValue: 2.014096
-    maxValue: 6.042288
-    value: 4.2296014
+  - geneName: InvestigateChargePointAction - investigateDuration
+    weight: 0.5
+    minValue: 0.15
+    maxValue: 0.45000002
+    value: 0.3
+    activeGene: 0
+  - geneName: InvestigateChargePointAction - cost
+    weight: 0.5
+    minValue: 1
+    maxValue: 100
+    value: 50.5
+    activeGene: 1
+  - geneName: PickUpBatteryAction - pickUpDuration
+    weight: 0.5
+    minValue: 0.25
+    maxValue: 0.75
+    value: 0.5
+    activeGene: 0
+  - geneName: PickUpBatteryAction - cost
+    weight: 0.5
+    minValue: 1
+    maxValue: 100
+    value: 50.5
+    activeGene: 1
+  - geneName: EatFruit - consumeDuration
+    weight: 0.5
+    minValue: 0.5
+    maxValue: 1.5
+    value: 1
+    activeGene: 0
+  - geneName: EatFruit - cost
+    weight: 0.3
+    minValue: 1
+    maxValue: 100
+    value: 30.7
+    activeGene: 1
+  - geneName: InvestigateTreeAction - investigateDuration
+    weight: 0.5
+    minValue: 0.25
+    maxValue: 0.75
+    value: 0.5
+    activeGene: 0
+  - geneName: InvestigateTreeAction - cost
+    weight: 0.47
+    minValue: 1
+    maxValue: 100
+    value: 47.53
     activeGene: 1

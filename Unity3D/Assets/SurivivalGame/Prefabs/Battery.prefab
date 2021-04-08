@@ -316,7 +316,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 353eaffd5882cc044bfa5acff62c5540, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chargeDispense: 0
   charge: 20
+  maxCharge: 100
 --- !u!1 &6977895163710420068
 GameObject:
   m_ObjectHideFlags: 0

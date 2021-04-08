@@ -9,12 +9,12 @@ public abstract class Robot : BaseAgent
 {
     [Header("Survival Stats")]
     [SerializeField] protected float maxHealth;
-    [SerializeField] protected float maxHunger;
+    [SerializeField] protected float maxHunger, hungerRegenerationThreshold, healthRegenerationRate;
     [SerializeField] protected float hungerIncreaseRate;
     AgentUI agentUI;
 
-    protected float health, hunger;
-    bool dead;
+    [SerializeField] protected float health, hunger;
+    [SerializeField]protected bool dead;
 
     public Inventory inventory;
     
@@ -89,7 +89,7 @@ public abstract class Robot : BaseAgent
         }
 
         //Set up stats
-        health = maxHealth;
+        health = maxHealth/2;
         hunger = maxHunger;
 
         if (GetComponent<AgentUI>() != null)
@@ -192,6 +192,9 @@ public abstract class Robot : BaseAgent
                 animator.SetFloat("Movespeed", navAgent.velocity.magnitude);
             }
             else Debug.LogWarning(this + " hasn't set NavMeshAgent Component!");
+
+            if (dead)
+                animator.SetBool("Dead", true);
         }
         else Debug.LogWarning(this + " hasn't set Animator Component!");
     }
@@ -202,8 +205,12 @@ public abstract class Robot : BaseAgent
     void Metabolise()
     {
         if (!dead)
-        {
-            hunger -= hungerIncreaseRate * Time.deltaTime;
+        {   AlterHunger(-hungerIncreaseRate * .01f* Time.deltaTime); //as a percentage
+            if (hunger > hungerRegenerationThreshold)
+            {
+                float regenAmmount = (hunger - hungerRegenerationThreshold) / (maxHunger - hungerRegenerationThreshold);
+                AlterHealth(healthRegenerationRate * .01f * Time.deltaTime * regenAmmount);
+            }
         }
 
         if (hunger <= 0)
@@ -216,9 +223,10 @@ public abstract class Robot : BaseAgent
     void Die()
     {
         dead = true;
+        navAgent.speed = 0;
     }
 
-    public void ReduceHunger(float _ammount)
+    public void AlterHunger(float _ammount)
     {
         hunger += _ammount*maxHunger;
         hunger = Mathf.Clamp(hunger, 0, maxHunger);

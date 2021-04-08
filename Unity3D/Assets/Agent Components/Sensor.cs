@@ -7,13 +7,17 @@ using UnityEngine;
 /// </summary>
 public class Sensor : MonoBehaviour
 {
-    public float viewDistance;
+    public float viewDistance, maxViewDistance, minViewDistance;
     public float viewAngle;
 
     [SerializeField] bool senseActive;
     [SerializeField] [Tooltip("The number of rays to cast out for detecting obstacles.")] int numViewRangeRays = 5;
     [SerializeField] [Tooltip("The magnitude of how the desired direction of movement steered in the opposite direction to detected obstacles")]
     [Range(0,1)]float avoidenceSensitivity;
+
+    [Header("Visual Representation")]
+    [SerializeField] Light spotLight;
+
     /// <summary>
     /// The desired direction of movement based on detected obstacles.
     /// </summary>
@@ -40,6 +44,11 @@ public class Sensor : MonoBehaviour
         UpdateObstacleAvoidanceDirection();
     }
 
+    public void SetViewDistancePercentage(float _percentage)
+    {
+        viewDistance = Mathf.Lerp(minViewDistance, maxViewDistance, _percentage);
+        UpdateLightRange();
+    }
 
     /// <summary>
     /// Converts an angle into a direction relative to this gameobjects transform.
@@ -149,6 +158,15 @@ public class Sensor : MonoBehaviour
             yield return new WaitForSeconds(_delay);
             FindVisibleInteractables();
             FindMemoriesInView();
+        }
+    }
+
+    void UpdateLightRange()
+    {
+        if (spotLight != null)
+        {
+           float angle =  Mathf.Rad2Deg* Mathf.Atan(viewDistance / spotLight.transform.position.y);
+            spotLight.spotAngle = angle * 2;
         }
     }
 }

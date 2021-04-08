@@ -30,8 +30,6 @@ public class BaseAgentUI : MonoBehaviour
     {
         if (healthBar != null)
         {
-            if (healthBar.fillRect.GetComponent<Image>() != null)
-                healthBar.fillRect.GetComponent<Image>().color = Color.Lerp(Color.red, Color.green, _percentage);
             healthBar.value = _percentage;
         }
 

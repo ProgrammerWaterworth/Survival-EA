@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Battery : MonoBehaviour
 {
-    [SerializeField] float chargeDispense;
     [SerializeField] float charge;
     [SerializeField] float maxCharge;
 

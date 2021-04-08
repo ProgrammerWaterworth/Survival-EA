@@ -11,13 +11,15 @@ public class ChargingBot : Robot, IFitnessFunction
     [SerializeField] bool isComplete;
     private float lifetime = 0;
 
-    float averageHunger = 1, hungerAccumulation = 1, hungerUpdates = 1;
-
+    float averageHunger = 1, hungerAccumulation = 1, statUpdates = 1;
+    float averageHealth = 1, healthAccumulation = 1;
+    float averageCharge = 1, chargeAccumulation = 1;
     protected override void Update()
     {
         base.Update();
-        UpdateAverageHunger();
-        lifetime += Time.deltaTime;
+        UpdateAverageStats();
+        if(!dead)
+            lifetime += Time.deltaTime;
     }
 
     protected override void Start()
@@ -32,33 +34,46 @@ public class ChargingBot : Robot, IFitnessFunction
 
         HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
 
-        switch (goalIndex)
+        if (!dead)
         {
-            case 0:
-                goal = GetCharge();
-                break;
-            case 1:
-                goal = MaintainHunger();
-                break;
-            case 2:
-                goal = Explore();
-                break;
-            case 3:
-                goal = FindFood();
-                break;
-            case 4:
-                goal = FindCharge();
-                break;
+            switch (goalIndex)
+            {
+                case 0:
+                    goal = GetCharge();
+                    break;
+                case 1:
+                    goal = MaintainHunger();
+                    break;
+                case 2:
+                    goal = Explore();
+                    break;
+                case 3:
+                    goal = FindFood();
+                    break;
+                case 4:
+                    goal = FindCharge();
+                    break;
+
+            }
 
         }
         return goal;
+        
     }
 
-    void UpdateAverageHunger()
+    void UpdateAverageStats()
     {
+        statUpdates++;
+
+        if (inventory != null)
+        {
+            chargeAccumulation += inventory.GetCharge();
+            averageCharge = chargeAccumulation / statUpdates;
+        }
         hungerAccumulation += hunger;
-        hungerUpdates++;
-        averageHunger = hungerAccumulation / hungerUpdates;
+        averageHunger = hungerAccumulation / statUpdates;
+        healthAccumulation += health;
+        averageHealth = healthAccumulation / statUpdates;
     }
 
     public override float GetGoalMultiplier()
@@ -87,7 +102,8 @@ public class ChargingBot : Robot, IFitnessFunction
 
     public float GetFitness()
     {
-        float _fitness = averageHunger;
+        //fitness must be a combination of lifetime average hunger and average charge. lifetime needs to have greatest contribution.
+        float _fitness = averageHealth+ averageCharge + averageHunger + (lifetime*10);
         return _fitness;
     }
 
@@ -95,14 +111,17 @@ public class ChargingBot : Robot, IFitnessFunction
     {
         if (inventory != null)
         {
-            return lifetime > 50f;
+            if (lifetime >= 80)
+                return true;
+            else if (dead)
+                return true;
         }
         else
         {
             Debug.LogError(this + "has no inventory assigned.");
             return false;
         }
-        
+        return false;
     }
 
     HashSet<KeyValuePair<string, object>> GetCharge()

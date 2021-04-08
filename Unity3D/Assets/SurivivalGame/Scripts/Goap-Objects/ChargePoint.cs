@@ -24,15 +24,20 @@ public class ChargePoint : MonoBehaviour
 
     void ReplenishCharge()
     {
-        if(currentBattery!=null)
+        if (currentBattery != null)
+        {
             currentBattery.gameObject.SetActive(true);
+            chargePointUI.EnableChargeUI(true);
+        }
 
         if (currentBattery == null)
         {
             currentBattery = Instantiate(batteryPrefab, spawnPoint.position, spawnPoint.rotation, null);
             currentBattery.gameObject.name = batteryPrefab.name;
             currentBattery.SetChargePercentage(0);
+            chargePointUI.UpdateCharge(currentBattery.GetChargePercentage());
             currentBattery.gameObject.SetActive(false);
+            chargePointUI.EnableChargeUI(false);
             dispenseTime = Time.time;
         }
         else
