@@ -18,6 +18,8 @@ public class AgentMemory : MonoBehaviour
 
     List<GameObject> memoryRemovalList;
 
+    GameObject memoryHolder;
+
     const string memoryString = "-Memory"; //used to identify an object as a memory object.
     /// <summary>
     /// A memory represents the agents known information about a specific object type.
@@ -55,6 +57,8 @@ public class AgentMemory : MonoBehaviour
             sensor = GetComponent<Sensor>();
         }
         else Debug.LogError(this+" does not have a sensor component to detect new information.");
+
+        memoryHolder = new GameObject(this.name + " Memories");
 
         memoryRemovalList = new List<GameObject>();
     }
@@ -200,7 +204,7 @@ public class AgentMemory : MonoBehaviour
     /// Updates current memories of object or adds new ones based on the _keyObject found.
     /// </summary>
     /// <param name="_actualObject">The object from the scene which a memory needs to be formed from.</param>
-    void UpdateObjectInMemory(GameObject _actualObject)
+    public void UpdateObjectInMemory(GameObject _actualObject)
     {
         if (_actualObject == null)
             return;
@@ -216,9 +220,12 @@ public class AgentMemory : MonoBehaviour
             AddMemory(_actualObject);      
     }
 
+
+
     GameObject CreateMemoryObject(GameObject _actualObject)
     {
         GameObject _memoryObject = new GameObject(_actualObject.name + memoryString);
+        _memoryObject.transform.parent = memoryHolder.transform;
         _memoryObject.transform.position = _actualObject.transform.position;
         _memoryObject.AddComponent<Memory>();
         _memoryObject.GetComponent<Memory>().SetTimeStamp();
@@ -256,6 +263,11 @@ public class AgentMemory : MonoBehaviour
         else Debug.Log(this + " has no sensor component!");
 
         return Vector3.zero;
+    }
+
+    public Transform GetMemoryHolderTransform()
+    {
+        return memoryHolder.transform;
     }
 
     /// <summary>

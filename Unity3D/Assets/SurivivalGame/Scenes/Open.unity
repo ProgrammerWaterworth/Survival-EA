@@ -977,7 +977,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1984e3ba6bd2c4db654dbc9e698ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeSpeed: 5
+  timeSpeed: 3
   highScoreText: {fileID: 1878418769}
   scoreText: {fileID: 1111706892}
   comboText: {fileID: 783858515}
@@ -2795,6 +2795,176 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1091570654}
   m_CullTransparentMesh: 0
+--- !u!1001 &1096310632
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 758013976457475484, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 415.00003
+      objectReference: {fileID: 0}
+    - target: {fileID: 851099018816522088, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: deadLayer.m_Bits
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 851099018816522088, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: posX
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 851099018816522088, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: posY
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 851099018816522090, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: spotLight
+      value: 
+      objectReference: {fileID: 1906762252}
+    - target: {fileID: 851099018816522090, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: maxViewDistance
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 851099018816522090, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: minViewDistance
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 851099018816522091, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 851099018816522093, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: batteryPrefab
+      value: 
+      objectReference: {fileID: 1131417246, guid: e15f1fb2fedeeab4ba2352cb5188ea56,
+        type: 3}
+    - target: {fileID: 3467716950882219745, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 296.60004
+      objectReference: {fileID: 0}
+    - target: {fileID: 3467716951155459878, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 352.60007
+      objectReference: {fileID: 0}
+    - target: {fileID: 3467716951317834007, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3467716951317834007, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3467716951370084580, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 407.08102
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383140475252577704, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_Name
+      value: BadRobot
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383140475252577704, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383140475252935048, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 29.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383140475252935048, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0000009536743
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383140475252935048, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 25.97
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383140475252935048, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383140475252935048, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383140475252935048, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383140475252935048, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383140475252935048, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383140475252935048, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383140475252935048, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383140475252935048, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6841624710780244360, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9120085672796909881, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9120085672796909881, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9120085673181971630, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9120085673181971630, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ecb673a37cfa03647be9d5c6cac6f086, type: 3}
 --- !u!1 &1111706890
 GameObject:
   m_ObjectHideFlags: 0
@@ -3423,6 +3593,49 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1164831430}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1399889998 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8594544343367576398, guid: 7b178f1e3e4105f4591d864574b3937e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1283783494749199177}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1399890015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399889998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c1afa99a45f87479310e12fec93dbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 1
+  target: {fileID: 0}
+  memoryTarget: {fileID: 0}
+  range: 10
+  shotDuration: 0.5
+  damage: 0.1
+  enemyName: BadRobot
+--- !u!114 &1399890016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399889998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b4c6fe6d4b3a334699bf4af49f531cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 130
+  target: {fileID: 0}
+  memoryTarget: {fileID: 0}
+  healDuration: 0.8
+  healthRestorePercentage: 0.49
+  chargeCostAmount: 5.21
 --- !u!1001 &1414839133
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4144,6 +4357,31 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 697105093}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1778130677 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4383140475252577704, guid: ecb673a37cfa03647be9d5c6cac6f086,
+    type: 3}
+  m_PrefabInstance: {fileID: 5534006732610214767}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1778130694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1778130677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c1afa99a45f87479310e12fec93dbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 15
+  target: {fileID: 0}
+  memoryTarget: {fileID: 0}
+  range: 12
+  shotDuration: 0.5
+  damage: 0.05
+  enemyName: GoodRobot
 --- !u!1001 &1809829678
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4422,6 +4660,31 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1878418767}
   m_CullTransparentMesh: 0
+--- !u!1 &1886302612 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4383140475252577704, guid: ecb673a37cfa03647be9d5c6cac6f086,
+    type: 3}
+  m_PrefabInstance: {fileID: 1096310632}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1886302613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1886302612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c1afa99a45f87479310e12fec93dbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 1
+  target: {fileID: 0}
+  memoryTarget: {fileID: 0}
+  range: 12
+  shotDuration: 0.5
+  damage: 0.05
+  enemyName: GoodRobot
 --- !u!1001 &1895236809
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4501,6 +4764,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ad8175d1ca1e2f4cade9dbfddbf5a8d, type: 3}
+--- !u!108 &1906762252 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 6841624710780244360, guid: ecb673a37cfa03647be9d5c6cac6f086,
+    type: 3}
+  m_PrefabInstance: {fileID: 1096310632}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1997698166
 GameObject:
   m_ObjectHideFlags: 0
@@ -5506,6 +5775,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8594544343367576398, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8706834616695631448, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
       propertyPath: m_Enabled
@@ -5966,6 +6240,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 407055026332573624, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: range
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 407055026332573631, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: range
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2688818012801418786, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
       propertyPath: m_fontColor.r
@@ -5985,6 +6269,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4287037373
+      objectReference: {fileID: 0}
+    - target: {fileID: 3595923257988756531, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: range
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3917244566839587775, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
@@ -6024,7 +6313,7 @@ PrefabInstance:
     - target: {fileID: 8594544343367546734, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 26.35
+      value: 38.88
       objectReference: {fileID: 0}
     - target: {fileID: 8594544343367546734, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
@@ -6079,7 +6368,28 @@ PrefabInstance:
     - target: {fileID: 8594544343367576398, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
       propertyPath: m_Name
-      value: GoodRobot (1)
+      value: GoodRobot
+      objectReference: {fileID: 0}
+    - target: {fileID: 8594544343367576398, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8706834616695631448, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: range
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8706834616695631450, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: batteryPrefab
+      value: 
+      objectReference: {fileID: 1131417246, guid: e15f1fb2fedeeab4ba2352cb5188ea56,
+        type: 3}
+    - target: {fileID: 8706834616695631450, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: ammoShotChargeCost
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
@@ -6096,6 +6406,16 @@ PrefabInstance:
       propertyPath: spotLight
       value: 
       objectReference: {fileID: 3433629777322927600}
+    - target: {fileID: 8706834616695631455, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: posX
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 8706834616695631455, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: healthlossRate
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b178f1e3e4105f4591d864574b3937e, type: 3}
 --- !u!4 &1318576666671590732
@@ -12701,6 +13021,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 851099018816522088, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: deadLayer.m_Bits
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 851099018816522088, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: posX
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 851099018816522088, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: posY
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 851099018816522090, guid: ecb673a37cfa03647be9d5c6cac6f086,
         type: 3}
       propertyPath: spotLight
@@ -12709,13 +13044,24 @@ PrefabInstance:
     - target: {fileID: 851099018816522090, guid: ecb673a37cfa03647be9d5c6cac6f086,
         type: 3}
       propertyPath: maxViewDistance
-      value: 7
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 851099018816522090, guid: ecb673a37cfa03647be9d5c6cac6f086,
         type: 3}
       propertyPath: minViewDistance
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 851099018816522091, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 851099018816522093, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: batteryPrefab
+      value: 
+      objectReference: {fileID: 1131417246, guid: e15f1fb2fedeeab4ba2352cb5188ea56,
+        type: 3}
     - target: {fileID: 3467716951317834007, guid: ecb673a37cfa03647be9d5c6cac6f086,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -12731,10 +13077,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: BadRobot
       objectReference: {fileID: 0}
+    - target: {fileID: 4383140475252577704, guid: ecb673a37cfa03647be9d5c6cac6f086,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4383140475252935048, guid: ecb673a37cfa03647be9d5c6cac6f086,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 53.93
+      value: 19.74
       objectReference: {fileID: 0}
     - target: {fileID: 4383140475252935048, guid: ecb673a37cfa03647be9d5c6cac6f086,
         type: 3}
@@ -12744,7 +13095,7 @@ PrefabInstance:
     - target: {fileID: 4383140475252935048, guid: ecb673a37cfa03647be9d5c6cac6f086,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 40.02
+      value: 30.06
       objectReference: {fileID: 0}
     - target: {fileID: 4383140475252935048, guid: ecb673a37cfa03647be9d5c6cac6f086,
         type: 3}

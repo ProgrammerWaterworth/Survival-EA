@@ -9,13 +9,12 @@ public abstract class Robot : BaseAgent
 {
     [Header("Survival Stats")]
     [SerializeField] protected float maxHealth;
-    [SerializeField] protected float maxHunger, hungerRegenerationThreshold, healthRegenerationRate;
+    [SerializeField] protected float maxHunger, hungerRegenerationThreshold, healthRegenerationRate, healthlossRate;
     [SerializeField] protected float hungerIncreaseRate;
     AgentUI agentUI;
 
-    [SerializeField] protected float health, hunger;
+    [SerializeField] protected float health, hunger, healthIncreaseChargeCost;
     [SerializeField]protected bool dead;
-
     public Inventory inventory;
     
     [Header("Movement")]
@@ -36,7 +35,7 @@ public abstract class Robot : BaseAgent
 
     //Navigation
     NavMeshAgent navAgent;
-
+    GoapAgent agentPlanner;
     protected virtual void Start()
     {
         SetUpRobot();
@@ -49,7 +48,7 @@ public abstract class Robot : BaseAgent
     protected virtual void Update()
     {
         AnimateMovement();
-        Metabolise();
+        UpdateLife();
         UpdateUI();
     }
     private void FixedUpdate()
@@ -110,22 +109,29 @@ public abstract class Robot : BaseAgent
             animator = GetComponent<Animator>();
         }
         else Debug.LogWarning(this + " has no animator set!");
+
+        if (GetComponent<GoapAgent>() != null)
+        {
+            agentPlanner = GetComponent<GoapAgent>();
+        }
     }
 
     public override HashSet<KeyValuePair<string, object>> GetWorldState()
     {
         HashSet<KeyValuePair<string, object>> worldData = new HashSet<KeyValuePair<string, object>>();
 
-        //worldData.Add(new KeyValuePair<string, object>("hasCharge", (inventory.GetCharge()>10)));
-        Debug.Log("<color=orange>"+this+" charge:</color>" + inventory.GetCharge());
-        //worldData.Add(new KeyValuePair<string, object>("hasWeapon", (inventory.GetWeapon() != null)));
-
+        worldData.Add(new KeyValuePair<string, object>("hasMuchBattery", (inventory.GetCharge()> healthIncreaseChargeCost)));
         return worldData;
     }
 
     public override void PlanFound(HashSet<KeyValuePair<string, object>> _goal, Queue<GoapAction> _actions, float _planCost)
     {
         base.PlanFound(_goal, _actions, _planCost);
+    }
+
+    public float GetHealthIncreaseChargeCost()
+    {
+        return healthIncreaseChargeCost;
     }
 
     public override bool MoveAgent(GoapAction _nextAction)
@@ -137,18 +143,18 @@ public abstract class Robot : BaseAgent
         }
              
         targetPosition = _nextAction.memoryTarget.transform.position;
-        // Set direction the agent is facing.        
-        /*      
-        moving = true;
-        transform.forward = Vector3.RotateTowards(transform.forward, targetPosition - transform.position, rotationStepAngle, 0);
-        transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-        */
-        //Debug.Log(this + " distance from target: "+ Vector3.Distance(transform.position, targetLocation.position));
-        if (Vector3.Distance(transform.position,targetPosition) < range)
+
+        //if action is a ranged one it may have different range to enable action.
+        float _range = range;
+        if (_nextAction.GetType().IsSubclassOf(typeof(RangedGoapAction)))
+            _range = ((RangedGoapAction)_nextAction).GetRange();
+
+        if (Vector3.Distance(transform.position,targetPosition) < _range)
         {
             Debug.Log(this + " is in range of target location.");
             // we are at the target location, we are done
-            _nextAction.SetInRange(true);          
+            _nextAction.SetInRange(true);
+            navAgent.SetDestination(transform.position);
             return true;
         }
         else
@@ -199,13 +205,29 @@ public abstract class Robot : BaseAgent
         else Debug.LogWarning(this + " hasn't set Animator Component!");
     }
 
+
+    public bool IsDead()
+    {
+        return dead;
+    }
     /// <summary>
-    /// Increase Hunger and Thirst over time.
+    /// Update player state over time.
     /// </summary>
-    void Metabolise()
+    void UpdateLife()
     {
         if (!dead)
-        {   AlterHunger(-hungerIncreaseRate * .01f* Time.deltaTime); //as a percentage
+        {                   
+            //Die if no health
+            if (health <= 0)
+                Die();
+            //Lose health if hunger bar empty.
+            if (hunger <= 0)
+                AlterHealth(-.01f * Time.deltaTime * healthlossRate);
+
+            //Increase hunger over time
+            AlterHunger(-hungerIncreaseRate * .01f * Time.deltaTime); //as a percentage
+
+            //Increase health if hunger bar is mostly full
             if (hunger > hungerRegenerationThreshold)
             {
                 float regenAmmount = (hunger - hungerRegenerationThreshold) / (maxHunger - hungerRegenerationThreshold);
@@ -213,8 +235,6 @@ public abstract class Robot : BaseAgent
             }
         }
 
-        if (hunger <= 0)
-            Die();
     }
 
     /// <summary>
@@ -222,8 +242,21 @@ public abstract class Robot : BaseAgent
     /// </summary>
     void Die()
     {
-        dead = true;
-        navAgent.speed = 0;
+        if (!dead)
+        {
+            dead = true;
+            navAgent.speed = 0;
+
+            if (agentPlanner != null)
+                agentPlanner.enabled = false;
+            //drop loot
+            if (inventory != null)
+            {
+                inventory.DropChargeAsBattery();
+            }
+            this.gameObject.layer = LayerMask.GetMask("Default");
+
+        }
     }
 
     public void AlterHunger(float _ammount)
@@ -236,6 +269,18 @@ public abstract class Robot : BaseAgent
     {
         health += _ammount*maxHealth;
         health = Mathf.Clamp(health, 0, maxHealth);
+    }
+
+    /// <summary>
+    /// Damage inflicted and the thing causing it.
+    /// </summary>
+    /// <param name="_ammount"></param>
+    /// <param name="_gameObject"></param>
+    public void Damage(float _ammount, GameObject _gameObject)
+    {
+        AlterHealth(-_ammount);
+        if (GetComponent<AgentMemory>() != null)
+            GetComponent<AgentMemory>().UpdateObjectInMemory(_gameObject);
     }
 
     void UpdateUI()

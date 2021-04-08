@@ -75,6 +75,10 @@ public class ExploreAction : GoapAction
             GameObject _destinationPoint = new GameObject(targetObjectName);
             //Get a point that's on the navmesh.
 
+            if (GetComponent<AgentMemory>() != null)
+                _destinationPoint.transform.parent = GetComponent<AgentMemory>().GetMemoryHolderTransform();
+
+
             _destinationPoint.transform.position = GetPointToMoveTo();
             NavMeshHit hit;
 

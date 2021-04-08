@@ -33,6 +33,7 @@ public abstract class GoapAction : MonoBehaviour
     /// </summary>
     float movementCostMultiplier = 1f;
 
+
     /// <summary>
     /// Target that the action must be performed on, if not null.
     /// </summary>

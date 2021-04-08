@@ -9,6 +9,8 @@ public class Inventory : MonoBehaviour
 
     float charge;
     [SerializeField] float maxCharge;
+    [SerializeField] Battery batteryPrefab;
+    [SerializeField] float ammoShotChargeCost;
     public float chargeUsageRate = 5f;
 
     // Start is called before the first frame update
@@ -59,6 +61,24 @@ public class Inventory : MonoBehaviour
     public float GetCharge()
     {
         return charge;
+    }
+
+    /// <summary>
+    /// Consumes the ammount of charge it costs for a shot of a weapon.
+    /// </summary>
+    public void ConsumeAmmo()
+    {
+        DecreaseCharge(ammoShotChargeCost);
+    }
+
+    public void DropChargeAsBattery()
+    {
+        if (batteryPrefab == null)
+            return;
+        Battery currentBattery = Instantiate(batteryPrefab, transform.position, transform.rotation, null);
+        currentBattery.gameObject.name = batteryPrefab.name;
+        currentBattery.SetChargePercentage(charge/maxCharge);
+        charge = 0;
     }
 
     public bool HasChargeLeft()

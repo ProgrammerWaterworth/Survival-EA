@@ -26,7 +26,7 @@ public class ChargingBot : Robot, IFitnessFunction
     {
         base.Start();
 
-        totalNumGoals = 5;
+        totalNumGoals = 7;
     }
 
     public override HashSet<KeyValuePair<string, object>> CreateGoalState()
@@ -52,6 +52,12 @@ public class ChargingBot : Robot, IFitnessFunction
                     break;
                 case 4:
                     goal = FindCharge();
+                    break;
+                case 5:
+                    goal = KillTarget();
+                    break;
+                case 6:
+                    goal = NeedHealth();
                     break;
 
             }
@@ -95,6 +101,10 @@ public class ChargingBot : Robot, IFitnessFunction
             case 4:
                 if (inventory != null)
                     _multiplier = (inventory.GetCharge() / inventory.GetMaxCharge());
+                break;
+            case 6:
+                if (inventory != null)
+                    _multiplier = (health / maxHealth);
                 break;
         }
         return _multiplier;
@@ -159,11 +169,17 @@ public class ChargingBot : Robot, IFitnessFunction
         return _goal;
     }
 
-    HashSet<KeyValuePair<string, object>> OvercomeThreat()
+    HashSet<KeyValuePair<string, object>> KillTarget()
     {
         HashSet<KeyValuePair<string, object>> _goal = new HashSet<KeyValuePair<string, object>>();
-        _goal.Add(new KeyValuePair<string, object>("threatened", false));
+        _goal.Add(new KeyValuePair<string, object>("killEnemy", true));
         return _goal;
     }
 
+    HashSet<KeyValuePair<string, object>> NeedHealth()
+    {
+        HashSet<KeyValuePair<string, object>> _goal = new HashSet<KeyValuePair<string, object>>();
+        _goal.Add(new KeyValuePair<string, object>("healed", true));
+        return _goal;
+    }
 }
