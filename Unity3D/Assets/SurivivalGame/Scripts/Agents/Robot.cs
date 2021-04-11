@@ -121,6 +121,8 @@ public abstract class Robot : BaseAgent
         HashSet<KeyValuePair<string, object>> worldData = new HashSet<KeyValuePair<string, object>>();
 
         worldData.Add(new KeyValuePair<string, object>("hasMuchBattery", (inventory.GetCharge()> healthIncreaseChargeCost)));
+
+        worldData.Add(new KeyValuePair<string, object>("healed", (health >= maxHealth*.9f)));
         return worldData;
     }
 

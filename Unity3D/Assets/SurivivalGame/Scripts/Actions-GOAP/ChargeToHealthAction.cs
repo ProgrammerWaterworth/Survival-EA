@@ -8,9 +8,9 @@ public class ChargeToHealthAction : GoapAction
     private float startTime = 0;
     public float healDuration = .8f; // seconds
     [SerializeField] float healthRestorePercentage;
-    [SerializeField] float chargeCostAmount;
     public ChargeToHealthAction()
     {
+        AddPrecondition("healed", false);
         AddPrecondition("hasMuchBattery", true);
         AddEffect("healed", true);
     }

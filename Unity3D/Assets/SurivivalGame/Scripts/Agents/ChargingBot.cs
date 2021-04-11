@@ -26,7 +26,7 @@ public class ChargingBot : Robot, IFitnessFunction
     {
         base.Start();
 
-        totalNumGoals = 7;
+        totalNumGoals = 6;
     }
 
     public override HashSet<KeyValuePair<string, object>> CreateGoalState()
@@ -54,9 +54,6 @@ public class ChargingBot : Robot, IFitnessFunction
                     goal = FindCharge();
                     break;
                 case 5:
-                    goal = KillTarget();
-                    break;
-                case 6:
                     goal = NeedHealth();
                     break;
 
