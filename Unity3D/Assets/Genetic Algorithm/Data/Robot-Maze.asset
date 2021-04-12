@@ -1,0 +1,155 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33a634517227eea439bd11a37374b37c, type: 3}
+  m_Name: Robot-Maze
+  m_EditorClassIdentifier: 
+  gameObject: {fileID: 8594544343367576398, guid: 7b178f1e3e4105f4591d864574b3937e,
+    type: 3}
+  genes:
+  - geneName: Inventory - chargeUsageRate
+    weight: 0.5
+    minValue: 0.5
+    maxValue: 1.5
+    value: 1
+    activeGene: 0
+  - geneName: Sensor - viewDistance
+    weight: 0.5
+    minValue: 4.385
+    maxValue: 13.155001
+    value: 8.77
+    activeGene: 0
+  - geneName: Sensor - maxViewDistance
+    weight: 0.5
+    minValue: 4
+    maxValue: 12
+    value: 8
+    activeGene: 0
+  - geneName: Sensor - minViewDistance
+    weight: 0.5
+    minValue: 1.5
+    maxValue: 4.5
+    value: 3
+    activeGene: 0
+  - geneName: Sensor - viewAngle
+    weight: 0.5
+    minValue: 35
+    maxValue: 105
+    value: 70
+    activeGene: 0
+  - geneName: GoapAgent - movementCostMultiplier
+    weight: 0.5
+    minValue: 0.25
+    maxValue: 0.75
+    value: 0.5
+    activeGene: 0
+  - geneName: ChargingBot - maxMoveSpeed
+    weight: 0.5
+    minValue: 3
+    maxValue: 9
+    value: 6
+    activeGene: 0
+  - geneName: ChargingBot - range
+    weight: 0.5
+    minValue: 0.75
+    maxValue: 2.25
+    value: 1.5
+    activeGene: 0
+  - geneName: ChargingBot - posX
+    weight: 0.5
+    minValue: 18.69
+    maxValue: 56.07
+    value: 37.38
+    activeGene: 0
+  - geneName: ChargingBot - posY
+    weight: 0.5
+    minValue: 13.040375
+    maxValue: 39.121124
+    value: 26.08075
+    activeGene: 0
+  - geneName: ChargingBot - RotY
+    weight: 0.5
+    minValue: 157.70651
+    maxValue: 473.11954
+    value: 315.41302
+    activeGene: 0
+  - geneName: AgentMemory - memoryTimeLength
+    weight: 0.5
+    minValue: 25
+    maxValue: 75
+    value: 50
+    activeGene: 0
+  - geneName: ExploreAction - cost
+    weight: 0.5
+    minValue: 1
+    maxValue: 500
+    value: 250.5
+    activeGene: 1
+  - geneName: InvestigateChargePointAction - investigateDuration
+    weight: 0.5
+    minValue: 0.15
+    maxValue: 0.45000002
+    value: 0.3
+    activeGene: 0
+  - geneName: InvestigateChargePointAction - cost
+    weight: 0.5
+    minValue: 1
+    maxValue: 500
+    value: 250.5
+    activeGene: 1
+  - geneName: PickUpBatteryAction - pickUpDuration
+    weight: 0.5
+    minValue: 0.25
+    maxValue: 0.75
+    value: 0.5
+    activeGene: 0
+  - geneName: PickUpBatteryAction - cost
+    weight: 0.5
+    minValue: 1
+    maxValue: 500
+    value: 250.5
+    activeGene: 1
+  - geneName: EatFruit - consumeDuration
+    weight: 0.5
+    minValue: 0.5
+    maxValue: 1.5
+    value: 1
+    activeGene: 0
+  - geneName: EatFruit - cost
+    weight: 0.5
+    minValue: 1
+    maxValue: 500
+    value: 250.5
+    activeGene: 1
+  - geneName: InvestigateTreeAction - investigateDuration
+    weight: 0.5
+    minValue: 0.25
+    maxValue: 0.75
+    value: 0.5
+    activeGene: 0
+  - geneName: InvestigateTreeAction - cost
+    weight: 0.5
+    minValue: 1
+    maxValue: 500
+    value: 250.5
+    activeGene: 1
+  - geneName: ChargeToHealthAction - healDuration
+    weight: 0.5
+    minValue: 0.4
+    maxValue: 1.2
+    value: 0.8
+    activeGene: 0
+  - geneName: ChargeToHealthAction - cost
+    weight: 0.5
+    minValue: 1
+    maxValue: 500
+    value: 250.5
+    activeGene: 1

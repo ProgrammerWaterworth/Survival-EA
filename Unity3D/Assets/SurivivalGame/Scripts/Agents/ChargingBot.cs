@@ -10,7 +10,7 @@ public class ChargingBot : Robot, IFitnessFunction
 	 */
     [SerializeField] bool isComplete;
     private float lifetime = 0;
-
+    [SerializeField] float maxLifetime;
     float averageHunger = 1, hungerAccumulation = 1, statUpdates = 1;
     float averageHealth = 1, healthAccumulation = 1;
     float averageCharge = 1, chargeAccumulation = 1;
@@ -110,7 +110,7 @@ public class ChargingBot : Robot, IFitnessFunction
     public float GetFitness()
     {
         //fitness must be a combination of lifetime average hunger and average charge. lifetime needs to have greatest contribution.
-        float _fitness = averageHealth+ averageCharge + averageHunger + (lifetime*10);
+        float _fitness = averageHealth+ averageCharge + averageHunger + (lifetime*10); //map coverage also.
         return _fitness;
     }
 
@@ -118,7 +118,7 @@ public class ChargingBot : Robot, IFitnessFunction
     {
         if (inventory != null)
         {
-            if (lifetime >= 80)
+            if (lifetime >= maxLifetime)
                 return true;
             else if (dead)
                 return true;
