@@ -9174,29 +9174,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1388297297}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1399889998 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8594544343367576398, guid: 7b178f1e3e4105f4591d864574b3937e,
-    type: 3}
-  m_PrefabInstance: {fileID: 1283783494749199177}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1399890016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1399889998}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b4c6fe6d4b3a334699bf4af49f531cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cost: 66
-  target: {fileID: 0}
-  memoryTarget: {fileID: 0}
-  healDuration: 0.8
-  healthRestorePercentage: 0.3
 --- !u!1 &1402845390
 GameObject:
   m_ObjectHideFlags: 0
@@ -14113,101 +14090,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 407055026332573624, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: range
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 407055026332573631, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: range
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 407055026332573633, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: m_StoppingDistance
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 407055026332573633, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: m_AutoBraking
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 407055026332573633, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: m_Acceleration
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 407055026332573633, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: m_AngularSpeed
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 407055026332573634, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: avoidanceSteerWeight
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 407055026332573634, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: movementDistanceIncrements
-      value: 2.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 407055026332573634, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: exploreSteerWeight
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 407055026332573634, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: exploreSteerSubWeight
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 407055026332573634, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: percentageSearchChance
-      value: 0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 407055026332573634, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: seekSteerWeight
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 407055026332573634, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: searchRotationMagnitude
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2688818012801418786, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: m_fontColor.r
-      value: 0.74216276
-      objectReference: {fileID: 0}
-    - target: {fileID: 2688818012801418786, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: m_fontColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2688818012801418786, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: m_fontColor.b
-      value: 0.5254902
-      objectReference: {fileID: 0}
-    - target: {fileID: 2688818012801418786, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: m_fontColor32.rgba
-      value: 4287037373
-      objectReference: {fileID: 0}
-    - target: {fileID: 3595923257988756531, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: range
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3917244566839587775, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -26.100098
-      objectReference: {fileID: 0}
     - target: {fileID: 4829156010743341507, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -14297,102 +14179,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GoodRobot
-      objectReference: {fileID: 0}
-    - target: {fileID: 8594544343367576398, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8594544343367576398, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8706834616695631448, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: range
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8706834616695631450, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: batteryPrefab
-      value: 
-      objectReference: {fileID: 1131417246, guid: e15f1fb2fedeeab4ba2352cb5188ea56,
-        type: 3}
-    - target: {fileID: 8706834616695631450, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: ammoShotChargeCost
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: maxViewDistance
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: minViewDistance
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: spotLight
-      value: 
-      objectReference: {fileID: 3433629777322927600}
-    - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: avoidanceOverDistance.m_Curve.Array.data[1].inSlope
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: avoidanceOverDistance.m_Curve.Array.data[1].outSlope
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: avoidanceOverDistance.m_Curve.Array.data[1].inWeight
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: avoidanceOverDistance.m_Curve.Array.data[0].inSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: avoidanceOverDistance.m_Curve.Array.data[0].outSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: viewAngle
-      value: 130
-      objectReference: {fileID: 0}
-    - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: numViewRangeRays
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 8706834616695631455, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: posX
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 8706834616695631455, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: healthlossRate
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8706834616695631455, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: healthIncreaseChargeCost
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8706834616695631455, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: range
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b178f1e3e4105f4591d864574b3937e, type: 3}
@@ -18744,12 +18530,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!108 &3433629777322927600 stripped
-Light:
-  m_CorrespondingSourceObject: {fileID: 8706834615479312839, guid: 7b178f1e3e4105f4591d864574b3937e,
-    type: 3}
-  m_PrefabInstance: {fileID: 1283783494749199177}
-  m_PrefabAsset: {fileID: 0}
 --- !u!33 &3587258553590812733
 MeshFilter:
   m_ObjectHideFlags: 0

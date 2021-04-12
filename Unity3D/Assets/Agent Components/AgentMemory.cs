@@ -21,10 +21,14 @@ public class AgentMemory : MonoBehaviour
     GameObject memoryHolder;
 
     const string memoryString = "-Memory"; //used to identify an object as a memory object.
-    /// <summary>
-    /// A memory represents the agents known information about a specific object type.
-    /// </summary>
-  
+
+    [Header("Area Memory")]
+    [SerializeField] [Tooltip("The points that make up the corners of the grid of search spaces.")] Vector2 minPoint, maxPoint;
+    [SerializeField] [Tooltip("The size of an area that the agent will traverse.")] [Range(1,10)]float searchSquareSize;
+    [SerializeField] [Range(0,1)] float squareVisibility;
+    public float [,] searchSquares = new float [10,10];
+    int numX, numY;
+    [SerializeField] float heatmapUpdateRate;
     /// <summary>
     /// Dictionary for storing and retrieving objects and their memory
     /// </summary>
@@ -45,6 +49,7 @@ public class AgentMemory : MonoBehaviour
     void Update()
     {
         GetWorldInformation();
+        UpdateCurrentGridPosition();
     }
 
     /// <summary>
@@ -61,6 +66,69 @@ public class AgentMemory : MonoBehaviour
         memoryHolder = new GameObject(this.name + " Memories");
 
         memoryRemovalList = new List<GameObject>();
+
+        UpdateMemoryGridSize();
+
+
+    }
+    /// <summary>
+    /// Updates scale of grid, resets values.
+    /// </summary>
+    void UpdateMemoryGridSize()
+    {
+        numX = Mathf.FloorToInt(Mathf.Abs(maxPoint.x - minPoint.x) / searchSquareSize);
+        numY = Mathf.FloorToInt(Mathf.Abs(maxPoint.y - minPoint.y) / searchSquareSize);
+        searchSquares = new float[numX, numY];
+        //set up memory grid
+        for (int i = 0; i < numX; i++)
+        {
+            for (int j = 0; j < numY; j++)
+            {
+                searchSquares[i,j] = 0;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Updates the point on grid to increase value showing presence of agent.
+    /// </summary>
+    void UpdateCurrentGridPosition()
+    {
+        if (searchSquares == null)
+            return;
+
+        Vector2 _relativePos = new Vector3(transform.position.x - minPoint.x, transform.position.z-minPoint.y);
+        _relativePos = new Vector2(Mathf.FloorToInt(_relativePos.x/searchSquareSize) , Mathf.FloorToInt(_relativePos.y / searchSquareSize));
+        searchSquares[(int)_relativePos.x, (int)_relativePos.y] += heatmapUpdateRate * Time.deltaTime ;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (searchSquares == null)
+            return;
+
+        numX = Mathf.FloorToInt(Mathf.Abs(maxPoint.x - minPoint.x) / searchSquareSize);
+        numY = Mathf.FloorToInt(Mathf.Abs(maxPoint.y - minPoint.y) / searchSquareSize);
+
+        if (searchSquares.GetLength(0) != numX || searchSquares.GetLength(1) != numY)
+            UpdateMemoryGridSize();
+
+        Debug.Log(numX+"," + numY);
+        //set up memory grid
+        for (int i = 0; i < numX; i++)
+        {
+            for (int j = 0; j < numY; j++)
+            {
+                //set colour
+                Color _colour = Color.Lerp(Color.red, Color.green, searchSquares[i,j]);
+                _colour = new Color(_colour.r, _colour.g, _colour.b, squareVisibility);
+                Gizmos.color = _colour;
+
+                //set position on grid
+                Vector3 _position = new Vector3(searchSquareSize * (0.5f + i),0,searchSquareSize * (0.5f + j)) + new Vector3(minPoint.x,0,minPoint.y);
+                Gizmos.DrawCube(_position,Vector3.one*searchSquareSize);
+            }
+        }
     }
 
     /// <summary>

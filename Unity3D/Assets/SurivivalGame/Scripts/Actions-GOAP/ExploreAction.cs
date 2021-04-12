@@ -167,7 +167,7 @@ public class ExploreAction : GoapAction
             _direction = _direction * movementDistanceIncrements;
             
         }
-        Debug.DrawLine(_point, _point + _direction, Color.green, 100);
+        Debug.DrawLine(_point, _point + (_direction/4), Color.green, 100);
         _point += _direction;
 
 

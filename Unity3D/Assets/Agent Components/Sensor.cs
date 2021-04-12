@@ -149,7 +149,7 @@ public class Sensor : MonoBehaviour
         seekingMovementDirection = Vector3.zero;
         float _maxRayDis = 0;
 
-        seekSteerRandomiser += new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1))* seekSteerMagnitude;
+        seekSteerRandomiser += new Vector3(Random.Range(-1.0f, 1.0f), 0, Random.Range(-1.0f, 1.0f)) * seekSteerMagnitude;
         seekSteerRandomiser = seekSteerRandomiser.normalized;
 
         //Accumulate the detection ray values 
@@ -158,22 +158,22 @@ public class Sensor : MonoBehaviour
             RaycastHit _hit;
             float _angle = -(viewAngle / 2) + (((float)i / (float)numViewRangeRays) * viewAngle);
             Vector3 _direction = Quaternion.Euler(0, _angle, 0) * transform.forward;
-            Debug.DrawLine(transform.position, transform.position + _direction * 5, Color.cyan);
+            Debug.DrawLine(transform.position, transform.position + _direction , Color.cyan);
+            Debug.DrawLine(transform.position + _direction, transform.position + _direction +(seekSteerRandomiser *seekRandomiserMagnitude), Color.white);
             // Does the ray intersect any objects excluding the player layer
-            if (Physics.Raycast(transform.position, _direction, out _hit, viewDistance, obstacleMask))
+            if (Physics.Raycast(transform.position, _direction, out _hit, Mathf.Infinity, obstacleMask))
             {
-                Vector3 _dir = _direction.normalized * (avoidanceOverDistance.Evaluate(Mathf.Clamp01(_hit.distance / Mathf.Min(avoidanceDistance, viewDistance))));
-                _dir += seekSteerRandomiser * seekRandomiserMagnitude;
+                Vector3 _dir = _direction.normalized;
 
-                if (_dir.magnitude > _maxRayDis)
+                if ((_dir +(seekSteerRandomiser * seekRandomiserMagnitude)).magnitude > _maxRayDis)
                 {
-                    _maxRayDis = _dir.magnitude;
+                    _maxRayDis = (_dir + (seekSteerRandomiser * seekRandomiserMagnitude)).magnitude;
                     seekingMovementDirection = _dir;
                 }
             }
             
         }
-        Debug.DrawLine(transform.position, transform.position + seekingMovementDirection, Color.red);
+        Debug.DrawLine(transform.position, transform.position + (seekingMovementDirection *4), Color.blue);
     }
 
     /// <summary>

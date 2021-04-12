@@ -2042,6 +2042,7 @@ GameObject:
   - component: {fileID: 407055026332573631}
   - component: {fileID: 407055026332573624}
   - component: {fileID: 1399890016}
+  - component: {fileID: 9093302777911367615}
   m_Layer: 10
   m_Name: GoodRobot
   m_TagString: Untagged
@@ -2137,15 +2138,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewDistance: 8.77
-  maxViewDistance: 8
-  minViewDistance: 3
+  maxViewDistance: 10
+  minViewDistance: 2
   avoidanceDistance: 3
-  viewAngle: 70
+  viewAngle: 130
   senseActive: 0
-  numViewRangeRays: 5
+  numViewRangeRays: 11
   spotLight: {fileID: 8706834615479312839}
   visibleInteractables: []
   visibleMemories: []
+  seekSteerMagnitude: 0
+  seekRandomiserMagnitude: 0
   avoidanceOverDistance:
     serializedVersion: 2
     m_Curve:
@@ -2161,11 +2164,11 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 3.2900755
-      outSlope: 3.2900755
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.008602202
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -2216,11 +2219,11 @@ MonoBehaviour:
   dead: 0
   inventory: {fileID: 8706834616695631450}
   maxMoveSpeed: 6
-  range: 1.5
+  range: 2
   rotationStepAngle: 260
   targetPosition: {x: 0, y: 0, z: 0}
   moving: 1
-  posX: 37.38
+  posX: 40
   posY: 26.08075
   RotY: 315.41302
   isComplete: 0
@@ -2306,7 +2309,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 6
-  m_Acceleration: 18
+  m_Acceleration: 30
   avoidancePriority: 50
   m_AngularSpeed: 200
   m_StoppingDistance: 0.3
@@ -2334,10 +2337,11 @@ MonoBehaviour:
   memoryTarget: {fileID: 0}
   actionType: 2
   exploreType: 0
-  exploreSteerWeight: 1
-  exploreSteerSubWeight: 2
-  avoidanceSteerWeight: 3
-  movementDistanceIncrements: 3
+  exploreSteerWeight: 0.4
+  exploreSteerSubWeight: 0.7
+  avoidanceSteerWeight: 1.5
+  seekSteerWeight: 3
+  movementDistanceIncrements: 2.2
   searchTimeCurve:
     serializedVersion: 2
     m_Curve:
@@ -2363,8 +2367,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxSearchTime: 2
-  searchRotationMagnitude: 2
-  percentageSearchChance: 0.05
+  searchRotationMagnitude: 1
+  percentageSearchChance: 0
 --- !u!114 &407055026332573635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2457,6 +2461,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cost: 26.46233
+  target: {fileID: 0}
+  memoryTarget: {fileID: 0}
+  healDuration: 0.8
+  healthRestorePercentage: 0.3
+--- !u!114 &9093302777911367615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8594544343367576398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b4c6fe6d4b3a334699bf4af49f531cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 66
   target: {fileID: 0}
   memoryTarget: {fileID: 0}
   healDuration: 0.8
@@ -3704,9 +3725,9 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 2655837023232726332}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4829156009986584086 stripped
+--- !u!114 &4829156011376515536 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7484972124913761066, guid: 652fe937b68111f468feb4eec1d8e9b1,
+  m_CorrespondingSourceObject: {fileID: 7484972126203809004, guid: 652fe937b68111f468feb4eec1d8e9b1,
     type: 3}
   m_PrefabInstance: {fileID: 2655837023232726332}
   m_PrefabAsset: {fileID: 0}
@@ -3728,9 +3749,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4829156011376515536 stripped
+--- !u!114 &4829156009986584086 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7484972126203809004, guid: 652fe937b68111f468feb4eec1d8e9b1,
+  m_CorrespondingSourceObject: {fileID: 7484972124913761066, guid: 652fe937b68111f468feb4eec1d8e9b1,
     type: 3}
   m_PrefabInstance: {fileID: 2655837023232726332}
   m_PrefabAsset: {fileID: 0}
