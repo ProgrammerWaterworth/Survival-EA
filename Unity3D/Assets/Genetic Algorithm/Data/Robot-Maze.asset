@@ -87,12 +87,36 @@ MonoBehaviour:
     maxValue: 75
     value: 50
     activeGene: 0
+  - geneName: ExploreAction - exploreSteerWeight
+    weight: 0.5
+    minValue: 0.15
+    maxValue: 0.45000002
+    value: 0.3
+    activeGene: 1
+  - geneName: ExploreAction - exploreSteerSubWeight
+    weight: 0.5
+    minValue: 0.35
+    maxValue: 1.05
+    value: 0.7
+    activeGene: 1
+  - geneName: ExploreAction - avoidanceSteerWeight
+    weight: 0.5
+    minValue: 0.5
+    maxValue: 1.5
+    value: 1
+    activeGene: 1
+  - geneName: ExploreAction - movementDistanceIncrements
+    weight: 0.5
+    minValue: 2
+    maxValue: 6
+    value: 4
+    activeGene: 1
   - geneName: ExploreAction - cost
     weight: 0.5
     minValue: 1
     maxValue: 500
     value: 250.5
-    activeGene: 1
+    activeGene: 0
   - geneName: InvestigateChargePointAction - investigateDuration
     weight: 0.5
     minValue: 0.15
@@ -100,11 +124,11 @@ MonoBehaviour:
     value: 0.3
     activeGene: 0
   - geneName: InvestigateChargePointAction - cost
-    weight: 0.5
+    weight: 0.279
     minValue: 1
     maxValue: 500
-    value: 250.5
-    activeGene: 1
+    value: 140.22101
+    activeGene: 0
   - geneName: PickUpBatteryAction - pickUpDuration
     weight: 0.5
     minValue: 0.25
@@ -112,11 +136,11 @@ MonoBehaviour:
     value: 0.5
     activeGene: 0
   - geneName: PickUpBatteryAction - cost
-    weight: 0.5
+    weight: 0.194
     minValue: 1
     maxValue: 500
-    value: 250.5
-    activeGene: 1
+    value: 97.806
+    activeGene: 0
   - geneName: EatFruit - consumeDuration
     weight: 0.5
     minValue: 0.5
@@ -124,11 +148,11 @@ MonoBehaviour:
     value: 1
     activeGene: 0
   - geneName: EatFruit - cost
-    weight: 0.5
+    weight: 0.116
     minValue: 1
     maxValue: 500
-    value: 250.5
-    activeGene: 1
+    value: 58.884
+    activeGene: 0
   - geneName: InvestigateTreeAction - investigateDuration
     weight: 0.5
     minValue: 0.25
@@ -136,11 +160,11 @@ MonoBehaviour:
     value: 0.5
     activeGene: 0
   - geneName: InvestigateTreeAction - cost
-    weight: 0.5
+    weight: 0.313
     minValue: 1
     maxValue: 500
-    value: 250.5
-    activeGene: 1
+    value: 157.187
+    activeGene: 0
   - geneName: ChargeToHealthAction - healDuration
     weight: 0.5
     minValue: 0.4
@@ -148,8 +172,8 @@ MonoBehaviour:
     value: 0.8
     activeGene: 0
   - geneName: ChargeToHealthAction - cost
-    weight: 0.5
+    weight: 1
     minValue: 1
     maxValue: 500
-    value: 250.5
-    activeGene: 1
+    value: 500
+    activeGene: 0

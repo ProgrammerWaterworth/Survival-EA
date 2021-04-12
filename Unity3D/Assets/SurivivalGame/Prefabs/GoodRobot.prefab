@@ -2139,10 +2139,10 @@ MonoBehaviour:
   viewDistance: 8.77
   maxViewDistance: 8
   minViewDistance: 3
+  avoidanceDistance: 3
   viewAngle: 70
   senseActive: 0
   numViewRangeRays: 5
-  avoidenceSensitivity: 0
   spotLight: {fileID: 8706834615479312839}
   visibleInteractables: []
   visibleMemories: []
@@ -2161,11 +2161,11 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 2
-      outSlope: 2
+      inSlope: 3.2900755
+      outSlope: 3.2900755
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.008602202
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -2209,7 +2209,7 @@ MonoBehaviour:
   hungerRegenerationThreshold: 60
   healthRegenerationRate: 1.5
   healthlossRate: 3
-  hungerIncreaseRate: 5
+  hungerIncreaseRate: 3
   health: 0
   hunger: 0
   healthIncreaseChargeCost: 10
@@ -2224,7 +2224,7 @@ MonoBehaviour:
   posY: 26.08075
   RotY: 315.41302
   isComplete: 0
-  maxLifetime: 200
+  maxLifetime: 100
 --- !u!136 &6084042902173927208
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2334,10 +2334,10 @@ MonoBehaviour:
   memoryTarget: {fileID: 0}
   actionType: 2
   exploreType: 0
-  exploreSteerWeight: 0.3
-  exploreSteerSubWeight: 0.7
-  avoidanceSteerWeight: 1
-  movementDistanceIncrements: 4
+  exploreSteerWeight: 1
+  exploreSteerSubWeight: 2
+  avoidanceSteerWeight: 3
+  movementDistanceIncrements: 3
   searchTimeCurve:
     serializedVersion: 2
     m_Curve:
@@ -2408,7 +2408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c5302f6c86e294aa962374d892db68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 250.5
+  cost: 244.34866
   target: {fileID: 0}
   memoryTarget: {fileID: 0}
   pickUpDuration: 0.5
@@ -2440,7 +2440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ef7693078cb8249ab435dc23ddea7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 250.5
+  cost: 350.4934
   target: {fileID: 0}
   memoryTarget: {fileID: 0}
   investigateDuration: 0.5
@@ -2456,7 +2456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b4c6fe6d4b3a334699bf4af49f531cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 250.5
+  cost: 26.46233
   target: {fileID: 0}
   memoryTarget: {fileID: 0}
   healDuration: 0.8

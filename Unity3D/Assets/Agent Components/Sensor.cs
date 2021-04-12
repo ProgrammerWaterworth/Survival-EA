@@ -7,13 +7,11 @@ using UnityEngine;
 /// </summary>
 public class Sensor : MonoBehaviour
 {
-    public float viewDistance, maxViewDistance, minViewDistance;
+    public float viewDistance, maxViewDistance, minViewDistance, avoidanceDistance;
     public float viewAngle;
 
     [SerializeField] bool senseActive;
     [SerializeField] [Tooltip("The number of rays to cast out for detecting obstacles.")] int numViewRangeRays = 5;
-    [SerializeField] [Tooltip("The magnitude of how the desired direction of movement steered in the opposite direction to detected obstacles")]
-    [Range(0,1)]float avoidenceSensitivity;
 
     [Header("Visual Representation")]
     [SerializeField] Light spotLight;
@@ -26,8 +24,9 @@ public class Sensor : MonoBehaviour
     public List<Transform> visibleInteractables = new List<Transform>();
     public List<Transform> visibleMemories = new List<Transform>();
     const float sensorUpdateRate = 0.25f;
-    Vector3 preferedMovementDirection;
-
+    Vector3 avoidanceMovementDirection, seekingMovementDirection, seekSteerRandomiser;
+    [SerializeField] [Tooltip("The magnitude of how much the randomiser steer vector is affected each update.")] float seekSteerMagnitude;
+    [SerializeField] [Tooltip("The magnitude of how much each of the seek behaviours are affected by the randomiser steering direction.")] float seekRandomiserMagnitude;
     [SerializeField] AnimationCurve avoidanceOverDistance;
 
     [SerializeField] [Tooltip("Mask for objects that block the users vision.")] LayerMask obstacleMask;
@@ -42,6 +41,7 @@ public class Sensor : MonoBehaviour
     private void Update()
     {
         UpdateObstacleAvoidanceDirection();
+        UpdateObstacleSeekDirection();
     }
 
     public void SetViewDistancePercentage(float _percentage)
@@ -122,7 +122,7 @@ public class Sensor : MonoBehaviour
     /// </summary>
     void UpdateObstacleAvoidanceDirection()
     {
-        preferedMovementDirection = Vector3.zero;
+        avoidanceMovementDirection = Vector3.zero;
         //Accumulate the detection ray values 
         for (int i = 0; i < numViewRangeRays; i++)
         {
@@ -133,12 +133,47 @@ public class Sensor : MonoBehaviour
             // Does the ray intersect any objects excluding the player layer
             if (Physics.Raycast(transform.position, _direction, out _hit, viewDistance, obstacleMask))
             {
-                Vector3 _dir = -_direction.normalized * (avoidanceOverDistance.Evaluate(1 - (_hit.distance / viewDistance)));
+                Vector3 _dir = -_direction.normalized * (avoidanceOverDistance.Evaluate(1 - (_hit.distance / Mathf.Min(avoidanceDistance,viewDistance))));
                 Debug.DrawLine(transform.position, transform.position + _dir * 7, Color.yellow);
-                preferedMovementDirection += _dir;
+                avoidanceMovementDirection += _dir;
             }
         }
-        Debug.DrawLine(transform.position, transform.position + preferedMovementDirection*6, Color.red);
+        Debug.DrawLine(transform.position, transform.position + avoidanceMovementDirection*6, Color.red);
+    }
+
+    /// <summary>
+    /// Raycast in view range to see what obstacles the agent is facing and update desired direction of movement.
+    /// </summary>
+    void UpdateObstacleSeekDirection()
+    {
+        seekingMovementDirection = Vector3.zero;
+        float _maxRayDis = 0;
+
+        seekSteerRandomiser += new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1))* seekSteerMagnitude;
+        seekSteerRandomiser = seekSteerRandomiser.normalized;
+
+        //Accumulate the detection ray values 
+        for (int i = 0; i < numViewRangeRays; i++)
+        {
+            RaycastHit _hit;
+            float _angle = -(viewAngle / 2) + (((float)i / (float)numViewRangeRays) * viewAngle);
+            Vector3 _direction = Quaternion.Euler(0, _angle, 0) * transform.forward;
+            Debug.DrawLine(transform.position, transform.position + _direction * 5, Color.cyan);
+            // Does the ray intersect any objects excluding the player layer
+            if (Physics.Raycast(transform.position, _direction, out _hit, viewDistance, obstacleMask))
+            {
+                Vector3 _dir = _direction.normalized * (avoidanceOverDistance.Evaluate(Mathf.Clamp01(_hit.distance / Mathf.Min(avoidanceDistance, viewDistance))));
+                _dir += seekSteerRandomiser * seekRandomiserMagnitude;
+
+                if (_dir.magnitude > _maxRayDis)
+                {
+                    _maxRayDis = _dir.magnitude;
+                    seekingMovementDirection = _dir;
+                }
+            }
+            
+        }
+        Debug.DrawLine(transform.position, transform.position + seekingMovementDirection, Color.red);
     }
 
     /// <summary>
@@ -147,8 +182,14 @@ public class Sensor : MonoBehaviour
     /// <returns></returns>
     public Vector3 GetObstacleAvoidanceDirection()
     {
-        return preferedMovementDirection;
+        return avoidanceMovementDirection;
     }
+
+    public Vector3 GetSeekDirection()
+    {
+        return seekingMovementDirection;
+    }
+
 
     IEnumerator FindTargetsWithDelay(float _delay)
     {

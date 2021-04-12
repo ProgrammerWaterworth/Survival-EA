@@ -20,10 +20,11 @@ public class ExploreAction : GoapAction
     [Header("Movement")]
     public int actionType;
     [SerializeField] ExploreType exploreType;
-    [SerializeField] float exploreSteerWeight;
-    [SerializeField] float exploreSteerSubWeight;
-    [SerializeField] float avoidanceSteerWeight;
-    [SerializeField] float movementDistanceIncrements;
+    public float exploreSteerWeight;
+    public float exploreSteerSubWeight;
+    public float avoidanceSteerWeight;
+    public float seekSteerWeight;
+    public float movementDistanceIncrements;
 
     [Header("Search")]
     float searchTime;
@@ -150,12 +151,23 @@ public class ExploreAction : GoapAction
         //apply obstacle detection change to direction.
         if (GetComponent<AgentMemory>()!=null)
         {
-            steeringDirection = (GetComponent<AgentMemory>().GetReactiveDirection());
-            _direction += steeringDirection * avoidanceSteerWeight; //ensures steering follows on from avoid objects and doesnt try turn back on itself when avoidance is 0
+            //avoidance
+            steeringDirection = (GetComponent<AgentMemory>().GetAvoidanceDirection());
+
+            if (steeringDirection != Vector3.zero) //apply avoidance and seek if obstacles detected.
+            {
+                _direction += steeringDirection * avoidanceSteerWeight; //ensures steering follows on from avoid objects and doesnt try turn back on itself when avoidance is 0
+
+                //seeking
+                steeringDirection = (GetComponent<AgentMemory>().GetSeekDirection());
+                _direction += steeringDirection * seekSteerWeight; //ensures steering follows on from avoid objects and doesnt try turn back on itself when avoidance is 0
+            }
+
             _direction = _direction.normalized;
             _direction = _direction * movementDistanceIncrements;
+            
         }
-        Debug.DrawLine(_point, _point + _direction, Color.green);
+        Debug.DrawLine(_point, _point + _direction, Color.green, 100);
         _point += _direction;
 
 

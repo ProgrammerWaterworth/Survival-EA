@@ -1206,7 +1206,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 413754652}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e491ea43603aedf4c9bba2bb7e77106b, type: 3}
   m_Name: 
@@ -1219,7 +1219,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 413754652}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af16566507c3ecd4a858a3a4861daecc, type: 3}
   m_Name: 
@@ -6974,32 +6974,32 @@ PrefabInstance:
     - target: {fileID: 4829156010743341507, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.535
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4829156010743341507, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4829156011096462420, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.535
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4829156011096462420, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4829156011324456992, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.714
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4829156011324456992, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8594544343367546734, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
@@ -7060,11 +7060,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GoodRobot
-      objectReference: {fileID: 0}
-    - target: {fileID: 8594544343367576398, guid: 7b178f1e3e4105f4591d864574b3937e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b178f1e3e4105f4591d864574b3937e, type: 3}

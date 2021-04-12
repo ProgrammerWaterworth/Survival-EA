@@ -3000,7 +3000,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1984e3ba6bd2c4db654dbc9e698ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeSpeed: 3
+  timeSpeed: 0.4
   highScoreText: {fileID: 1878418769}
   scoreText: {fileID: 1111706892}
   comboText: {fileID: 783858515}
@@ -3131,14 +3131,15 @@ MonoBehaviour:
   state: 0
   prefab: {fileID: 8594544343367576398, guid: 7b178f1e3e4105f4591d864574b3937e, type: 3}
   individual: {fileID: 0}
-  data: {fileID: 11400000, guid: 1003bc91ce48d0948bc5267a93ec71c7, type: 2}
+  data: {fileID: 11400000, guid: 35b6f274b9a8f0d4d88af701b8db198f, type: 2}
   spawnPoint: {fileID: 1300009650}
   genes:
-  - 0.98
   - 0.5
   - 0.5
-  - 0.3
-  - 0.47
+  - 0.5
+  - 0.5
+  - 0.5
+  - 0.5
 --- !u!1001 &438525375
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14135,12 +14136,47 @@ PrefabInstance:
     - target: {fileID: 407055026332573633, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
       propertyPath: m_Acceleration
-      value: 4
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 407055026332573633, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
       propertyPath: m_AngularSpeed
       value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 407055026332573634, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: avoidanceSteerWeight
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 407055026332573634, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: movementDistanceIncrements
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 407055026332573634, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: exploreSteerWeight
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 407055026332573634, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: exploreSteerSubWeight
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 407055026332573634, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: percentageSearchChance
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 407055026332573634, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: seekSteerWeight
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 407055026332573634, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: searchRotationMagnitude
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2688818012801418786, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
@@ -14267,6 +14303,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 8594544343367576398, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8706834616695631448, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
       propertyPath: range
@@ -14298,6 +14339,41 @@ PrefabInstance:
       propertyPath: spotLight
       value: 
       objectReference: {fileID: 3433629777322927600}
+    - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: avoidanceOverDistance.m_Curve.Array.data[1].inSlope
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: avoidanceOverDistance.m_Curve.Array.data[1].outSlope
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: avoidanceOverDistance.m_Curve.Array.data[1].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: avoidanceOverDistance.m_Curve.Array.data[0].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: avoidanceOverDistance.m_Curve.Array.data[0].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: viewAngle
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 8706834616695631453, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: numViewRangeRays
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 8706834616695631455, guid: 7b178f1e3e4105f4591d864574b3937e,
         type: 3}
       propertyPath: posX
@@ -14312,6 +14388,11 @@ PrefabInstance:
         type: 3}
       propertyPath: healthIncreaseChargeCost
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8706834616695631455, guid: 7b178f1e3e4105f4591d864574b3937e,
+        type: 3}
+      propertyPath: range
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b178f1e3e4105f4591d864574b3937e, type: 3}
